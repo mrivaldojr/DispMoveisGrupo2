@@ -56,7 +56,6 @@
                android:layout_margin="10dp"
                android:padding="20dp"
                android:scaleType="fitCenter"
-               android:focusable="false"
                android:clickable="true" />
         </TableRow>
 
