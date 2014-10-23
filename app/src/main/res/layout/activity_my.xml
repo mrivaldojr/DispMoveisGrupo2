@@ -22,12 +22,27 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
+                android:id="@+id/Logo"
                 android:src="@drawable/logo"
                 android:minWidth="100dp"
                 android:minHeight="100dp"
                 />
-            </TableRow>
+
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/app_name"
+            android:id="@+id/textView"
+            android:layout_gravity="center"/>
+        </TableRow>
+
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -36,7 +51,7 @@
            <ImageView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:id="@+id/imageView2"
+               android:id="@+id/bt_login"
                android:src="@drawable/b_login"
                android:layout_margin="10dp"
                android:padding="20dp"
