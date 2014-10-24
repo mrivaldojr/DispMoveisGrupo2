@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ufba.mypersonaltrainner" >
 
+
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="15"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -15,6 +18,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".PrincipalActivity"
+            android:label="@string/title_activity_principal" >
+        </activity>
+        <activity
+            android:name=".MeusTreinos"
+            android:label="@string/title_activity_meus_treinos"
+            android:parentActivityName=".PrincipalActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.PrincipalActivity" />
         </activity>
     </application>
 
