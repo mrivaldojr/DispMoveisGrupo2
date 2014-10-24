@@ -9,5 +9,6 @@
     <string name="user_xp">xxxx</string>
     <string name="friend">Amigos</string>
     <string name="selected_training">Treino</string>
+    <string name="my_training">Meus Treinos</string>
 
 </resources>
