@@ -44,4 +44,28 @@
         android:layout_toRightOf="@id/img_perfil"
         android:layout_below="@id/user_lvl"
         android:layout_marginLeft="10dp"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_below="@id/user_xp"
+        android:layout_toRightOf="@id/img_perfil"
+        android:layout_margin="5dp"/>
+    <TextView
+        android:id="@+id/friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/friend"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@id/img_perfil"
+        android:layout_marginTop="10dp"
+        android:textColor="#3d3d3d"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/friend"
+        android:background="#3d3d3d">
+    </RelativeLayout>
 </RelativeLayout>

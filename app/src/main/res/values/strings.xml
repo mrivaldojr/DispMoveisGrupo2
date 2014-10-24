@@ -7,5 +7,6 @@
     <string name="user_name">Usuário</string>
     <string name="user_lvl">Level: ?</string>
     <string name="user_xp">xxxx</string>
+    <string name="friend">Amigos</string>
 
 </resources>
