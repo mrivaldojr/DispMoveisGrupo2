@@ -7,13 +7,23 @@
     <string name="user_name">Usuário</string>
     <string name="user_lvl">Level: ?</string>
     <string name="user_xp">xxxx</string>
-
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_meus_treinos">MeusTreinos</string>
     <string name="action_new">Novo Treino</string>
-
     <string name="friend">Amigos</string>
     <string name="selected_training">Treino</string>
     <string name="my_training">Meus Treinos</string>
+    <string name="title_activity_side_bar">SideBarActivity</string>
+
+    <!--nomes das opções da sidebar!-->
+    <string name="title_section1">Perfil</string>
+    <string name="title_section2">Treinos</string>
+    <string name="title_section3">Exercícios</string>
+    <!-- fim nomes das opções da sidebar!-->
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="title_activity_configurar_treino_my">ConfigurarTreinoMyActivity</string>
 
 </resources>

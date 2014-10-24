@@ -1,7 +1,6 @@
 package ufba.mypersonaltrainner;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,8 +19,8 @@ public class MyActivity extends Activity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), PrincipalActivity.class);
-                startActivity(i);
+           //     Intent i = new Intent(getBaseContext(), PrincipalActivity.class);
+           //     startActivity(i);
 
             }
         });
