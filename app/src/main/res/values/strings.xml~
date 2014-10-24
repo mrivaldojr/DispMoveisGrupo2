@@ -7,13 +7,14 @@
     <string name="user_name">Usuário</string>
     <string name="user_lvl">Level: ?</string>
     <string name="user_xp">xxxx</string>
-
+<<<<<<< HEAD
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_meus_treinos">MeusTreinos</string>
     <string name="action_new">Novo Treino</string>
-
+=======
     <string name="friend">Amigos</string>
     <string name="selected_training">Treino</string>
     <string name="my_training">Meus Treinos</string>
+>>>>>>> b5c8b6baf7a959e390848c494ee97f9b99fae503
 
 </resources>
