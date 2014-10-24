@@ -8,5 +8,6 @@
     <string name="user_lvl">Level: ?</string>
     <string name="user_xp">xxxx</string>
     <string name="friend">Amigos</string>
+    <string name="selected_training">Treino</string>
 
 </resources>
