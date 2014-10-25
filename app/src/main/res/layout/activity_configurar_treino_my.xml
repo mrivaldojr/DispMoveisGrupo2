@@ -17,7 +17,7 @@
         <EditText
             android:layout_width="wrap_content"
             android:hint="Nome Do Treino"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/edt_nomeTreino"
             android:layout_weight="0.56" />
 
@@ -35,9 +35,26 @@
             android:id="@+id/txtView_addExerc" />
     </LinearLayout>
 
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="399dp"
+            android:id="@+id/list_execiciosAdicionados" />
+
+    </LinearLayout>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_execiciosAdicionados" />
+        android:text="Salvar"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
