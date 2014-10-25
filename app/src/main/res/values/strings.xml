@@ -15,15 +15,16 @@
     <string name="my_training">Meus Treinos</string>
     <string name="title_activity_side_bar">SideBarActivity</string>
 
-    <!--nomes das opções da sidebar!-->
-    <string name="title_section1">Perfil</string>
-    <string name="title_section2">Treinos</string>
-    <string name="title_section3">Exercícios</string>
-    <!-- fim nomes das opções da sidebar!-->
+    <!-- nomes das opções da sidebar! -->
+    <string name="title_section1">Meu Treino</string>
+    <string name="title_section2">Treinos Cadastrados</string>
+    <string name="title_section3">Alguma coisa</string>
+    <!-- fim nomes das opções da sidebar! -->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="title_activity_configurar_treino_my">ConfigurarTreinoMyActivity</string>
+    <string name="title_activity_treino_de_hoje">Treino de Hoje</string>
 
 </resources>
