@@ -1,26 +1,27 @@
 package ufba.mypersonaltrainner;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 
-public class MyActivity extends Activity {
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_login);
 
-        ImageView img = (ImageView) findViewById(R.id.bt_login);
+        ImageButton img = (ImageButton) findViewById(R.id.bt_login);
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-           //     Intent i = new Intent(getBaseContext(), PrincipalActivity.class);
-           //     startActivity(i);
+           Intent i = new Intent(getBaseContext(), SideBarActivity.class);
+           startActivity(i);
 
             }
         });

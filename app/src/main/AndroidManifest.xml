@@ -12,12 +12,22 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MyActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MeusTreinos"
-            android:label="@string/title_activity_meus_treinos">
+            android:label="@string/title_activity_meus_treinos"
+            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.SideBarActivity"/>
+            >
         </activity>
         <activity
             android:name=".ConfigurarTreinoMyActivity"
@@ -26,13 +36,15 @@
         <activity
             android:name=".SideBarActivity"
             android:label="@string/title_activity_side_bar" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".TreinoDeHojeActivity"
+            android:label="@string/title_activity_treino_de_hoje"
+            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.SideBarActivity" />
         </activity>
     </application>
 
