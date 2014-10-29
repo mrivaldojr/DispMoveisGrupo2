@@ -7,54 +7,51 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
 
-
-public class TreinoDeHojeActivity extends Activity {
-
-    private ListView listExercicios;
+public class TreinosAtivosActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.treino_de_hoje);
+        setContentView(R.layout.activity_treinos_ativos);
 
-        listExercicios = (ListView) findViewById(R.id.lv_treinoDeHoje);
+        //dados de teste
+        ListView lv = (ListView) findViewById(R.id.listView_treinos_ativos);
 
-        List<ItemListMeuTreino> lista = new ArrayList<ItemListMeuTreino>();
+        List<String> lst = new ArrayList<String>();
 
-        for(int i=0; i<20;i++){
-            ItemListMeuTreino item = new ItemListMeuTreino();
-
-            item.setCarga(i+20);
-            item.setNome("Exercicio"+i);
-            item.setRepeticoes(3);
-
-            lista.add(item);
+        for(int i=1;i<4;i++){
+            String item = "Treino "+i;
+            lst.add(item);
         }
 
-        listExercicios.setAdapter(new ListMeuTreinoAdapter(this, lista));
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,
+                R.layout.list_meus_treinos_item,
+                R.id.txt_nome_treino_lst_item,
+                lst);
 
-        listExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setAdapter(adapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
+                Intent intent = new Intent(getBaseContext(), TrainigDetail.class);
                 startActivity(intent);
             }
         });
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.treino_de_hoje, menu);
+        getMenuInflater().inflate(R.menu.treinos_ativos, menu);
         return true;
     }
 

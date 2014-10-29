@@ -15,16 +15,12 @@ import java.util.List;
 import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
 
 
-public class TreinoDeHojeActivity extends Activity {
-
-    private ListView listExercicios;
+public class TrainigDetail extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.treino_de_hoje);
-
-        listExercicios = (ListView) findViewById(R.id.lv_treinoDeHoje);
+        setContentView(R.layout.training_detail);
 
         List<ItemListMeuTreino> lista = new ArrayList<ItemListMeuTreino>();
 
@@ -38,9 +34,11 @@ public class TreinoDeHojeActivity extends Activity {
             lista.add(item);
         }
 
-        listExercicios.setAdapter(new ListMeuTreinoAdapter(this, lista));
+        ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
 
-        listExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setAdapter(new ListMeuTreinoAdapter(this, lista));
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
@@ -54,7 +52,7 @@ public class TreinoDeHojeActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.treino_de_hoje, menu);
+        getMenuInflater().inflate(R.menu.trainig_detail, menu);
         return true;
     }
 

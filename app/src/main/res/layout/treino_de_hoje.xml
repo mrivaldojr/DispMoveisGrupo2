@@ -47,27 +47,31 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/progress_treino"
         android:layout_centerHorizontal="true"
         android:weightSum="1"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:layout_alignParentBottom="true">
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="306dp"
-            android:id="@+id/listView"
+            android:id="@+id/lv_treinoDeHoje"
             android:layout_below="@+id/progress_trophy"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_weight="0.94" />
+            android:layout_weight="0.22" />
 
         <Button
             android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:text="Finalizar"
             android:id="@+id/button"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true" />
+
     </LinearLayout>
 
 </RelativeLayout>

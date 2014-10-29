@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -211,8 +210,8 @@ public class NavigationDrawerFragment extends Fragment {
     //lida com o clique
     private void selectClickedItem(int position) {
         Intent i;
-
         switch (position){
+
             case 0:
                 i = new Intent(getActivity(), TreinoDeHojeActivity.class);
                 startActivity(i);
@@ -222,8 +221,8 @@ public class NavigationDrawerFragment extends Fragment {
                 startActivity(i);
                 break;
             case 2:
-                Toast toast = Toast.makeText(getActivity(), "Vai pra alguma tela",Toast.LENGTH_SHORT);
-                toast.show();
+                i = new Intent(getActivity(),TreinosAtivosActivity.class);
+                startActivity(i);
                 break;
         }
 
@@ -274,12 +273,6 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
