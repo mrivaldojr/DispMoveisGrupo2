@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ufba.mypersonaltrainner" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="ufba.mypersonaltrainner.parseLogin.SampleApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.parse.ui.ParseLoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_ENABLED"
+                android:value="true" />
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.FACEBOOK_LOGIN_PERMISSIONS"
+                android:value="@array/my_facebook_permissions" />
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.parseLogin.SampleDispatchActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.SideBarActivity"
+            android:label="@string/title_activity_side_bar" >
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.MeusTreinos"
+            android:label="@string/title_activity_meus_treinos"
+            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.SideBarActivity" />
+            >
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.ConfigurarTreinoActivity"
+            android:label="@string/title_activity_configurar_treino_my" >
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.TreinoDeHojeActivity"
+            android:label="@string/title_activity_treino_de_hoje"
+            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.SideBarActivity" />
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.ExercicioActivity"
+            android:label="@string/title_activity_execicio" >
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.TrainigDetail"
+            android:label="@string/title_activity_trainig_detail"
+            android:parentActivityName="ufba.mypersonaltrainner.MeusTreinos" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ufba.mypersonaltrainner.MeusTreinos" />
+        </activity>
+        <activity
+            android:name="ufba.mypersonaltrainner.TreinosAtivosActivity"
+            android:label="@string/title_activity_treinos_ativos" >
+        </activity>
+        <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+    </application>
+
+</manifest>
