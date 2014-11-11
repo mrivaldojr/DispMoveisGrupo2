@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ufba.mypersonaltrainner.MeusTreinos" >
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_new"
+        android:icon="@drawable/new_icon"
+        android:title="@string/action_new"
+        android:showAsAction="ifRoom" />
+</menu>
+<!-- From: file:/home/junior/AndroidStudioProjects/DispMoveisGrupo2/myPersonalTrainer/src/main/res/menu/meus_treinos.xml -->
