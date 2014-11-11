@@ -44,9 +44,9 @@
                 </string>
                 <string name="com_facebook_loginview_cancel_action" >Cancelar
                 </string>
-                <string name="com_facebook_choose_friends" >Elige Amigos
-                </string>
                 <string name="com_facebook_internet_permission_error_message" >WebView inicio de sesión requiere permiso INTERNET
+                </string>
+                <string name="com_facebook_choose_friends" >Elige Amigos
                 </string>
                 <string name="com_facebook_image_download_unknown_error" >Error al descargar la imagen.
                 </string>
@@ -307,17 +307,17 @@
                 </string>
                 <string name="com_facebook_requesterror_reconnect" >.ארעה שגיאה בעת החיבור עם פייסבוק, חבר בבקשה מחדש את האפליקציה עם פייסבוק
                 </string>
-                <string name="com_facebook_logo_content_description" >פייסבוק לוגו
-                </string>
                 <string name="com_facebook_picker_done_button_text" >בצע
+                </string>
+                <string name="com_facebook_logo_content_description" >פייסבוק לוגו
                 </string>
                 <string name="com_facebook_loginview_log_in_button" >התחבר לפייסבוק
                 </string>
                 <string name="com_facebook_loginview_logged_in_as" >מחובר בשם: %1$s
                 </string>
-                <string name="com_facebook_placepicker_subtitle_were_here_only_format" >%1$,d היו פה
-                </string>
                 <string name="com_facebook_requesterror_relogin" >.האפליקציה אינה מחוברת לפייסבוק, אנא היכנס וחבר מחדש את האפליקציה
+                </string>
+                <string name="com_facebook_placepicker_subtitle_were_here_only_format" >%1$,d היו פה
                 </string>
                 <string name="com_facebook_internet_permission_error_title" >AndroidManifest שגיאת
                 </string>
@@ -343,9 +343,9 @@
                 </string>
                 <string name="com_facebook_loginview_logged_in_using_facebook" >מחובר באמצעות פייסבוק
                 </string>
-                <string name="com_facebook_dialogloginactivity_ok_button" >אישור
-                </string>
                 <string name="com_facebook_requesterror_permissions" >.חיבור האפליקציה עם פייסבוק נכשל בשל הרשאות לא מספקות, אנא הענק הרשאות לאפליקציה בכדי שהפעולה תוכל להתבצע
+                </string>
+                <string name="com_facebook_dialogloginactivity_ok_button" >אישור
                 </string>
                 <string name="com_facebook_loginview_log_out_action" >התנתק
                 </string>
@@ -422,9 +422,9 @@
                 </string>
                 <string name="com_facebook_loginview_log_out_button" >התנתק
                 </string>
-                <string name="com_facebook_loginview_logged_in_using_facebook" >מחובר באמצעות פייסבוק
-                </string>
                 <string name="com_facebook_internet_permission_error_message" >ההתחברות לתצוגת אתר דורשת אישור אינטרנט
+                </string>
+                <string name="com_facebook_loginview_logged_in_using_facebook" >מחובר באמצעות פייסבוק
                 </string>
                 <string name="com_facebook_loginview_log_out_action" >התנתק
                 </string>
@@ -775,11 +775,12 @@ center
                 <color name="com_facebook_likeboxcountview_border_color" >#6a7180
                 </color>
 
+                <string name="com_facebook_image_download_unknown_error" >Unexpected error while downloading an image.
+                </string>
+
                 <dimen name="com_facebook_likeboxcountview_border_radius" >3dp
                 </dimen>
 
-                <string name="com_facebook_image_download_unknown_error" >Unexpected error while downloading an image.
-                </string>
                 <string name="com_facebook_loginview_log_out_button" >Log out
                 </string>
 
@@ -802,9 +803,11 @@ center
                         format="boolean" />
                 </declare-styleable>
 
+                <dimen name="com_facebook_profilepictureview_preset_size_normal" >100dp
+                </dimen>
                 <dimen name="com_facebook_loginview_padding_left" >12dip
                 </dimen>
-                <dimen name="com_facebook_profilepictureview_preset_size_normal" >100dp
+                <dimen name="com_facebook_likeview_internal_padding" >6dp
                 </dimen>
 
                 <declare-styleable name="com_facebook_friend_picker_fragment" >
@@ -813,8 +816,6 @@ center
                         format="boolean" />
                 </declare-styleable>
 
-                <dimen name="com_facebook_likeview_internal_padding" >6dp
-                </dimen>
                 <dimen name="com_facebook_loginview_padding_bottom" >12dp
                 </dimen>
                 <dimen name="com_facebook_likebutton_padding_left" >8dp
@@ -829,25 +830,25 @@ center
                 <color name="com_facebook_usersettingsfragment_connected_text_color" >#FFFFFF
                 </color>
 
-                <dimen name="com_facebook_profilepictureview_preset_size_small" >50dp
-                </dimen>
-
                 <string name="com_facebook_dialogloginactivity_ok_button" >OK
                 </string>
 
-                <dimen name="com_facebook_likebutton_padding_top" >0dp
+                <dimen name="com_facebook_profilepictureview_preset_size_small" >50dp
                 </dimen>
-                <dimen name="com_facebook_profilepictureview_preset_size_large" >180dp
+                <dimen name="com_facebook_likebutton_padding_top" >0dp
                 </dimen>
 
                 <string name="com_facebook_loginview_logged_in_as" >Logged in as: %1$s
                 </string>
 
-                <color name="com_facebook_usersettingsfragment_connected_shadow_color" >#000000
-                </color>
+                <dimen name="com_facebook_profilepictureview_preset_size_large" >180dp
+                </dimen>
 
                 <string name="com_facebook_loginview_cancel_action" >Cancel
                 </string>
+
+                <color name="com_facebook_usersettingsfragment_connected_shadow_color" >#000000
+                </color>
 
                 <declare-styleable name="com_facebook_login_view" >
                     <attr
@@ -1320,13 +1321,13 @@ Forgot password
                 </string>
                 <string name="com_parse_ui_progress_dialog_text" >Loading...
                 </string>
-                <string name="com_parse_ui_username_input_hint" >Username
-                </string>
                 <string name="com_parse_ui_login_warning_twitter_login_user_update_failed" >"Updating user object after Twitter login failed, exception: "
                 </string>
-                <string name="com_parse_ui_no_username_toast" >Please enter your username
+                <string name="com_parse_ui_username_input_hint" >Username
                 </string>
                 <string name="com_parse_ui_facebook_login_button_label" >Log in with Facebook
+                </string>
+                <string name="com_parse_ui_no_username_toast" >Please enter your username
                 </string>
                 <string name="com_parse_ui_login_warning_facebook_login_user_update_failed" >"Updating user object after Facebook login failed, exception: "
                 </string>
@@ -1417,22 +1418,27 @@ wrap_content
                 </string>
                 <string name="com_parse_ui_login_warning_layout_missing_login_help_button" >Layout missing login help button
                 </string>
-                <string name="com_parse_ui_logo_content_description" >Logo
-                </string>
-                <string name="com_parse_ui_login_warning_parse_signup_failed" >"Parse signup failed, exception: "
-                </string>
 
                 <color name="com_parse_ui_facebook_login_button" >#3B5998
                 </color>
 
-                <style name="ParseLoginUI" />
+                <string name="com_parse_ui_logo_content_description" >Logo
+                </string>
+                <string name="com_parse_ui_login_warning_parse_signup_failed" >"Parse signup failed, exception: "
+                </string>
+                <string name="com_parse_ui_email_input_hint" >Email
+                </string>
 
                 <dimen name="com_parse_ui_vertical_margin" >16dp
                 </dimen>
 
-                <string name="com_parse_ui_email_input_hint" >Email
-                </string>
+                <style name="ParseLoginUI" />
+
                 <string name="com_parse_ui_parse_login_invalid_credentials_toast" >The username and password you entered don\'t match
+                </string>
+                <string name="com_parse_ui_login_warning_parse_login_failed" >"Parse username/password login failed, exception: "
+                </string>
+                <string name="com_parse_ui_parse_login_failed_unknown_toast" >Could not log in, please try again later
                 </string>
 
                 <style
@@ -1446,11 +1452,6 @@ wrap_content
                     </item>
                 </style>
 
-                <string name="com_parse_ui_parse_login_failed_unknown_toast" >Could not log in, please try again later
-                </string>
-                <string name="com_parse_ui_login_warning_parse_login_failed" >"Parse username/password login failed, exception: "
-                </string>
-
                 <style
                     name="ParseLoginUI.TextView"
                     parent="@android:style/Widget.TextView" >
@@ -1462,9 +1463,9 @@ wrap_content
                     </item>
                 </style>
 
-                <color name="com_parse_ui_parse_login_display_text" >@android:color/white
-                </color>
                 <color name="com_parse_ui_parse_login_help_button_label" >#E0E0E0
+                </color>
+                <color name="com_parse_ui_parse_login_display_text" >@android:color/white
                 </color>
 
                 <string name="com_parse_ui_login_help_email_input_hint" >Email
@@ -1473,6 +1474,9 @@ wrap_content
                 </string>
                 <string name="com_parse_ui_facebook_login_failed_toast" >Facebook login failed
                 </string>
+
+                <color name="com_parse_ui_twitter_login_button_push" >#2588B5
+                </color>
 
                 <style
                     name="ParseLoginUI.Button"
@@ -1494,9 +1498,6 @@ match_parent
                     </item>
                 </style>
 
-                <color name="com_parse_ui_twitter_login_button_push" >#2588B5
-                </color>
-
                 <string name="com_parse_ui_login_warning_layout_missing_password_field" >Layout missing password field
                 </string>
 
@@ -1504,6 +1505,9 @@ match_parent
                 </color>
                 <color name="com_parse_ui_parse_login_text_hint" >#AAAAAA
                 </color>
+
+                <string name="com_parse_ui_login_warning_disabled_username_password_login" >Disabled username/password login and signup because of missing layout elements
+                </string>
 
                 <plurals name="com_parse_ui_password_too_short_toast" >
                     <item quantity="one">
@@ -1514,13 +1518,12 @@ Password must be at least %d characters long
                     </item>
                 </plurals>
 
-                <string name="com_parse_ui_login_warning_disabled_username_password_login" >Disabled username/password login and signup because of missing layout elements
-                </string>
-
                 <dimen name="com_parse_ui_small_vertical_spacing" >8dp
                 </dimen>
 
                 <string name="com_parse_ui_login_warning_layout_missing_login_button" >Layout missing login button
+                </string>
+                <string name="com_parse_ui_parse_login_button_label" >Log in
                 </string>
 
                 <style
@@ -1531,20 +1534,17 @@ true
                     </item>
                 </style>
 
-                <string name="com_parse_ui_parse_login_button_label" >Log in
-                </string>
                 <string name="com_parse_ui_login_warning_facebook_login_failed" >"Facebook login failed, exception: "
                 </string>
                 <string name="com_parse_ui_login_help_instructions" >Enter your email to recover your password
                 </string>
                 <string name="com_parse_ui_username_taken_toast" >Username is already taken, please choose a different one
                 </string>
+                <string name="com_parse_ui_login_warning_disabled_facebook_login" >Layout missing Facebook login button, disabled Facebook login
+                </string>
 
                 <dimen name="com_parse_ui_vertical_spacing" >16dp
                 </dimen>
-
-                <string name="com_parse_ui_login_warning_disabled_facebook_login" >Layout missing Facebook login button, disabled Facebook login
-                </string>
             </file>
         </source>
     </dataSet>
@@ -1886,15 +1886,15 @@ true
                 qualifiers="" >
                 <string name="title_section1" >Treino de Hoje
                 </string>
-                <string name="action_settings" >Settings
-                </string>
                 <string name="title_section3" >Treinos Ativos
+                </string>
+                <string name="action_settings" >Settings
                 </string>
                 <string name="title_section2" >Treinos Cadastrados
                 </string>
-                <string name="title_section4" >Logout
-                </string>
                 <string name="navigation_drawer_close" >Close navigation drawer
+                </string>
+                <string name="title_section4" >Logout
                 </string>
                 <string name="my_training" >Meus Treinos
                 </string>
@@ -1908,7 +1908,7 @@ true
                 </string>
                 <string name="selected_training" >Treino
                 </string>
-                <string name="parse_client_key" >Xh0t2EmUF3eNBYp8N3He6PD0tP5bvJ41EX7MA4yw
+                <string name="parse_client_key" >fZo3txX0EgWHS4bkVIiLzH0h9yPGcS20h1nxOw3u
                 </string>
                 <string name="title_activity_principal" >PrincipalActivity
                 </string>
@@ -1916,9 +1916,9 @@ true
                 </string>
                 <string name="title_activity_treino_de_hoje" >Treino de Hoje
                 </string>
-                <string name="parse_app_id" >A8T3Z4NhU61cher7KQm3HvokLHnJk8eCmyevyFN1
+                <string name="parse_app_id" >zAMAiwyXWH7rYYBCuZlnchjIW5CvVw9JtpotJ37g
                 </string>
-                <string name="facebook_app_id" >370422519809290
+                <string name="facebook_app_id" >1556506021251662
                 </string>
                 <string name="navigation_drawer_open" >Open navigation drawer
                 </string>
@@ -1944,13 +1944,13 @@ user_friends
 
                 <string name="title_activity_meus_treinos" >MeusTreinos
                 </string>
-                <string name="title_activity_trainig_detail" >Trainig Detail
-                </string>
                 <string name="title_activity_side_bar" >SideBarActivity
                 </string>
-                <string name="user_xp" >xxxx
+                <string name="title_activity_trainig_detail" >Trainig Detail
                 </string>
                 <string name="app_name" >My Personal Trainner
+                </string>
+                <string name="user_xp" >xxxx
                 </string>
                 <string name="user_name" >Usuário
                 </string>
