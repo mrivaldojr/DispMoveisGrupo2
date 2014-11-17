@@ -14,22 +14,21 @@
     <string name="selected_training">Treino</string>
     <string name="my_training">Meus Treinos</string>
     <string name="title_activity_side_bar">SideBarActivity</string>
-    
-    
 
     <string-array name="my_facebook_permissions">
         <item>public_profile</item>
         <item>user_relationships</item>
         <item>user_location</item>
-        <item>user_friends</item>    
+        <item>user_friends</item>
     </string-array>
 
-    
-    <!-- chaves
+    <!--
+    chaves
     <string name="parse_app_id">A8T3Z4NhU61cher7KQm3HvokLHnJk8eCmyevyFN1</string>
     <string name="parse_client_key">Xh0t2EmUF3eNBYp8N3He6PD0tP5bvJ41EX7MA4yw</string>
     <string name="facebook_app_id">370422519809290</string>
-    !-->
+    !
+    -->
 
     <string name="parse_app_id">zAMAiwyXWH7rYYBCuZlnchjIW5CvVw9JtpotJ37g</string>
     <string name="parse_client_key">fZo3txX0EgWHS4bkVIiLzH0h9yPGcS20h1nxOw3u</string>
@@ -50,5 +49,9 @@
     <string name="title_activity_execicio">ExecicioActivity</string>
     <string name="title_activity_trainig_detail">Trainig Detail</string>
     <string name="title_activity_treinos_ativos">TreinosAtivosActivity</string>
+    <string name="title_activity_adiciona_exercicio_ao_treino">Adiciona Exercício Ao Treino</string>
+    <string name="nome_do_exercicio">Nome do Exercício</string>
+    <string name="series_do_exercicio">Séries</string>
+    <string name="carga_do_exercicio">Carga</string>
 
 </resources>
