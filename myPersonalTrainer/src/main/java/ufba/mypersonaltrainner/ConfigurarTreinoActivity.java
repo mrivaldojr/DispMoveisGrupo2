@@ -8,7 +8,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +49,42 @@ public class ConfigurarTreinoActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainigDetail.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    public void salvaTreino(View view) {
+
+        EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
+        String nome = nomeEditText.getText().toString();
+        nome = (nome != null && nome != "") ? nome :
+                "treino gerado no " +  ConfigurarTreinoActivity.class.getSimpleName();
+        ParseObject treino = new ParseObject("TRT_treino");
+        treino.put("trt_ds_nome", nome);
+
+        // treino.saveInBackground();
+
+        final String nomeF = nome;
+
+        treino.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("TRT_treino")
+                            .whereEqualTo("trt_ds_nome", nomeF);
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
+                        public void done(ParseObject object, ParseException e) {
+                            CharSequence text;
+                            if (e == null) {
+                                text = object.getString("trt_ds_nome");
+                            } else {
+                                text = e.getMessage();
+                            }
+                            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
