@@ -13,13 +13,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ public class ConfigurarTreinoActivity extends Activity {
 
     private ListView listViewExercicios;
     private ArrayAdapter<Exercicio> adapterExercicios;
-    private String text;
     static final int CRIA_EXERCICIO_REQUEST = 0;
     static final String CHAVE_NOME = "chave";
     static final String CHAVE_SERIES = "series";
@@ -59,6 +56,11 @@ public class ConfigurarTreinoActivity extends Activity {
         });
     }
 
+/*    public void mostraTreinos() {
+        final ParseUser user = ParseUser.getCurrentUser();
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    }*/
+
     public void salvaTreino(View view) {
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         String treinoNome = nomeEditText.getText().toString();
@@ -71,7 +73,6 @@ public class ConfigurarTreinoActivity extends Activity {
         final ParseObject treino = new ParseObject("treino");
         treino.put("trn_user", user);
         treino.put("trn_nome", treinoNome);
-        ParseRelation<ParseObject> exercicios = treino.getRelation("exercicios");
 
         for (int i = 0; i < adapterExercicios.getCount(); i++) {
             Exercicio ex = adapterExercicios.getItem(i);
@@ -79,13 +80,37 @@ public class ConfigurarTreinoActivity extends Activity {
             exercicio.put("exe_nome", ex.getNome());
             exercicio.put("exe_serie", ex.getSeries());
             exercicio.put("exe_carga", ex.getCarga());
-            exercicios.add(exercicio);
+            treino.add("exercicios", exercicio);
         }
 
         try {
             treino.save();
             treinos.add(treino);
-            user.saveInBackground(new SaveCallback() {
+            user.save();
+            ParseQuery<ParseObject> query = treinos.getQuery();
+            query.include("exercicios");
+            List<ParseObject> treinosDoParse = query.find();
+            String text = "Treinos de " + user.getUsername() + "\n\n";
+            for (ParseObject treinoDoParse : treinosDoParse) {
+                text = "Treino " + treinoDoParse.getString("trn_nome") + "\n";
+                List<ParseObject> exerciciosDoParse = treinoDoParse.getList("exercicios");
+                for (ParseObject exercioDoParse : exerciciosDoParse) {
+                    text += "Exercicio " + exercioDoParse.getString("exe_nome") + ":\n";
+                    text += "Series: " + exercioDoParse.getString("exe_serie") + "\n";
+                    text += "Carga: " + exercioDoParse.getString("exe_carga") + " Kg\n\n";
+                }
+            }
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+        } catch (ParseException e) {
+            Log.e(this.getClass().getSimpleName(), "não foi... la msg de erro  estack trace\n erro: ");
+            Log.e(this.getClass().getSimpleName(), e.getMessage());
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+            /*
+            ParseQuery<ParseObject> query = treinos.getQuery();
+            query.findInBackground(new SaveCallback() {
                 public void done(ParseException e) {
                     if (e != null) {
                         Log.e("ConfigurarTreinoActivity.class", e.getMessage());
@@ -126,6 +151,7 @@ public class ConfigurarTreinoActivity extends Activity {
             Log.e("ConfigurarTreino.class", e.getMessage());
             e.printStackTrace();
         }
+*/
 
         /*treinos.add(treino);
         user.saveInBackground(new SaveCallback() {
