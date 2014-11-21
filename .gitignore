@@ -13,6 +13,13 @@ facebookSDK/build/
 myPersonalTrainer/build/
 parseLoginUI/build/
 parseLoginUI/parseLoginUI.iml
+.idea
+*.iml
+*.ipr
+*.iws
+classes
+gen-external-apklibs
+build/
 
 #built application files
 *.apk
