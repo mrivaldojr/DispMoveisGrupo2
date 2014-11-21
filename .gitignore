@@ -1,9 +1,19 @@
+#.gradle
+#/local.properties
+#/.idea/workspace.xml
+#/.idea/libraries
+#.DS_Store
+#/build
+
+# Android Studio
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
+build/
+facebookSDK/build/
+myPersonalTrainer/build/
+parseLoginUI/build/
+parseLoginUI/parseLoginUI.iml
 
 #built application files
 *.apk
@@ -31,13 +41,3 @@ Thumbs.db
 # Eclipse project files
 .classpath
 .project
-
-# Android Studio
-.idea
-#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
-.gradle
-build/
-facebookSDK/build/
-myPersonalTrainer/build/
-parseLoginUI/build/
-parseLoginUI/parseLoginUI.iml
