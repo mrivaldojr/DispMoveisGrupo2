@@ -9,9 +9,12 @@
 .idea
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
+facebookSDK/build
 facebookSDK/build/
 myPersonalTrainer/build/
+myPersonalTrainer/build
 parseLoginUI/build/
+parseLoginUI/build
 parseLoginUI/parseLoginUI.iml
 .idea
 *.iml
