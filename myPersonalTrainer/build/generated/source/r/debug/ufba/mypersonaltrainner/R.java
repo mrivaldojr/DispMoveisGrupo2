@@ -2158,7 +2158,7 @@ containing a value of this type.
         public static final int com_parse_ui_parse_login_third_party_section=0x7f030032;
         public static final int com_parse_ui_parse_signup_form=0x7f030033;
         public static final int com_parse_ui_parse_signup_fragment=0x7f030034;
-        public static final int elemento_de_lista_de_exercicio=0x7f030035;
+        public static final int elemento_de_lista_de_treios=0x7f030035;
         public static final int fragment_navigation_drawer_perfil=0x7f030036;
         public static final int fragment_side_bar=0x7f030037;
         public static final int list_meus_treinos_item=0x7f030038;

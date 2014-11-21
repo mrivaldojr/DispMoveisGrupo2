@@ -15,12 +15,11 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ufba.mypersonaltrainner.model.Exercicio;
 
@@ -33,6 +32,8 @@ public class ConfigurarTreinoActivity extends Activity {
     static final String CHAVE_NOME = "chave";
     static final String CHAVE_SERIES = "series";
     static final String CHAVE_CARGA = "nome";
+
+    private final String LOG_TAG = this.getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +64,15 @@ public class ConfigurarTreinoActivity extends Activity {
 
     public void salvaTreino(View view) {
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
-        String treinoNome = nomeEditText.getText().toString();
-        treinoNome = (treinoNome != null && treinoNome != "") ? treinoNome :
-                "treino gerado no " +  ConfigurarTreinoActivity.class.getSimpleName();
+        final String treinoNome = nomeEditText.getText().toString();
+
 
         final ParseUser user = ParseUser.getCurrentUser();
-        final ParseRelation<ParseObject> treinos = user.getRelation("treinos");
+        Log.v(LOG_TAG, "Tentando inserir treino " + treinoNome +
+                " de " + user.getUsername() + " email " + user.getEmail());
+        ParseRelation<ParseObject> treinos = user.getRelation("treinos");
 
-        final ParseObject treino = new ParseObject("treino");
+        ParseObject treino = new ParseObject("treino");
         treino.put("trn_user", user);
         treino.put("trn_nome", treinoNome);
 
@@ -83,8 +85,24 @@ public class ConfigurarTreinoActivity extends Activity {
             treino.add("exercicios", exercicio);
         }
 
+        treinos.add(treino);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.v(LOG_TAG, "Sucesso!");
+                    Toast.makeText(getApplicationContext(), "Sucesso!", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.e(LOG_TAG, "não foi... la msg de erro e stack trace\n erro: ");
+                    Log.e(LOG_TAG, e.getMessage());
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+/*
         try {
-            treino.save();
             treinos.add(treino);
             user.save();
             ParseQuery<ParseObject> query = treinos.getQuery();
@@ -107,6 +125,7 @@ public class ConfigurarTreinoActivity extends Activity {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+*/
 
             /*
             ParseQuery<ParseObject> query = treinos.getQuery();
