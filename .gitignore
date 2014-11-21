@@ -16,6 +16,15 @@ myPersonalTrainer/build
 parseLoginUI/build/
 parseLoginUI/build
 parseLoginUI/parseLoginUI.iml
+
+/*/out
+/*/*/build
+/*/*/production
+*.iws
+*.ipr
+*~
+*.swp
+
 .idea
 *.iml
 *.ipr
