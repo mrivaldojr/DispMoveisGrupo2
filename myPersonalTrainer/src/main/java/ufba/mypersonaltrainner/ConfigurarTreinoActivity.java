@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -26,16 +25,20 @@ import ufba.mypersonaltrainner.model.Exercicio;
 
 public class ConfigurarTreinoActivity extends Activity {
 
+    static final int CRIA_EXERCICIO_REQUEST = 0;
+    static final String CHAVE_NOME = "ufba.mypersonaltrainner.chave";
+    static final String CHAVE_SERIES = "ufba.mypersonaltrainner.series";
+    static final String CHAVE_CARGA = "ufba.mypersonaltrainner.nome";
+    private final String LOG_TAG = this.getClass().getSimpleName();
     private ListView listViewExercicios;
     private ArrayAdapter<Exercicio> adapterExercicios;
-    static final int CRIA_EXERCICIO_REQUEST = 0;
-    static final String CHAVE_NOME = "chave";
-    static final String CHAVE_SERIES = "series";
-    static final String CHAVE_CARGA = "nome";
 
-    private final String LOG_TAG = this.getClass().getSimpleName();
+/*    public void mostraTreinos() {
+        final ParseUser user = ParseUser.getCurrentUser();
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+    }*/
 
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configurar_treino_my);
@@ -51,29 +54,18 @@ public class ConfigurarTreinoActivity extends Activity {
         listViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), TrainigDetail.class);
+                Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 startActivity(intent);
             }
         });
     }
 
-/*    public void mostraTreinos() {
-        final ParseUser user = ParseUser.getCurrentUser();
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-    }*/
-
     public void salvaTreino(View view) {
+
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         final String treinoNome = nomeEditText.getText().toString();
 
-
-        final ParseUser user = ParseUser.getCurrentUser();
-        Log.v(LOG_TAG, "Tentando inserir treino " + treinoNome +
-                " de " + user.getUsername() + " email " + user.getEmail());
-        ParseRelation<ParseObject> treinos = user.getRelation("treinos");
-
         ParseObject treino = new ParseObject("treino");
-        treino.put("trn_user", user);
         treino.put("trn_nome", treinoNome);
 
         for (int i = 0; i < adapterExercicios.getCount(); i++) {
@@ -85,15 +77,20 @@ public class ConfigurarTreinoActivity extends Activity {
             treino.add("exercicios", exercicio);
         }
 
-        treinos.add(treino);
-        user.saveInBackground(new SaveCallback() {
+        ParseUser user = ParseUser.getCurrentUser();
+        Log.v(LOG_TAG, "Tentando inserir treino " + treinoNome +
+                " de " + user.getUsername() + " email " + user.getEmail());
+
+        treino.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     Log.v(LOG_TAG, "Sucesso!");
                     Toast.makeText(getApplicationContext(), "Sucesso!", Toast.LENGTH_LONG).show();
+                    setResult(Activity.RESULT_OK);
+                    finish();
                 } else {
-                    Log.e(LOG_TAG, "não foi... la msg de erro e stack trace\n erro: ");
+                    Log.e(LOG_TAG, "não foi... la vai msg de erro e stack trace\n erro: ");
                     Log.e(LOG_TAG, e.getMessage());
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -101,8 +98,8 @@ public class ConfigurarTreinoActivity extends Activity {
             }
         });
 
-/*
-        try {
+/*        try {
+            treino.save();
             treinos.add(treino);
             user.save();
             ParseQuery<ParseObject> query = treinos.getQuery();
@@ -124,8 +121,8 @@ public class ConfigurarTreinoActivity extends Activity {
             Log.e(this.getClass().getSimpleName(), e.getMessage());
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-*/
+        }*/
+
 
             /*
             ParseQuery<ParseObject> query = treinos.getQuery();

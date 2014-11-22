@@ -8,6 +8,12 @@ public class ItemListMeuTreino {
     private int repeticoes;
     private int carga;
 
+    public ItemListMeuTreino(String nome, int repeticoes, int carga) {
+        this.nome = nome;
+        this.repeticoes = repeticoes;
+        this.carga = carga;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -28,8 +34,5 @@ public class ItemListMeuTreino {
         this.carga = carga;
     }
 
-    public String getNome() {
-
-        return nome;
-    }
+    public String getNome() { return nome; }
 }

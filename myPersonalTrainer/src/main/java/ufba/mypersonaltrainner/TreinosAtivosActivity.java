@@ -41,7 +41,7 @@ public class TreinosAtivosActivity extends Activity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), TrainigDetail.class);
+                Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 startActivity(intent);
             }
         });
