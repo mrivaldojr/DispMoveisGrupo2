@@ -1,29 +1,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="ufba.mypersonaltrainner.AdicionaExercicioAoTreinoActivity">
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Novo Exercício" />
+        android:text="Selecione a Categoria" />
         <!--android:id="@+id/txtView_addExerc" />-->
-    <EditText
-        android:id="@+id/add_exercicio_nome_do_exercicio"
-        android:inputType="text"
-        android:layout_width="match_parent"
+    <Spinner
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/nome_do_exercicio" />
+        android:prompt="@string/spinner_categoria"
+        android:id="@+id/spinnerCategoria" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Selecione o Exercício"
+        android:id="@+id/textView2" />
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerExercicio" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
     <EditText
         android:id="@+id/add_exercicio_series_do_exercicio"
         android:inputType="number"
-        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
@@ -33,17 +49,38 @@
     <EditText
         android:id="@+id/add_exercicio_carga_do_exercicio"
         android:inputType="number"
-        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:hint="@string/carga_do_exercicio"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirma"
-        android:layout_gravity="center_horizontal"
-        android:onClick="confirma" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/button_cancelar_dialog"
+            android:text="Cancelar"
+            android:layout_gravity="center_horizontal"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicionar"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:onClick="confirma" />
+
+    </LinearLayout>
+
+
 </LinearLayout>

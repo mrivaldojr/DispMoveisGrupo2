@@ -184,12 +184,6 @@ public class ConfigurarTreinoActivity extends Activity {
                                                 }}});}}}});}});*/
     }
 
-    public void addExercicioDialog(View view) {
-        // Do something in response to button click
-        Intent i = new Intent(this,AdicionaExercicioAoTreinoActivity.class);
-        startActivityForResult(i, CRIA_EXERCICIO_REQUEST);
-    }
-
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         if (requestCode == CRIA_EXERCICIO_REQUEST) {
@@ -218,6 +212,12 @@ public class ConfigurarTreinoActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if(id == R.id.action_novo_exercicio){
+            Intent i = new Intent(this,AdicionaExercicioAoTreinoActivity.class);
+            startActivityForResult(i, CRIA_EXERCICIO_REQUEST);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -21,18 +21,13 @@
             android:id="@+id/edt_nomeTreino"
             android:layout_weight="0.56" />
 
-        <ImageButton
+        Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imgBt_addExerc"
-            android:src="@drawable/new_icon"
-            android:onClick="addExercicioDialog" />
+            android:text="Salvar"
+            android:id="@+id/button" />
 
-        <TextView
-            android:layout_width="76dp"
-            android:layout_height="47dp"
-            android:text="Adicionar Exercício"
-            android:id="@+id/txtView_addExerc" />
     </LinearLayout>
 
     <LinearLayout
@@ -53,9 +48,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Salvar"
+        android:text="Salvar Treino"
         android:id="@+id/bt_salvarTreino"
         android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/save_disquete"
+        style="?android:attr/borderlessButtonStyle"
         android:onClick="salvaTreino" />
 
 </LinearLayout>
