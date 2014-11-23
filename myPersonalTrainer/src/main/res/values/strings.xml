@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="user_name">Usuário</string>
     <string name="user_lvl">Level: ?</string>
-    <string name="user_xp">xxxx</string>
+    <string name="user_xp">Experiência: ?/?</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_meus_treinos">MeusTreinos</string>
     <string name="action_new">Novo Treino</string>
