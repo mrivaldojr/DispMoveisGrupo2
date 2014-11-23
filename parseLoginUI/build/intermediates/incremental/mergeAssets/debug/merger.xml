@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/junior/AndroidStudioProjects/DispMoveisGrupo2/parseLoginUI/src/main/assets" />
+        <source path="C:\Users\usuario\AndroidStudioProjects\DispMoveisGrupo2orig\parseLoginUI\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="/home/junior/AndroidStudioProjects/DispMoveisGrupo2/parseLoginUI/src/debug/assets" />
+        <source path="C:\Users\usuario\AndroidStudioProjects\DispMoveisGrupo2orig\parseLoginUI\src\debug\assets" />
     </dataSet>
 
 </merger>

@@ -2,7 +2,7 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="/home/junior/AndroidStudioProjects/DispMoveisGrupo2/myPersonalTrainer/src/androidTest/assets" />
+        <source path="C:\Users\usuario\AndroidStudioProjects\DispMoveisGrupo2orig\myPersonalTrainer\src\androidTest\assets" />
     </dataSet>
 
 </merger>

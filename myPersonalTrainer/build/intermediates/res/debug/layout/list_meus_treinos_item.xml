@@ -12,4 +12,4 @@
         android:text="Large Text"
         android:id="@+id/txt_nome_treino_lst_item"
         android:layout_gravity="center_horizontal" />
-</LinearLayout><!-- From: file:/home/junior/AndroidStudioProjects/DispMoveisGrupo2/myPersonalTrainer/src/main/res/layout/list_meus_treinos_item.xml -->
+</LinearLayout><!-- From: file:/C:/Users/usuario/AndroidStudioProjects/DispMoveisGrupo2orig/myPersonalTrainer/src/main/res/layout/list_meus_treinos_item.xml -->

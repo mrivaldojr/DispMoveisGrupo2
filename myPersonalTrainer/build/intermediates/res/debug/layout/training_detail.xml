@@ -58,4 +58,4 @@
         android:id="@+id/checkBox"
         android:layout_gravity="center_horizontal"
         android:checked="false" />
-</LinearLayout><!-- From: file:/home/junior/AndroidStudioProjects/DispMoveisGrupo2/myPersonalTrainer/src/main/res/layout/training_detail.xml -->
+</LinearLayout><!-- From: file:/C:/Users/usuario/AndroidStudioProjects/DispMoveisGrupo2orig/myPersonalTrainer/src/main/res/layout/training_detail.xml -->
