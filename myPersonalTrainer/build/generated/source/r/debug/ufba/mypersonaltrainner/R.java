@@ -2020,12 +2020,14 @@ containing a value of this type.
         public static final int imageView=0x7f080055;
         public static final int imgBt_addExerc=0x7f08004e;
         public static final int img_perfil=0x7f08008a;
+        public static final int inicia_cache=0x7f0800a3;
         public static final int inline=0x7f08001a;
         public static final int item_lv_carga=0x7f080092;
         public static final int item_lv_nome=0x7f080091;
         public static final int item_lv_rep=0x7f080093;
         public static final int large=0x7f08001f;
         public static final int left=0x7f08001c;
+        public static final int limpa_cache=0x7f0800a4;
         public static final int linearLayout=0x7f08009e;
         public static final int listMode=0x7f080001;
         public static final int listView_meus_treinos=0x7f080058;

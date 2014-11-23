@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
 
@@ -41,14 +42,19 @@ public class MeusTreinos extends Activity {
                 lst);
                 */
 
-        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this, "treino");
+        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this, new ParseQueryAdapter.QueryFactory<ParseObject>() {
+            public ParseQuery<ParseObject> create() {
+                ParseQuery query = new ParseQuery("treino");
+                query.fromPin("tudo");
+                query.orderByDescending("updatedAt");
+                return query;
+            }
+        });
         mTreinoAdapter.setTextKey("trn_nome");
 
 //        TreinosParseAdapter adapter = new TreinosParseAdapter(this);
-
         if (mTreinoAdapter.hasStableIds())  Log.v(LOG_TAG, "OBA STABLE ID!!!");
-        else  Log.v(LOG_TAG, "OHH NÃO TEM STABLE ID...");
-
+        else  Log.v(LOG_TAG, "Ohh não tem stable id...");
 
         listView = (ListView) findViewById(R.id.listView_meus_treinos);
         listView.setAdapter(mTreinoAdapter);

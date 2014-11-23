@@ -36,6 +36,7 @@ public class TrainingDetail extends Activity {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
         query.include("exercicios");
+        query.fromLocalDatastore();
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
