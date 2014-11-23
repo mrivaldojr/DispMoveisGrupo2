@@ -26,6 +26,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:name="ufba.mypersonaltrainner.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        tools:layout="@layout/fragment_navigation_drawer_perfil" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,8 +1,5 @@
 package ufba.mypersonaltrainner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +7,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseQueryAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TreinosAtivosActivity extends Activity {
@@ -31,17 +34,30 @@ public class TreinosAtivosActivity extends Activity {
             lst.add(item);
         }
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
+        /*ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.list_meus_treinos_item,
                 R.id.txt_nome_treino_lst_item,
-                lst);
+                lst);*/
+        ParseQueryAdapter<ParseObject> adapter;
+        adapter = new ParseQueryAdapter<ParseObject>(this
+                , new ParseQueryAdapter.QueryFactory<ParseObject>() {
+            @Override
+            public ParseQuery<ParseObject> create() {
+                ParseQuery query = new ParseQuery("treino");
+                query.fromPin("modificados");
+                query.orderByDescending("pinnedAt");
+                return query;
+            }
+        });
+        adapter.setTextKey("trn_nome");
+        adapter.setTextKey("pinnedAt");
 
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), TrainigDetail.class);
+                Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 startActivity(intent);
             }
         });

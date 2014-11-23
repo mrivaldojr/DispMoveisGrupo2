@@ -3,7 +3,7 @@
     package="ufba.mypersonaltrainner" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="9"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -78,7 +78,7 @@
             android:label="@string/title_activity_execicio" >
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.TrainigDetail"
+            android:name=".TrainingDetail"
             android:label="@string/title_activity_trainig_detail"
             android:parentActivityName="ufba.mypersonaltrainner.MeusTreinos" >
             <meta-data
