@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.facebook.FacebookRequestError;
@@ -24,7 +25,10 @@ public class PerfilFragment extends Fragment {
 
 
 	private TextView txtViewNome;
-	private ProfilePictureView userProfilePictureView;
+    private TextView txtViewLevel;
+    private TextView txtViewPontos;
+    private ProfilePictureView userProfilePictureView;
+    private ProgressBar barExp;
 	
 	
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -51,11 +55,16 @@ public class PerfilFragment extends Fragment {
         
         //instancia o usuário logado
         ParseUser user =  ParseUser.getCurrentUser();
+        LevelUser.setId_userd_user(user.getObjectId());
+        LevelUser.getInstance();
         
         String nome = user.getString("name");
         
         txtViewNome = (TextView) rootView.findViewById(R.id.user_name);
         txtViewNome.setText(nome);
+        txtViewLevel = (TextView) rootView.findViewById(R.id.user_lvl);
+        txtViewPontos = (TextView) rootView.findViewById(R.id.user_xp);
+        barExp = (ProgressBar) rootView.findViewById(R.id.Bar_xp);
         userProfilePictureView = (ProfilePictureView) rootView.findViewById(R.id.img_perfil);
         
         Session session = ParseFacebookUtils.getSession();
@@ -122,7 +131,18 @@ public class PerfilFragment extends Fragment {
     
     private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		if (currentUser.has("profile")) {
+
+        int level = LevelUser.getInstance().getLevel();
+        int pontos = LevelUser.getInstance().getPontos();
+        int max_pontos = LevelUser.getInstance().getMaxpontos();
+
+        txtViewLevel.setText("Level: "+Integer.toString(level));
+        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
+        barExp.setProgress((pontos*100)/max_pontos);
+
+        //LevelUser.getInstance().addPontos(100);
+
+        if (currentUser.has("profile")) {
 			JSONObject userProfile = currentUser.getJSONObject("profile");
 			try {
 				String id = userProfile.getString("facebookId");
