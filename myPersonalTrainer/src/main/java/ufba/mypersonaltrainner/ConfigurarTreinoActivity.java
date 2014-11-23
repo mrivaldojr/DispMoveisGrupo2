@@ -15,9 +15,10 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import ufba.mypersonaltrainner.model.Exercicio;
 
@@ -66,6 +67,7 @@ public class ConfigurarTreinoActivity extends Activity {
 
         final ParseObject treino = new ParseObject("treino");
         treino.put("trn_nome", treinoNome);
+        treino.put("pinnedAt", new Date(System.currentTimeMillis()));
 
         for (int i = 0; i < adapterExercicios.getCount(); i++) {
             Exercicio ex = adapterExercicios.getItem(i);
@@ -76,21 +78,33 @@ public class ConfigurarTreinoActivity extends Activity {
             treino.add("exercicios", exercicio);
         }
 
-        ParseUser user = ParseUser.getCurrentUser();
-        Log.v(LOG_TAG, "Tentando inserir treino " + treinoNome +
-                " de " + user.getUsername() + " email " + user.getEmail());
         try {
-            treino.pin("modificados");
             treino.pin("tudo");
+            treino.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null)  {
+                        treino.pinInBackground("modificados");
+                    }
+                }
+            });
+
+
             Log.v(LOG_TAG, "Sucesso!");
             Toast.makeText(getApplicationContext(), "Sucesso!", Toast.LENGTH_LONG).show();
             setResult(Activity.RESULT_OK);
             finish();
         } catch (ParseException e) {
-            Log.e(LOG_TAG, e.getMessage());
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            erro(e);
+            finish();
         }
+    }
+
+    void erro(ParseException e) {
+        Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
+        Log.e(LOG_TAG, e.getMessage());
+        e.printStackTrace();
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     public void addExercicioDialog(View view) {

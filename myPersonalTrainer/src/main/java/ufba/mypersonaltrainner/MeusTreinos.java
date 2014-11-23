@@ -1,18 +1,26 @@
 package ufba.mypersonaltrainner;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+
+import java.util.List;
 
 
 public class MeusTreinos extends Activity {
@@ -26,6 +34,7 @@ public class MeusTreinos extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_meus_treinos);
 
         /*List<String> lst = new ArrayList<String>();
@@ -35,18 +44,18 @@ public class MeusTreinos extends Activity {
             lst.add(item);
         }
 
-
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.list_meus_treinos_item,
                 R.id.txt_nome_treino_lst_item,
                 lst);
                 */
 
-        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this, new ParseQueryAdapter.QueryFactory<ParseObject>() {
+        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
+                , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery query = new ParseQuery("treino");
                 query.fromPin("tudo");
-                query.orderByDescending("updatedAt");
+                query.orderByDescending("pinnedAt");
                 return query;
             }
         });
@@ -98,8 +107,105 @@ public class MeusTreinos extends Activity {
         }
         if(id == R.id.action_new){
             Intent i = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
-            startActivityForResult(i, CRIA_TREINO_REQUEST);;
+            startActivityForResult(i, CRIA_TREINO_REQUEST);
+        }
+        if(id == R.id.action_refresh){
+            refresh();
+        }
+        if(id == R.id.action_clear) {
+            Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
+            // Limpa o cache local da categoria "tudo"
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
+            query.fromPin("tudo");
+            try {
+                List<ParseObject> treinos = query.find();
+                ParseObject.unpinAll("tudo", treinos);
+            } catch (ParseException e) {
+                erro(e);
+            }
+            mTreinoAdapter.loadObjects();
+        }
+        if(id == R.id.action_load){
+            Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_SHORT).show();
+            // Carrega treinos do parse e coloca no datastore com pin.
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
+            query.fromPin("tudo");
+            try {
+                if (query.count() == 0) {
+                    query = ParseQuery.getQuery("treino");
+                    List<ParseObject> treinos = query.find();
+                    for (ParseObject treino : treinos) {
+                        treino.pin("tudo");
+                    }
+                }
+            } catch (ParseException e) {
+                erro(e);
+            }
+/*
+            Toast.makeText(getApplicationContext(), "Pinmod", Toast.LENGTH_SHORT).show();
+            // Carrega treinos do parse e coloca no datastore com pin.
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
+            query.fromPin("tudo");
+            try {
+                List<ParseObject> treinos = query.find();
+                for (ParseObject treino : treinos) {
+                    if (treino.isDirty()) {
+                        Log.d(LOG_TAG, treino.getString("trn_nome"));
+                        treino.pinInBackground("modificados");
+                    }
+                }
+            } catch (ParseException e) {
+                erro(e);
+            }
+*/
+
+            mTreinoAdapter.loadObjects();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void erro(ParseException e) {
+        Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
+        Log.e(LOG_TAG, e.getMessage());
+        e.printStackTrace();
+        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    void refresh() {
+        ParseQuery<ParseObject> query;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if ((ni == null) || (!ni.isConnected())) {
+            return;
+        }
+        Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
+        // Limpa o cache local da categoria "tudo"
+        query = ParseQuery.getQuery("treino");
+        query.fromPin("tudo");
+        try {
+            List<ParseObject> treinos = query.find();
+            ParseObject.unpinAll("tudo", treinos);
+        } catch (ParseException e) {
+            erro(e);
+        }
+
+        Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_LONG).show();
+        // Carrega treinos do parse e coloca no datastore com pin.
+        query = ParseQuery.getQuery("treino");
+        query.include("exercicios");
+        query.fromPin("tudo");
+        try {
+            if (query.count() == 0) {
+                query = ParseQuery.getQuery("treino");
+                List<ParseObject> treinos = query.find();
+                for (ParseObject treino : treinos) {
+                    treino.pin("tudo");
+                }
+            }
+        } catch (ParseException e) {
+            erro(e);
+        }
+        mTreinoAdapter.loadObjects();
     }
 }
