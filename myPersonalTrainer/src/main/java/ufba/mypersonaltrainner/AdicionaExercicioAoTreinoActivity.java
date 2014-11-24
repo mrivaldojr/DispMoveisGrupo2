@@ -28,6 +28,8 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
     private Spinner exerciciosSpinner;
     private String categoriaEscolhida;
     private Button cancelar;
+    private List<String> exercicios = new ArrayList<String>();
+    private ArrayAdapter<String> adapterExercicio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +55,26 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 categoriaEscolhida = parent.getItemAtPosition(position).toString();
 
-                ExercicioAsync exercicioAsync = new ExercicioAsync();
-                exercicioAsync.execute(categoriaEscolhida);
+                if(categoriaEscolhida.toString().equals("Escolha uma Categoria")) {
+                    exercicios.clear();
+                    
+                    //limpa o spinner
+                    adapterExercicio = new ArrayAdapter<String>(getBaseContext(),
+                            android.R.layout.simple_spinner_item,
+                            exercicios);
+                    adapterExercicio.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    exerciciosSpinner.setAdapter(adapterExercicio);
+                }
+
+                else{
+                    ExercicioAsync exercicioAsync = new ExercicioAsync();
+                    exercicioAsync.execute(categoriaEscolhida);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //Toast toast = Toast.makeText(getApplicationContext(), "Escolha Alguma Categoria", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -111,7 +126,6 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
         ProgressDialog progressDialog;
         List<ParseObject> listaExercicios;
-        List<String> exercicios = new ArrayList<String>();
         ParseObject parseObject;
         String nome;
 
@@ -134,6 +148,10 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
                 parseQuery.whereEqualTo("exe_ds_categoria" , categoria[0]);
                 listaExercicios = parseQuery.find();
 
+
+                exercicios.clear();
+
+
                 for (ParseObject parseObject : listaExercicios) {
                     nome = parseObject.getString("exe_ds_nome");
                     exercicios.add(nome);
@@ -148,7 +166,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         protected void onPostExecute(Void Void) {
             progressDialog.dismiss();
 
-            ArrayAdapter<String> adapterExercicio = new ArrayAdapter<String>(getBaseContext(),
+            adapterExercicio = new ArrayAdapter<String>(getBaseContext(),
                     android.R.layout.simple_spinner_item,
                     exercicios);
 
