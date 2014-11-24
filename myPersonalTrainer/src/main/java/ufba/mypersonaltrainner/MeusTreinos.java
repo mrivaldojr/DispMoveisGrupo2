@@ -29,7 +29,8 @@ public class MeusTreinos extends Activity {
     private ListView listView;
     private final String LOG_TAG = MeusTreinos.class.getSimpleName();
     static final int CRIA_TREINO_REQUEST = 0;
-    static final String CHAVE_IDPARSE_TREINO = "ufba.mypersonaltrainner..id_parse";
+    static final String CHAVE_EXTRA_IDPARSE_TREINO = "ufba.mypersonaltrainner.id_parse";
+    static final String CHAVE_EXTRA_NOME_TREINO = "ufba.mypersonaltrainner.nome_treino";
     private ParseQueryAdapter<ParseObject> mTreinoAdapter;
 
     @Override
@@ -40,7 +41,7 @@ public class MeusTreinos extends Activity {
         mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
-                ParseQuery query = new ParseQuery(PK.TREINO);
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
                 query.fromPin(PK.GRP_TUDO);
                 query.orderByDescending(PK.PIN_DATE);
                 return query;
@@ -48,7 +49,7 @@ public class MeusTreinos extends Activity {
         });
         mTreinoAdapter.setTextKey(PK.TREINO_NOME);
 
-//        TreinosParseAdapter adapter = new TreinosParseAdapter(this);
+        // TreinosParseAdapter adapter = new TreinosParseAdapter(this);
         if (mTreinoAdapter.hasStableIds())  Log.v(LOG_TAG, "OBA STABLE ID!!!");
         else  Log.v(LOG_TAG, "Ohh não tem stable id...");
 
@@ -60,8 +61,8 @@ public class MeusTreinos extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 ParseObject treino = (ParseObject) listView.getItemAtPosition(i);
-                intent.putExtra("NOME_TREINO",treino.getString("trn_nome"));
-                intent.putExtra(CHAVE_IDPARSE_TREINO, treino.getObjectId());
+                intent.putExtra(CHAVE_EXTRA_NOME_TREINO, treino.getString(PK.TREINO_NOME));
+                intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
                 startActivity(intent);
             }
         });
@@ -102,12 +103,12 @@ public class MeusTreinos extends Activity {
         }
         if(id == R.id.action_clear) {
             Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
-            // Limpa o cache local da categoria "tudo"
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
-            query.fromPin("tudo");
+            // Limpa o cache local da categoria GRP_TUDO
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.fromPin(PK.GRP_TUDO);
             try {
                 List<ParseObject> treinos = query.find();
-                ParseObject.unpinAll("tudo", treinos);
+                ParseObject.unpinAll(PK.GRP_TUDO, treinos);
             } catch (ParseException e) {
                 erro(e);
             }
@@ -116,14 +117,14 @@ public class MeusTreinos extends Activity {
         if(id == R.id.action_load){
             Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_SHORT).show();
             // Carrega treinos do parse e coloca no datastore com pin.
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
-            query.fromPin("tudo");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.fromPin(PK.GRP_TUDO);
             try {
                 if (query.count() == 0) {
-                    query = ParseQuery.getQuery("treino");
+                    query = ParseQuery.getQuery(PK.TREINO);
                     List<ParseObject> treinos = query.find();
                     for (ParseObject treino : treinos) {
-                        treino.pin("tudo");
+                        treino.pin(PK.GRP_TUDO);
                     }
                 }
             } catch (ParseException e) {
@@ -150,27 +151,27 @@ public class MeusTreinos extends Activity {
             return;
         }
         Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
-        // Limpa o cache local da categoria "tudo"
-        query = ParseQuery.getQuery("treino");
-        query.fromPin("tudo");
+        // Limpa o cache local da categoria PK.GRP_TUDO
+        query = ParseQuery.getQuery(PK.TREINO);
+        query.fromPin(PK.GRP_TUDO);
         try {
             List<ParseObject> treinos = query.find();
-            ParseObject.unpinAll("tudo", treinos);
+            ParseObject.unpinAll(PK.GRP_TUDO, treinos);
         } catch (ParseException e) {
             erro(e);
         }
 
         Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_LONG).show();
         // Carrega treinos do parse e coloca no datastore com pin.
-        query = ParseQuery.getQuery("treino");
-        query.include("exercicios");
-        query.fromPin("tudo");
+        query = ParseQuery.getQuery(PK.TREINO);
+        query.include(PK.EXERCICIO);
+        query.fromPin(PK.GRP_TUDO);
         try {
             if (query.count() == 0) {
-                query = ParseQuery.getQuery("treino");
+                query = ParseQuery.getQuery(PK.TREINO);
                 List<ParseObject> treinos = query.find();
                 for (ParseObject treino : treinos) {
-                    treino.pin("tudo");
+                    treino.pin(PK.GRP_TUDO);
                 }
             }
         } catch (ParseException e) {

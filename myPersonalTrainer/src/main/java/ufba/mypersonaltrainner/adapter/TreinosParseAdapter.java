@@ -11,6 +11,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
 import ufba.mypersonaltrainner.R;
+import ufba.mypersonaltrainner.util.PK;
 
 public class TreinosParseAdapter extends ParseQueryAdapter<ParseObject> {
 
@@ -18,9 +19,8 @@ public class TreinosParseAdapter extends ParseQueryAdapter<ParseObject> {
 
     public TreinosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
-            public ParseQuery create() {
-                ParseQuery query = new ParseQuery("treino");
-                return query;
+            public ParseQuery<ParseObject> create() {
+                return new ParseQuery<ParseObject>(PK.TREINO);
             }
         });
     }
@@ -42,8 +42,7 @@ public class TreinosParseAdapter extends ParseQueryAdapter<ParseObject> {
         //}
 
         // Add the title view
-        TextView x = (TextView) v;
-        x.setText(object.getString("trn_nome"));
+        ((TextView) v).setText(object.getString(PK.TREINO_NOME));
 
         if (this.hasStableIds()) Log.v(LOG_TAG, "OBA STABLE ID!!!");
         else Log.v(LOG_TAG, "OHH NÃO TEM STABLE ID...");

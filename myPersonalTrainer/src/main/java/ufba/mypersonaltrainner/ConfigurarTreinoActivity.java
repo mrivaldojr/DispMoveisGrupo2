@@ -19,8 +19,10 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import ufba.mypersonaltrainner.model.Exercicio;
+import ufba.mypersonaltrainner.util.PK;
 
 
 public class ConfigurarTreinoActivity extends Activity {
@@ -65,31 +67,30 @@ public class ConfigurarTreinoActivity extends Activity {
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         final String treinoNome = nomeEditText.getText().toString();
 
-        final ParseObject treino = new ParseObject("treino");
-        treino.put("trn_nome", treinoNome);
-        treino.put("pinnedAt", new Date(System.currentTimeMillis()));
+        final ParseObject treino = new ParseObject(PK.TREINO);
+        treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
+        treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
+        treino.put(PK.TREINO_NOME, treinoNome);
 
         for (int i = 0; i < adapterExercicios.getCount(); i++) {
-            Exercicio ex = adapterExercicios.getItem(i);
-            ParseObject exercicio = new ParseObject("exercicio");
-            exercicio.put("exe_nome", ex.getNome());
-            exercicio.put("exe_serie", ex.getSeries());
-            exercicio.put("exe_carga", ex.getCarga());
-            treino.add("exercicios", exercicio);
+            Exercicio exercicio = adapterExercicios.getItem(i);
+            ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
+            novoExercicio.put(PK.EXERCICIO_NOME, exercicio.getNome());
+            novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.getSeries());
+            novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.getCarga());
+            treino.add(PK.EXERCICIO, novoExercicio);
         }
 
         try {
-            treino.pin("tudo");
+            treino.pin(PK.GRP_TUDO);
             treino.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e != null)  {
-                        treino.pinInBackground("modificados");
+                        treino.pinInBackground(PK.GRP_SUJO);
                     }
                 }
             });
-
-
             Log.v(LOG_TAG, "Sucesso!");
             Toast.makeText(getApplicationContext(), "Sucesso!", Toast.LENGTH_LONG).show();
             setResult(Activity.RESULT_OK);

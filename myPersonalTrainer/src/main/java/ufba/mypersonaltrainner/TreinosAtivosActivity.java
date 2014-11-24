@@ -13,8 +13,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import ufba.mypersonaltrainner.util.PK;
 
 
 public class TreinosAtivosActivity extends Activity {
@@ -27,14 +26,14 @@ public class TreinosAtivosActivity extends Activity {
         //dados de teste
         ListView lv = (ListView) findViewById(R.id.listView_treinos_ativos);
 
-        List<String> lst = new ArrayList<String>();
+        /*List<String> lst = new ArrayList<String>();
 
         for(int i=1;i<4;i++){
             String item = "Treino "+i;
             lst.add(item);
         }
 
-        /*ArrayAdapter adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 R.layout.list_meus_treinos_item,
                 R.id.txt_nome_treino_lst_item,
                 lst);*/
@@ -43,14 +42,12 @@ public class TreinosAtivosActivity extends Activity {
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             @Override
             public ParseQuery<ParseObject> create() {
-                ParseQuery query = new ParseQuery("treino");
-                query.fromPin("modificados");
-                query.orderByDescending("pinnedAt");
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TIPO_EXERCICIO);
+                query.fromPin(PK.GRP_TIPO_EXERCICIO);
                 return query;
             }
         });
-        adapter.setTextKey("trn_nome");
-        adapter.setTextKey("pinnedAt");
+        adapter.setTextKey(PK.TIPO_EXERCICIO_NOME);
 
         lv.setAdapter(adapter);
 

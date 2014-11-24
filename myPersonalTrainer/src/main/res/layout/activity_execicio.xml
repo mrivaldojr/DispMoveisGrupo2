@@ -14,8 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Supino Reto"
-        android:id="@+id/textView"
+        android:id="@+id/textViewNome"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -23,18 +22,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In magna mauris, consequat in nisl nec, euismod pharetra arcu. Nunc congue maximus sapien, nec aliquet felis porta eget. Quisque nec ante vitae ex vehicula sollicitudin quis nec purus. Vivamus at leo ac metus tempus tempus. Maecenas eu porttitor risus. Curabitur sed tincidunt elit, ut euismod mi. Maecenas luctus neque vel mauris fermentum hendrerit a vitae nisi. Curabitur eleifend tempor dui, eu tempus risus aliquet quis. Curabitur sed tortor urna. Sed semper iaculis tempor. Mauris porta quam in dui sagittis rutrum."
-        android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
+        android:id="@+id/textViewDescricao"
+        android:layout_below="@+id/textViewNome"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
+    <com.parse.ParseImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/supino_reto_barra"
-        android:id="@+id/imageView"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2" />
+        android:layout_below="@+id/textViewDescricao" />
+
 </RelativeLayout>

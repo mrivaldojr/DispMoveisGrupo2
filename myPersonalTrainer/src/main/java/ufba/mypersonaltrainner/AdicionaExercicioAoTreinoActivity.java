@@ -57,7 +57,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 categoriaEscolhida = parent.getItemAtPosition(position).toString();
 
-                if(categoriaEscolhida.toString().equals("Escolha uma Categoria")) {
+                if(categoriaEscolhida.equals("Escolha uma Categoria")) {
                     exercicios.clear();
                     
                     //limpa o spinner
@@ -128,7 +128,6 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
         ProgressDialog progressDialog;
         List<ParseObject> listaExercicios;
-        ParseObject parseObject;
         String nome;
 
         @Override
@@ -148,14 +147,14 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
             try {
 
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TIPO_EXERCICIO);
-                query.fromPin(PK.TIPO_EXERCICIO);
+                query.fromPin(PK.GRP_TIPO_EXERCICIO);
                 query.whereEqualTo(PK.TIPO_EXERCICIO_CATEGORIA , categoria[0]);
                 listaExercicios = query.find();
 
                 exercicios.clear();
 
-                for (ParseObject tipoExercicio : listaExercicios) {
-                    nome = tipoExercicio.getString(PK.TIPO_EXERCICIO_NOME);
+                for (ParseObject exercicio : listaExercicios) {
+                    nome = exercicio.getString(PK.TIPO_EXERCICIO_NOME);
                     exercicios.add(nome);
                 }
             } catch (ParseException e) {

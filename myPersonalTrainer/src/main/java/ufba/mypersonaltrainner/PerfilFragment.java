@@ -32,6 +32,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import ufba.mypersonaltrainner.util.PK;
+
 public class PerfilFragment extends Fragment {
 
 
@@ -111,8 +113,8 @@ public class PerfilFragment extends Fragment {
         ParseQuery<ParseObject> query;
 
         // Upa os objeos do grupo de sujos pro parse cloud
-        query = ParseQuery.getQuery("treino");
-        query.fromPin("modificados");
+        query = ParseQuery.getQuery(PK.TREINO);
+        query.fromPin(PK.GRP_SUJO);
         try {
             List<ParseObject> treinosSujos = query.find();
             ParseObject.saveAllInBackground(treinosSujos, new SaveCallback() {
@@ -121,13 +123,9 @@ public class PerfilFragment extends Fragment {
                 public void done(ParseException e) {
                     Toast.makeText(activity.getApplicationContext(),
                             "Internet detectado, upando os novos treinos", Toast.LENGTH_SHORT).show();
-                    ParseObject.unpinAllInBackground("modificados");
+                    ParseObject.unpinAllInBackground(PK.GRP_SUJO);
                 }
             });
-            /*for (ParseObject t : treinosSujos) {
-                t.save();
-                t.unpinInBackground();
-            }*/
         } catch (ParseException e) {
             erro(e);
         }
@@ -136,20 +134,34 @@ public class PerfilFragment extends Fragment {
                 "Carregando da nuvem", Toast.LENGTH_LONG).show();
 
         // Carrega treinos do parse e passa pro datastore local
-        query = ParseQuery.getQuery("treino");
-        query.fromPin("tudo");
+        query = ParseQuery.getQuery(PK.TREINO);
+        query.setLimit(1);
+        query.fromPin(PK.GRP_TUDO);
         try {
             if (query.count() == 0) {
-                query = ParseQuery.getQuery("treino");
+                query = ParseQuery.getQuery(PK.TREINO);
                 List<ParseObject> treinos = query.find();
                 for (ParseObject treino : treinos) {
-                    treino.pin("tudo");
+                    treino.pin(PK.GRP_TUDO);
                 }
             }
         } catch (ParseException e) {
             erro(e);
         }
 
+        // Carrega tipos de exercicios do parse e passa pro datastore local
+        query = ParseQuery.getQuery(PK.TIPO_EXERCICIO);
+        query.fromPin(PK.GRP_TIPO_EXERCICIO);
+        query.setLimit(1);
+        try {
+            if (query.count() == 0) { // precisa melhorar isso
+                query = ParseQuery.getQuery(PK.TIPO_EXERCICIO);
+                List<ParseObject> tiposExercicios = query.find();
+                ParseObject.pinAll(PK.GRP_TIPO_EXERCICIO, tiposExercicios);
+            }
+        } catch(ParseException e) {
+            erro(e);
+        }
     }
 
     void erro(ParseException e) {
@@ -182,10 +194,10 @@ public class PerfilFragment extends Fragment {
 							userProfile.put("facebookId", user.getId());
 							userProfile.put("name", user.getName());
 							if (user.getProperty("gender") != null) {
-								userProfile.put("gender", (String) user.getProperty("gender"));
+								userProfile.put("gender", user.getProperty("gender"));
 							}
 							if (user.getProperty("email") != null) {
-								userProfile.put("email", (String) user.getProperty("email"));
+								userProfile.put("email", user.getProperty("email"));
 							}
 
 							// Save the user profile info in a user property
