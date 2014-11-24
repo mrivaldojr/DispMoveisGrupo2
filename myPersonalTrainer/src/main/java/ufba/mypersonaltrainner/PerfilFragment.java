@@ -65,13 +65,9 @@ public class PerfilFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_side_bar, container, false);
         
         //instancia o usuário logado
-<<<<<<< HEAD
-        ParseUser user = ParseUser.getCurrentUser();
-=======
         ParseUser user =  ParseUser.getCurrentUser();
-        LevelUser.setId_userd_user(user.getObjectId());
-        LevelUser.getInstance();
->>>>>>> 394701e44c0e1744d4ae204c47517b42af997ff3
+        //LevelUser.setId_userd_user(user.getObjectId());
+        //LevelUser.getInstance();
         
         String nome = user.getString("name");
         
@@ -213,13 +209,13 @@ public class PerfilFragment extends Fragment {
     private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 
-        int level = LevelUser.getInstance().getLevel();
-        int pontos = LevelUser.getInstance().getPontos();
-        int max_pontos = LevelUser.getInstance().getMaxpontos();
+        //int level = LevelUser.getInstance().getLevel();
+        //int pontos = LevelUser.getInstance().getPontos();
+        //  int max_pontos = LevelUser.getInstance().getMaxpontos();
 
-        txtViewLevel.setText("Level: "+Integer.toString(level));
-        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
-        barExp.setProgress((pontos*100)/max_pontos);
+        //txtViewLevel.setText("Level: "+Integer.toString(level));
+        // txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
+        // barExp.setProgress((pontos*100)/max_pontos);
 
         //LevelUser.getInstance().addPontos(100);
 

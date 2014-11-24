@@ -30,19 +30,19 @@ public class TrainingDetail extends Activity {
         setContentView(R.layout.training_detail);
 
         Intent intent = getIntent();
-        String treinoID = intent.getStringExtra(MeusTreinos.CHAVE_IDPARSE_TREINO);
+        String treinoParseID = intent.getStringExtra(MeusTreinos.CHAVE_IDPARSE_TREINO);
 
         final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
         query.include("exercicios");
-        query.fromLocalDatastore();
-        query.getInBackground(treinoID, new GetCallback<ParseObject>() {
+        query.fromPin("tudo");
+        query.getInBackground(treinoParseID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
-                    List<ParseObject> exercicios = treino.getList("exercicios");
+                    List<ParseObject> exerciciosDoParse = treino.getList("exercicios");
                     ArrayList<ItemListMeuTreino> listaExercicios = new ArrayList<ItemListMeuTreino>();
-                    for (ParseObject exercicio : exercicios) {
+                    for (ParseObject exercicio : exerciciosDoParse) {
                         String nome = exercicio.getString("exe_nome");
                         int reps = Integer.parseInt(exercicio.getString("exe_serie"));
                         int carga = Integer.parseInt(exercicio.getString("exe_carga"));
