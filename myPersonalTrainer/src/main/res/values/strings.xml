@@ -4,6 +4,7 @@
     <string name="app_name">My Personal Trainner</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_novo_ecercicio">+Exercicio</string>
     <string name="user_name">Usuário</string>
     <string name="user_lvl">Level: ?</string>
     <string name="user_xp">Experiência: ?/?</string>
@@ -14,12 +15,23 @@
     <string name="selected_training">Treino</string>
     <string name="my_training">Meus Treinos</string>
     <string name="title_activity_side_bar">SideBarActivity</string>
+    <string name="spinner_categoria">Escolha a Categoria</string>
 
     <string-array name="my_facebook_permissions">
         <item>public_profile</item>
         <item>user_relationships</item>
         <item>user_location</item>
         <item>user_friends</item>
+    </string-array>
+
+    <string-array name="categorias_de_exercicios">
+        <item>Todas</item>
+        <item>Abdome</item>
+        <item>Costas</item>
+        <item>Peito</item>
+        <item>Triceps</item>
+        <item>Perna</item>
+        <item>Biceps</item>
     </string-array>
 
     <!--
@@ -44,14 +56,13 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
-    <string name="title_activity_configurar_treino_my">ConfigurarTreinoMyActivity</string>
+    <string name="title_activity_configurar_treino_my">Novo Treino</string>
     <string name="title_activity_treino_de_hoje">Treino de Hoje</string>
     <string name="title_activity_execicio">ExecicioActivity</string>
     <string name="title_activity_trainig_detail">Trainig Detail</string>
     <string name="title_activity_treinos_ativos">TreinosAtivosActivity</string>
-    <string name="title_activity_adiciona_exercicio_ao_treino">Adiciona Exercício Ao Treino</string>
+    <string name="title_activity_adiciona_exercicio_ao_treino">Adicionar Exercício</string>
     <string name="nome_do_exercicio">Nome do Exercício</string>
     <string name="series_do_exercicio">Séries</string>
     <string name="carga_do_exercicio">Carga</string>
-
 </resources>
