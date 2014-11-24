@@ -21,6 +21,8 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import ufba.mypersonaltrainner.util.PK;
+
 
 public class AdicionaExercicioAoTreinoActivity extends Activity{
 
@@ -94,16 +96,16 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
     }
 
     public void confirma(View view) {
-        Intent i = new Intent();
+        Intent intent = new Intent();
 
         EditText series = (EditText) findViewById(R.id.add_exercicio_series_do_exercicio);
         EditText carga = (EditText) findViewById(R.id.add_exercicio_carga_do_exercicio);
 
-        i.putExtra(ConfigurarTreinoActivity.CHAVE_NOME, exerciciosSpinner.getSelectedItem().toString());
-        i.putExtra(ConfigurarTreinoActivity.CHAVE_SERIES, series.getText().toString());
-        i.putExtra(ConfigurarTreinoActivity.CHAVE_CARGA, carga.getText().toString());
+        intent.putExtra(ConfigurarTreinoActivity.CHAVE_NOME, exerciciosSpinner.getSelectedItem().toString());
+        intent.putExtra(ConfigurarTreinoActivity.CHAVE_SERIES, series.getText().toString());
+        intent.putExtra(ConfigurarTreinoActivity.CHAVE_CARGA, carga.getText().toString());
 
-        setResult(Activity.RESULT_OK, i);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
@@ -144,16 +146,16 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         protected Void doInBackground(String... categoria) {
 
             try {
-                ParseQuery<ParseObject> parseQuery = new ParseQuery<ParseObject>("EXE_exercicio");
-                parseQuery.whereEqualTo("exe_ds_categoria" , categoria[0]);
-                listaExercicios = parseQuery.find();
 
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TIPO_EXERCICIO);
+                query.fromPin(PK.TIPO_EXERCICIO);
+                query.whereEqualTo(PK.TIPO_EXERCICIO_CATEGORIA , categoria[0]);
+                listaExercicios = query.find();
 
                 exercicios.clear();
 
-
-                for (ParseObject parseObject : listaExercicios) {
-                    nome = parseObject.getString("exe_ds_nome");
+                for (ParseObject tipoExercicio : listaExercicios) {
+                    nome = tipoExercicio.getString(PK.TIPO_EXERCICIO_NOME);
                     exercicios.add(nome);
                 }
             } catch (ParseException e) {

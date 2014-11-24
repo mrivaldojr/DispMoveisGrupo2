@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -21,6 +20,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 
 import java.util.List;
+
+import ufba.mypersonaltrainner.util.PK;
 
 
 public class MeusTreinos extends Activity {
@@ -34,32 +35,18 @@ public class MeusTreinos extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_meus_treinos);
-
-        /*List<String> lst = new ArrayList<String>();
-
-        for(int i=1;i<15;i++){
-            String item = "Treino "+i;
-            lst.add(item);
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.list_meus_treinos_item,
-                R.id.txt_nome_treino_lst_item,
-                lst);
-                */
 
         mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
-                ParseQuery query = new ParseQuery("treino");
-                query.fromPin("tudo");
-                query.orderByDescending("pinnedAt");
+                ParseQuery query = new ParseQuery(PK.TREINO);
+                query.fromPin(PK.GRP_TUDO);
+                query.orderByDescending(PK.PIN_DATE);
                 return query;
             }
         });
-        mTreinoAdapter.setTextKey("trn_nome");
+        mTreinoAdapter.setTextKey(PK.TREINO_NOME);
 
 //        TreinosParseAdapter adapter = new TreinosParseAdapter(this);
         if (mTreinoAdapter.hasStableIds())  Log.v(LOG_TAG, "OBA STABLE ID!!!");
@@ -141,24 +128,6 @@ public class MeusTreinos extends Activity {
             } catch (ParseException e) {
                 erro(e);
             }
-/*
-            Toast.makeText(getApplicationContext(), "Pinmod", Toast.LENGTH_SHORT).show();
-            // Carrega treinos do parse e coloca no datastore com pin.
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("treino");
-            query.fromPin("tudo");
-            try {
-                List<ParseObject> treinos = query.find();
-                for (ParseObject treino : treinos) {
-                    if (treino.isDirty()) {
-                        Log.d(LOG_TAG, treino.getString("trn_nome"));
-                        treino.pinInBackground("modificados");
-                    }
-                }
-            } catch (ParseException e) {
-                erro(e);
-            }
-*/
-
             mTreinoAdapter.loadObjects();
         }
         return super.onOptionsItemSelected(item);
