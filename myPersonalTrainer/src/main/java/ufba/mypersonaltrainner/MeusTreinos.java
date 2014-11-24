@@ -60,6 +60,7 @@ public class MeusTreinos extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 ParseObject treino = (ParseObject) listView.getItemAtPosition(i);
+                intent.putExtra("NOME_TREINO",treino.getString("trn_nome"));
                 intent.putExtra(CHAVE_IDPARSE_TREINO, treino.getObjectId());
                 startActivity(intent);
             }
