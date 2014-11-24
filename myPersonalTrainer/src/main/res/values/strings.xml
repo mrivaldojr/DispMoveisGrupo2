@@ -24,23 +24,24 @@
         <item>user_friends</item>
     </string-array>
 
-    <string-array name="categorias_de_exercicios">
-        <item>Todas</item>
-        <item>Abdome</item>
-        <item>Costas</item>
-        <item>Peito</item>
-        <item>Triceps</item>
-        <item>Perna</item>
-        <item>Biceps</item>
-    </string-array>
+    <!-- Nomes para o Spinner -->
+   <string-array name="categorias_de_exercicios">
+       <item>Escolha uma Categoria</item>
+       <item>Abdome</item>
+       <item>Costas</item>
+       <item>Peito</item>
+       <item>Triceps</item>
+       <item>Perna</item>
+       <item>Biceps</item>
+   </string-array>
 
-    <!--
-    chaves
-    <string name="parse_app_id">A8T3Z4NhU61cher7KQm3HvokLHnJk8eCmyevyFN1</string>
-    <string name="parse_client_key">Xh0t2EmUF3eNBYp8N3He6PD0tP5bvJ41EX7MA4yw</string>
-    <string name="facebook_app_id">370422519809290</string>
-    !
-    -->
+   <!--
+   chaves
+   <string name="parse_app_id">A8T3Z4NhU61cher7KQm3HvokLHnJk8eCmyevyFN1</string>
+   <string name="parse_client_key">Xh0t2EmUF3eNBYp8N3He6PD0tP5bvJ41EX7MA4yw</string>
+   <string name="facebook_app_id">370422519809290</string>
+   !
+   -->
 
     <string name="parse_app_id">zAMAiwyXWH7rYYBCuZlnchjIW5CvVw9JtpotJ37g</string>
     <string name="parse_client_key">fZo3txX0EgWHS4bkVIiLzH0h9yPGcS20h1nxOw3u</string>
