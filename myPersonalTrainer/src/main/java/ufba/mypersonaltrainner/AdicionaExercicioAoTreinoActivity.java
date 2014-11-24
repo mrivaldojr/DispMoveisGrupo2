@@ -62,9 +62,6 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
             }
         });
-
-
-
     }
 
     private View.OnClickListener clickCancelar = new View.OnClickListener() {
@@ -133,12 +130,11 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         protected Void doInBackground(String... categoria) {
 
             try {
-                ParseQuery<ParseObject> parseQuery = new ParseQuery("EXE_exercicio");
-                parseQuery.whereEqualTo("exe_ds_categoria" , categoria[0].toString());
+                ParseQuery<ParseObject> parseQuery = new ParseQuery<ParseObject>("EXE_exercicio");
+                parseQuery.whereEqualTo("exe_ds_categoria" , categoria[0]);
                 listaExercicios = parseQuery.find();
 
-                for (int i = 0; i < listaExercicios.size(); i++) {
-                    parseObject = listaExercicios.get(i);
+                for (ParseObject parseObject : listaExercicios) {
                     nome = parseObject.getString("exe_ds_nome");
                     exercicios.add(parseObject.getString("exe_ds_nome"));
                 }

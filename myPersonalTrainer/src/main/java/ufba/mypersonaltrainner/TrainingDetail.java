@@ -64,11 +64,6 @@ public class TrainingDetail extends Activity {
                 }
             }
         });
-
-
-
-
-
     }
 
 
