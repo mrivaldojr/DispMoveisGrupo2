@@ -110,7 +110,6 @@ public class PerfilFragment extends Fragment {
 
         ParseQuery<ParseObject> query;
 
-
         // Upa os objeos do grupo de sujos pro parse cloud
         query = ParseQuery.getQuery("treino");
         query.fromPin("modificados");
