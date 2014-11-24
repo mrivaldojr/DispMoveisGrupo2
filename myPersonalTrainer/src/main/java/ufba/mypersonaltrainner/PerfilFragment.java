@@ -66,18 +66,28 @@ public class PerfilFragment extends Fragment {
         
         //instancia o usuário logado
         ParseUser user =  ParseUser.getCurrentUser();
-        //LevelUser.setId_userd_user(user.getObjectId());
-        //LevelUser.getInstance();
         
         String nome = user.getString("name");
         
         txtViewNome = (TextView) rootView.findViewById(R.id.user_name);
         txtViewNome.setText(nome);
+
         txtViewLevel = (TextView) rootView.findViewById(R.id.user_lvl);
         txtViewPontos = (TextView) rootView.findViewById(R.id.user_xp);
         barExp = (ProgressBar) rootView.findViewById(R.id.Bar_xp);
         userProfilePictureView = (ProfilePictureView) rootView.findViewById(R.id.img_perfil);
-        
+
+        int level = LevelUser.getInstance().getLevel();
+        int pontos = LevelUser.getInstance().getPontos();
+        int maxpontos = LevelUser.getInstance().getMaxpontos();
+
+        LevelUser.getInstance().addPontos(23);
+
+        //Atualização dos dados sempre que o usuário abrir o perfil
+        txtViewLevel.setText("Level: "+Integer.toString(level));
+        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
+        barExp.setProgress((pontos*100)/maxpontos);
+
         Session session = ParseFacebookUtils.getSession();
 		if (session != null && session.isOpened()) {
 			makeMeRequest();
@@ -208,16 +218,6 @@ public class PerfilFragment extends Fragment {
     
     private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
-
-        //int level = LevelUser.getInstance().getLevel();
-        //int pontos = LevelUser.getInstance().getPontos();
-        //  int max_pontos = LevelUser.getInstance().getMaxpontos();
-
-        //txtViewLevel.setText("Level: "+Integer.toString(level));
-        // txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
-        // barExp.setProgress((pontos*100)/max_pontos);
-
-        //LevelUser.getInstance().addPontos(100);
 
         if (currentUser.has("profile")) {
 			JSONObject userProfile = currentUser.getJSONObject("profile");
