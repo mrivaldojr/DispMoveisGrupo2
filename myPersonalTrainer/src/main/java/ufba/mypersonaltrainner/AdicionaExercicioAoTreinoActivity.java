@@ -154,7 +154,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
                 for (ParseObject parseObject : listaExercicios) {
                     nome = parseObject.getString("exe_ds_nome");
-                    exercicios.add(parseObject.getString("exe_ds_nome"));
+                    exercicios.add(nome);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
