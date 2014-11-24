@@ -65,6 +65,7 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private static final String LOG_TAG = NavigationDrawerFragment.class.getSimpleName();
 
     public NavigationDrawerFragment() {
     }

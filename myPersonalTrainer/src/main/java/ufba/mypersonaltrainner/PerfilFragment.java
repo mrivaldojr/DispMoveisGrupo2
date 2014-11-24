@@ -1,16 +1,18 @@
 package ufba.mypersonaltrainner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -18,8 +20,17 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
+import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class PerfilFragment extends Fragment {
 
@@ -55,8 +66,8 @@ public class PerfilFragment extends Fragment {
         
         //instancia o usuário logado
         ParseUser user =  ParseUser.getCurrentUser();
-        LevelUser.setId_userd_user(user.getObjectId());
-        LevelUser.getInstance();
+        //LevelUser.setId_userd_user(user.getObjectId());
+        //LevelUser.getInstance();
         
         String nome = user.getString("name");
         
@@ -71,10 +82,76 @@ public class PerfilFragment extends Fragment {
 		if (session != null && session.isOpened()) {
 			makeMeRequest();
 		}
-        
+
+        upaSujosPopulaCache();
         return rootView;
     }
-    
+
+    void upaSujosPopulaCache() {
+        final Activity activity = getActivity();
+
+        // Verifica a conexão.
+        ConnectivityManager cm = (ConnectivityManager) activity
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if ((ni == null) || (!ni.isConnected())) {
+            return;
+        }
+
+        ParseQuery<ParseObject> query;
+
+
+        // Upa os objeos do grupo de sujos pro parse cloud
+        query = ParseQuery.getQuery("treino");
+        query.fromPin("modificados");
+        try {
+            List<ParseObject> treinosSujos = query.find();
+            ParseObject.saveAllInBackground(treinosSujos, new SaveCallback() {
+
+                @Override
+                public void done(ParseException e) {
+                    Toast.makeText(activity.getApplicationContext(),
+                            "Internet detectado, upando os novos treinos", Toast.LENGTH_SHORT).show();
+                    ParseObject.unpinAllInBackground("modificados");
+                }
+            });
+            /*for (ParseObject t : treinosSujos) {
+                t.save();
+                t.unpinInBackground();
+            }*/
+        } catch (ParseException e) {
+            erro(e);
+        }
+
+        Toast.makeText(activity.getApplicationContext(),
+                "Carregando da nuvem", Toast.LENGTH_LONG).show();
+
+        // Carrega treinos do parse e passa pro datastore local
+        query = ParseQuery.getQuery("treino");
+        query.fromPin("tudo");
+        try {
+            if (query.count() == 0) {
+                query = ParseQuery.getQuery("treino");
+                List<ParseObject> treinos = query.find();
+                for (ParseObject treino : treinos) {
+                    treino.pin("tudo");
+                }
+            }
+        } catch (ParseException e) {
+            erro(e);
+        }
+
+    }
+
+    void erro(ParseException e) {
+        final String LOG_TAG = getActivity().getClass().getSimpleName();
+        Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
+        Log.e(LOG_TAG, e.getMessage());
+        e.printStackTrace();
+        Toast.makeText(getActivity().getApplicationContext()
+                , e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -132,13 +209,13 @@ public class PerfilFragment extends Fragment {
     private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 
-        int level = LevelUser.getInstance().getLevel();
-        int pontos = LevelUser.getInstance().getPontos();
-        int max_pontos = LevelUser.getInstance().getMaxpontos();
+        //int level = LevelUser.getInstance().getLevel();
+        //int pontos = LevelUser.getInstance().getPontos();
+        //  int max_pontos = LevelUser.getInstance().getMaxpontos();
 
-        txtViewLevel.setText("Level: "+Integer.toString(level));
-        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
-        barExp.setProgress((pontos*100)/max_pontos);
+        //txtViewLevel.setText("Level: "+Integer.toString(level));
+        // txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(max_pontos));
+        // barExp.setProgress((pontos*100)/max_pontos);
 
         //LevelUser.getInstance().addPontos(100);
 
