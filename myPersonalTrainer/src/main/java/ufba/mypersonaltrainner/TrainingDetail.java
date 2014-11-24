@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -24,6 +25,9 @@ import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
 public class TrainingDetail extends Activity {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
+
+    private TextView nomeTreino;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,9 @@ public class TrainingDetail extends Activity {
 
         Intent intent = getIntent();
         String treinoParseID = intent.getStringExtra(MeusTreinos.CHAVE_IDPARSE_TREINO);
+
+        nomeTreino = (TextView) findViewById(R.id.selected_training_detail);
+        nomeTreino.setText(intent.getStringExtra("NOME_TREINO"));
 
         final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
 
