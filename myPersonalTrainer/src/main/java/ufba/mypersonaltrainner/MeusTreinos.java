@@ -42,7 +42,7 @@ public class MeusTreinos extends Activity {
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
-                query.fromPin(PK.GRP_TUDO);
+                //query.fromPin(PK.GRP_TUDO);
                 query.orderByDescending(PK.PIN_DATE);
                 return query;
             }
@@ -50,8 +50,6 @@ public class MeusTreinos extends Activity {
         mTreinoAdapter.setTextKey(PK.TREINO_NOME);
 
         // TreinosParseAdapter adapter = new TreinosParseAdapter(this);
-        if (mTreinoAdapter.hasStableIds())  Log.v(LOG_TAG, "OBA STABLE ID!!!");
-        else  Log.v(LOG_TAG, "Ohh não tem stable id...");
 
         listView = (ListView) findViewById(R.id.listView_meus_treinos);
         listView.setAdapter(mTreinoAdapter);
@@ -62,7 +60,8 @@ public class MeusTreinos extends Activity {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 ParseObject treino = (ParseObject) listView.getItemAtPosition(i);
                 intent.putExtra(CHAVE_EXTRA_NOME_TREINO, treino.getString(PK.TREINO_NOME));
-                intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
+                // intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
+                intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getObjectId());
                 startActivity(intent);
             }
         });
@@ -73,7 +72,7 @@ public class MeusTreinos extends Activity {
         if (requestCode == CRIA_TREINO_REQUEST) {
             if (resultCode == RESULT_OK) {
                 mTreinoAdapter.loadObjects();
-                //mTreinoAdapter.notifyDataSetChanged();
+                mTreinoAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -99,10 +98,12 @@ public class MeusTreinos extends Activity {
             startActivityForResult(i, CRIA_TREINO_REQUEST);
         }
         if(id == R.id.action_refresh){
-            refresh();
+            return true;
+            //refresh();
         }
         if(id == R.id.action_clear) {
-            Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
+            return true;
+            /*Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
             // Limpa o cache local da categoria GRP_TUDO
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
             query.fromPin(PK.GRP_TUDO);
@@ -112,10 +113,11 @@ public class MeusTreinos extends Activity {
             } catch (ParseException e) {
                 erro(e);
             }
-            mTreinoAdapter.loadObjects();
+            mTreinoAdapter.loadObjects();*/
         }
-        if(id == R.id.action_load){
-            Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_SHORT).show();
+        if(id == R.id.action_load) {
+            return true;
+            /*Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_SHORT).show();
             // Carrega treinos do parse e coloca no datastore com pin.
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
             query.fromPin(PK.GRP_TUDO);
@@ -130,7 +132,7 @@ public class MeusTreinos extends Activity {
             } catch (ParseException e) {
                 erro(e);
             }
-            mTreinoAdapter.loadObjects();
+            mTreinoAdapter.loadObjects();*/
         }
         return super.onOptionsItemSelected(item);
     }

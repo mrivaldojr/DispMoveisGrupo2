@@ -62,12 +62,12 @@ public class ConfigurarTreinoActivity extends Activity {
         });
     }
 
-    public void salvaTreino(View view) {
+    public void salvarTreino(View view) {
 
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         final String treinoNome = nomeEditText.getText().toString();
 
-        final ParseObject treino = new ParseObject(PK.TREINO);
+        final ParseObject treino = new ParseObject(c);
         treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
         treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
         treino.put(PK.TREINO_NOME, treinoNome);
@@ -81,24 +81,30 @@ public class ConfigurarTreinoActivity extends Activity {
             treino.add(PK.EXERCICIO, novoExercicio);
         }
 
-        try {
-            treino.pin(PK.GRP_TUDO);
-            treino.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null)  {
-                        treino.pinInBackground(PK.GRP_SUJO);
-                    }
+        //try {
+            //treino.pin(PK.GRP_TUDO);
+        treino.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(getApplicationContext(), "Salvou!", Toast.LENGTH_LONG).show();
+                } else {
+                    erro(e);
+                    finish();
                 }
-            });
-            Log.v(LOG_TAG, "Sucesso!");
-            Toast.makeText(getApplicationContext(), "Sucesso!", Toast.LENGTH_LONG).show();
-            setResult(Activity.RESULT_OK);
-            finish();
-        } catch (ParseException e) {
+                /*if (e != null)  {
+                    Log.v(LOG_TAG, "Pinou!");
+                    Toast.makeText(getApplicationContext(), "Pinou!", Toast.LENGTH_LONG).show();
+                    treino.pinInBackground(PK.GRP_SUJO);
+                }*/
+            }
+        });
+        setResult(Activity.RESULT_OK);
+        finish();
+        /*} catch (ParseException e) {
             erro(e);
             finish();
-        }
+        }*/
     }
 
     void erro(ParseException e) {

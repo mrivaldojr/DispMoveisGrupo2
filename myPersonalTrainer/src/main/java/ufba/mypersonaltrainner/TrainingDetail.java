@@ -48,7 +48,7 @@ public class TrainingDetail extends Activity {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
-        query.fromPin(PK.GRP_TUDO);
+        //query.fromPin(PK.GRP_TUDO);
         query.getInBackground(treinoParseID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {

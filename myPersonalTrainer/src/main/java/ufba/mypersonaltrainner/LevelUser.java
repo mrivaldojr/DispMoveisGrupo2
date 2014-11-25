@@ -1,18 +1,10 @@
 package ufba.mypersonaltrainner;
 
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 public class LevelUser {
     private static LevelUser instance;
-    private static final int RATE_EXP = 100; //Constante que define a exp maxima
+    private static final int RATE_EXP = 100; // Exp maxima
 
     private int level;
     private int pontos;
@@ -60,7 +52,6 @@ public class LevelUser {
         user.put("level", level);
         user.put("pontos", aux);
         user.saveInBackground();
-
     }
 
     public int getMaxpontos() { return maxpontos;   }

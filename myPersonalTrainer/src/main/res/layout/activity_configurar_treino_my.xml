@@ -53,6 +53,6 @@
         android:layout_gravity="center_horizontal"
         android:drawableLeft="@drawable/save_disquete"
         style="?android:attr/borderlessButtonStyle"
-        android:onClick="salvaTreino" />
+        android:onClick="salvarTreino" />
 
 </LinearLayout>

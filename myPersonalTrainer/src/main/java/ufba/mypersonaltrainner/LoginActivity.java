@@ -22,7 +22,6 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
            Intent i = new Intent(getBaseContext(), SideBarActivity.class);
            startActivity(i);
-
             }
         });
     }

@@ -2,11 +2,7 @@ package ufba.mypersonaltrainner;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +16,13 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.ProfilePictureView;
-import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
+import ufba.mypersonaltrainner.util.Cache;
 import ufba.mypersonaltrainner.util.PK;
 
 public class PerfilFragment extends Fragment {
@@ -45,6 +36,7 @@ public class PerfilFragment extends Fragment {
 	
 	
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private final String LOG_TAG = PerfilFragment.class.getSimpleName();
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -66,10 +58,10 @@ public class PerfilFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_side_bar, container, false);
         
-        //instancia o usuário logado
-        ParseUser user =  ParseUser.getCurrentUser();
+        // instancia o usuário logado
+        ParseUser user = ParseUser.getCurrentUser();
         
-        String nome = user.getString("name");
+        String nome = user.getString(PK.USER_NAME);
         
         txtViewNome = (TextView) rootView.findViewById(R.id.user_name);
         txtViewNome.setText(nome);
@@ -79,13 +71,14 @@ public class PerfilFragment extends Fragment {
         barExp = (ProgressBar) rootView.findViewById(R.id.Bar_xp);
         userProfilePictureView = (ProfilePictureView) rootView.findViewById(R.id.img_perfil);
 
-        int level = LevelUser.getInstance().getLevel();
-        int pontos = LevelUser.getInstance().getPontos();
-        int maxpontos = LevelUser.getInstance().getMaxpontos();
+        LevelUser levelUser = LevelUser.getInstance();
+        int level = levelUser.getLevel();
+        int pontos = levelUser.getPontos();
+        int maxpontos = levelUser.getMaxpontos();
 
-        LevelUser.getInstance().addPontos(23);
+        levelUser.addPontos(23);
 
-        //Atualização dos dados sempre que o usuário abrir o perfil
+        // Atualização dos dados sempre que o usuário abrir o perfil
         txtViewLevel.setText("Level: "+Integer.toString(level));
         txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
         barExp.setProgress((pontos*100)/maxpontos);
@@ -95,82 +88,17 @@ public class PerfilFragment extends Fragment {
 			makeMeRequest();
 		}
 
-        upaSujosPopulaCache();
+        // Cache.limpaache();
+        Activity a = getActivity();
+        if (Cache.conectado(a)) {
+            Toast.makeText(a.getApplicationContext(),
+                    "Internet detectada", Toast.LENGTH_SHORT).show();
+            //Cache.salvaTreinosSujos(a);
+            Cache.carregaTiposExercicios();
+            //Cache.carregaTreinos();
+        }
+
         return rootView;
-    }
-
-    void upaSujosPopulaCache() {
-        final Activity activity = getActivity();
-
-        // Verifica a conexão.
-        ConnectivityManager cm = (ConnectivityManager) activity
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if ((ni == null) || (!ni.isConnected())) {
-            return;
-        }
-
-        ParseQuery<ParseObject> query;
-
-        // Upa os objeos do grupo de sujos pro parse cloud
-        query = ParseQuery.getQuery(PK.TREINO);
-        query.fromPin(PK.GRP_SUJO);
-        try {
-            List<ParseObject> treinosSujos = query.find();
-            ParseObject.saveAllInBackground(treinosSujos, new SaveCallback() {
-
-                @Override
-                public void done(ParseException e) {
-                    Toast.makeText(activity.getApplicationContext(),
-                            "Internet detectado, upando os novos treinos", Toast.LENGTH_SHORT).show();
-                    ParseObject.unpinAllInBackground(PK.GRP_SUJO);
-                }
-            });
-        } catch (ParseException e) {
-            erro(e);
-        }
-
-        Toast.makeText(activity.getApplicationContext(),
-                "Carregando da nuvem", Toast.LENGTH_LONG).show();
-
-        // Carrega treinos do parse e passa pro datastore local
-        query = ParseQuery.getQuery(PK.TREINO);
-        query.setLimit(1);
-        query.fromPin(PK.GRP_TUDO);
-        try {
-            if (query.count() == 0) {
-                query = ParseQuery.getQuery(PK.TREINO);
-                List<ParseObject> treinos = query.find();
-                for (ParseObject treino : treinos) {
-                    treino.pin(PK.GRP_TUDO);
-                }
-            }
-        } catch (ParseException e) {
-            erro(e);
-        }
-
-        // Carrega tipos de exercicios do parse e passa pro datastore local
-        query = ParseQuery.getQuery(PK.TIPO_EXERCICIO);
-        query.fromPin(PK.GRP_TIPO_EXERCICIO);
-        query.setLimit(1);
-        try {
-            if (query.count() == 0) { // precisa melhorar isso
-                query = ParseQuery.getQuery(PK.TIPO_EXERCICIO);
-                List<ParseObject> tiposExercicios = query.find();
-                ParseObject.pinAll(PK.GRP_TIPO_EXERCICIO, tiposExercicios);
-            }
-        } catch(ParseException e) {
-            erro(e);
-        }
-    }
-
-    void erro(ParseException e) {
-        final String LOG_TAG = getActivity().getClass().getSimpleName();
-        Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
-        Log.e(LOG_TAG, e.getMessage());
-        e.printStackTrace();
-        Toast.makeText(getActivity().getApplicationContext()
-                , e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
