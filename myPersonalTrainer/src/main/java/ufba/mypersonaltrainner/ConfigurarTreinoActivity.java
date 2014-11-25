@@ -22,19 +22,17 @@ import java.util.Date;
 import java.util.UUID;
 
 import ufba.mypersonaltrainner.model.Exercicio;
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
 
 public class ConfigurarTreinoActivity extends Activity {
 
-    static final int CRIA_EXERCICIO_REQUEST = 0;
-    static final String CHAVE_NOME = "ufba.mypersonaltrainner.chave";
-    static final String CHAVE_SERIES = "ufba.mypersonaltrainner.series";
-    static final String CHAVE_CARGA = "ufba.mypersonaltrainner.nome";
+
     private final String LOG_TAG = this.getClass().getSimpleName();
     private ListView listViewExercicios;
     private ArrayAdapter<Exercicio> adapterExercicios;
-
+    private int REQUERIDA;
 /*    public void mostraTreinos() {
         final ParseUser user = ParseUser.getCurrentUser();
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
@@ -45,8 +43,19 @@ public class ConfigurarTreinoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configurar_treino_my);
 
-        // List<Exercicio> lst = new ArrayList<Exercicio>();
+        EditText nomeDoTreino = (EditText) findViewById(R.id.edt_nomeTreino);
+        Intent intentChamante = getIntent();
 
+        String action = intentChamante.getAction();
+        if (action.equals(C.ACTION_NOVO_TREINO)) {
+            REQUERIDA = C.CRIA_TREINO_REQUEST;
+            nomeDoTreino.setText(getString(R.string.action_novo_treino));
+        } else if (action.equals(C.ACTION_EDIT_TREINO)) {
+            REQUERIDA = C.EDITA_TREINO_REQUEST;
+            nomeDoTreino.setText(getString(R.string.action_editar_treino));
+        }
+
+        // List<Exercicio> lst = new ArrayList<Exercicio>();
         adapterExercicios = new ArrayAdapter<Exercicio>(this,
                 android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
 
@@ -56,8 +65,11 @@ public class ConfigurarTreinoActivity extends Activity {
         listViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
-                startActivity(intent);
+                Intent intent = new Intent(getBaseContext(),
+                        AdicionaExercicioAoTreinoActivity.class);
+
+                intent.putExtra(C.CHAVE_EXTRA_IDPARSE_TREINO,);
+                startActivityForResult(intent, C.EDITA_EXERCICIO_REQUEST);
             }
         });
     }
@@ -116,11 +128,11 @@ public class ConfigurarTreinoActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        if (requestCode == CRIA_EXERCICIO_REQUEST) {
+        if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
             if (resultCode == RESULT_OK) {
-                String nome = data.getStringExtra(CHAVE_NOME);
-                String series = data.getStringExtra(CHAVE_SERIES);
-                String carga = data.getStringExtra(CHAVE_CARGA);
+                String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
+                String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
+                String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
 
                 adapterExercicios.add(new Exercicio(nome, series, carga));
                 adapterExercicios.notifyDataSetChanged();
@@ -147,7 +159,7 @@ public class ConfigurarTreinoActivity extends Activity {
 
         if(id == R.id.action_novo_exercicio){
             Intent i = new Intent(this,AdicionaExercicioAoTreinoActivity.class);
-            startActivityForResult(i, CRIA_EXERCICIO_REQUEST);
+            startActivityForResult(i, C.CRIA_EXERCICIO_REQUEST);
             return true;
         }
         return super.onOptionsItemSelected(item);

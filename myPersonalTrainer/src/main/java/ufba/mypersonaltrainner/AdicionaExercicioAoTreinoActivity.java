@@ -105,7 +105,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         intent.putExtra(ConfigurarTreinoActivity.CHAVE_SERIES, series.getText().toString());
         intent.putExtra(ConfigurarTreinoActivity.CHAVE_CARGA, carga.getText().toString());
 
-        setResult(Activity.RESULT_OK, intent);
+        setResult(Activity.RESULT_OK, intent)
         finish();
     }
 

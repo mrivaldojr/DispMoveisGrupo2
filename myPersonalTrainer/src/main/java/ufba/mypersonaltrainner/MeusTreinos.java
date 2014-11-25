@@ -21,6 +21,7 @@ import com.parse.ParseQueryAdapter;
 
 import java.util.List;
 
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
 
@@ -28,9 +29,6 @@ public class MeusTreinos extends Activity {
 
     private ListView listView;
     private final String LOG_TAG = MeusTreinos.class.getSimpleName();
-    static final int CRIA_TREINO_REQUEST = 0;
-    static final String CHAVE_EXTRA_IDPARSE_TREINO = "ufba.mypersonaltrainner.id_parse";
-    static final String CHAVE_EXTRA_NOME_TREINO = "ufba.mypersonaltrainner.nome_treino";
     private ParseQueryAdapter<ParseObject> mTreinoAdapter;
 
     @Override
@@ -59,9 +57,10 @@ public class MeusTreinos extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 ParseObject treino = (ParseObject) listView.getItemAtPosition(i);
-                intent.putExtra(CHAVE_EXTRA_NOME_TREINO, treino.getString(PK.TREINO_NOME));
+                intent.putExtra(C.CHAVE_EXTRA_IDPARSE_TREINO, treino.getObjectId());
+                intent.putExtra(C.CHAVE_EXTRA_NOME_TREINO, treino.getString(PK.TREINO_NOME));
                 // intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
-                intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getObjectId());
+
                 startActivity(intent);
             }
         });
@@ -69,10 +68,10 @@ public class MeusTreinos extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        if (requestCode == CRIA_TREINO_REQUEST) {
+        if (requestCode == C.CRIA_TREINO_REQUEST) {
             if (resultCode == RESULT_OK) {
                 mTreinoAdapter.loadObjects();
-                mTreinoAdapter.notifyDataSetChanged();
+                //mTreinoAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -95,7 +94,12 @@ public class MeusTreinos extends Activity {
         }
         if(id == R.id.action_new){
             Intent i = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
-            startActivityForResult(i, CRIA_TREINO_REQUEST);
+            startActivityForResult(i, C.CRIA_TREINO_REQUEST);
+        }
+        if(id == R.id.action_editar_treino) {
+            Intent i = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
+
+            startActivityForResult(i, C.EDITA_TREINO_REQUEST);
         }
         if(id == R.id.action_refresh){
             return true;
