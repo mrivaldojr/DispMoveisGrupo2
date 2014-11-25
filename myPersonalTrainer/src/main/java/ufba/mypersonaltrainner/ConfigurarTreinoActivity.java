@@ -67,7 +67,7 @@ public class ConfigurarTreinoActivity extends Activity {
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         final String treinoNome = nomeEditText.getText().toString();
 
-        final ParseObject treino = new ParseObject(c);
+        final ParseObject treino = new ParseObject(PK.TREINO);
         treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
         treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
         treino.put(PK.TREINO_NOME, treinoNome);
