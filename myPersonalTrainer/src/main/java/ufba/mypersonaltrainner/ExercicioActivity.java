@@ -14,6 +14,7 @@ import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
 
@@ -30,7 +31,7 @@ public class ExercicioActivity extends Activity {
 
         Intent intent = getIntent();
 
-        String nome = intent.getStringExtra(TrainingDetail.CHAVE_NOME_EXERCICIO);
+        String nome = intent.getStringExtra(C.EXTRA_EXERCICIO_NOME);
         nomeExercicioTextView.setText(nome);
 
         imagemDoExercicio.setPlaceholder(getResources()

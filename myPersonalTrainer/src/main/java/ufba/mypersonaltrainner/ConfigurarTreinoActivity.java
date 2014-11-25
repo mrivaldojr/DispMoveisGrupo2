@@ -15,63 +15,95 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import ufba.mypersonaltrainner.adapter.ExerciciosArrayAdapter;
 import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
+import ufba.mypersonaltrainner.util.DynamicListView;
+import ufba.mypersonaltrainner.util.ExercicioPO;
 import ufba.mypersonaltrainner.util.PK;
 
 
 public class ConfigurarTreinoActivity extends Activity {
 
 
+    // private ArrayAdapter<Exercicio> adapterExercicios;
     private final String LOG_TAG = this.getClass().getSimpleName();
-    private ListView listViewExercicios;
-    private ArrayAdapter<Exercicio> adapterExercicios;
-    private int REQUERIDA;
-/*    public void mostraTreinos() {
-        final ParseUser user = ParseUser.getCurrentUser();
-        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-    }*/
+    private ListView mListViewExercicios;
+    private ArrayAdapter<ExercicioPO> mAdapterExercicios;
+    private int mRequest;
+    private List<ParseObject> mExerciciosPO;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configurar_treino_my);
 
-        EditText nomeDoTreino = (EditText) findViewById(R.id.edt_nomeTreino);
         Intent intentChamante = getIntent();
+        final String idTreinoSelecionado = intentChamante.getStringExtra(C.EXTRA_TREINO_IDPARSE);
+        final String nomeTreino = intentChamante.getStringExtra(C.EXTRA_TREINO_NOME);
 
         String action = intentChamante.getAction();
         if (action.equals(C.ACTION_NOVO_TREINO)) {
-            REQUERIDA = C.CRIA_TREINO_REQUEST;
-            nomeDoTreino.setText(getString(R.string.action_novo_treino));
+            mRequest = C.CRIA_TREINO_REQUEST;
+            String novoTreinoTitle = getString(R.string.action_novo_treino);
+            getActionBar().setTitle(novoTreinoTitle);
+            mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
+                    android.R.layout.simple_list_item_1,
+                    buscaListaExercicioDoParse(idTreinoSelecionado));
         } else if (action.equals(C.ACTION_EDIT_TREINO)) {
-            REQUERIDA = C.EDITA_TREINO_REQUEST;
-            nomeDoTreino.setText(getString(R.string.action_editar_treino));
+            mRequest = C.EDITA_TREINO_REQUEST;
+            EditText nomeTreinoTextView = (EditText) findViewById(R.id.edt_nomeTreino);
+            nomeTreinoTextView.setText(nomeTreino);
+            String editaTreinoTitle = getString(R.string.action_editar_treino);
+            getActionBar().setTitle(editaTreinoTitle);
+            mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
+                    android.R.layout.simple_list_item_1, new ArrayList<ExercicioPO>());
         }
 
-        // List<Exercicio> lst = new ArrayList<Exercicio>();
-        adapterExercicios = new ArrayAdapter<Exercicio>(this,
-                android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
+        mListViewExercicios = (ListView) findViewById(R.id.list_execiciosAdicionados);
+                mListViewExercicios.setAdapter(mAdapterExercicios);
 
-        listViewExercicios = (ListView) findViewById(R.id.list_execiciosAdicionados);
-        listViewExercicios.setAdapter(adapterExercicios);
-
-        listViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(),
                         AdicionaExercicioAoTreinoActivity.class);
-
-                intent.putExtra(C.CHAVE_EXTRA_IDPARSE_TREINO,);
+                ExercicioPO exercicio = (ExercicioPO) mListViewExercicios.getItemAtPosition(i);
                 startActivityForResult(intent, C.EDITA_EXERCICIO_REQUEST);
             }
         });
+    }
+
+    ArrayList<ExercicioPO> buscaListaExercicioDoParse(String idTreino) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+        query.include(PK.EXERCICIO);
+        //query.fromPin(PK.GRP_TUDO);
+        ParseObject treinoPO = null;
+        try {
+            treinoPO = query.get(idTreino);
+        } catch(ParseException e) {
+            Log.e(this.getClass().getSimpleName(), e.getMessage());
+            e.printStackTrace();
+        }
+        mExerciciosPO = treinoPO.getList(PK.EXERCICIO);
+        ArrayList<ExercicioPO> exercicios = new ArrayList<ExercicioPO>();
+        for (ParseObject exercicio : mExerciciosPO) {
+            String objectId = exercicio.getObjectId();
+            String nome = exercicio.getString(PK.EXERCICIO_NOME);
+            String reps = exercicio.getString(PK.EXERCICIO_SERIES);
+            String carga = exercicio.getString(PK.EXERCICIO_CARGA);
+            exercicios.add(new ExercicioPO(objectId, nome, reps, carga));
+        }
+
+        return exercicios;
     }
 
     public void salvarTreino(View view) {
@@ -84,13 +116,14 @@ public class ConfigurarTreinoActivity extends Activity {
         treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
         treino.put(PK.TREINO_NOME, treinoNome);
 
-        for (int i = 0; i < adapterExercicios.getCount(); i++) {
-            Exercicio exercicio = adapterExercicios.getItem(i);
+        for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
+            ExercicioPO exercicio = mAdapterExercicios.getItem(i);
             ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
-            novoExercicio.put(PK.EXERCICIO_NOME, exercicio.getNome());
-            novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.getSeries());
-            novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.getCarga());
+            novoExercicio.put(PK.EXERCICIO_NOME, exercicio.nome);
+            novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.series);
+            novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
             treino.add(PK.EXERCICIO, novoExercicio);
+            // TODO CACHE
         }
 
         //try {
@@ -130,12 +163,26 @@ public class ConfigurarTreinoActivity extends Activity {
                                     Intent data) {
         if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
             if (resultCode == RESULT_OK) {
+                String idParse = data.getStringExtra(C.EXTRA_EXERCICIO_IDPARSE);
                 String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
                 String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
                 String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
 
-                adapterExercicios.add(new Exercicio(nome, series, carga));
-                adapterExercicios.notifyDataSetChanged();
+                mAdapterExercicios.add(new ExercicioPO(idParse, nome, series, carga));
+                mAdapterExercicios.notifyDataSetChanged();
+            }
+        }
+        if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
+            // TODO falta fazer esse...
+            if (resultCode == RESULT_OK) {
+                String idParse = data.getStringExtra(C.EXTRA_EXERCICIO_IDPARSE);
+                String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
+                String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
+                String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
+
+                mAdapterExercicios.add(new ExercicioPO(idParse, , series, carga));
+                mAdapterExercicios.
+                mAdapterExercicios.notifyDataSetChanged();
             }
         }
     }
