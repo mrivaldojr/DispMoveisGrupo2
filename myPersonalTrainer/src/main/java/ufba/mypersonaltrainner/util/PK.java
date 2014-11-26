@@ -1,6 +1,7 @@
 package ufba.mypersonaltrainner.util;
 
 public class PK {
+    // Parse Keys
     public static final String USER_NAME = "name";
 
     public static final String TIPO_EXERCICIO = "EXE_exercicio";

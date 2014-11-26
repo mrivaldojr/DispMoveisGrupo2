@@ -70,7 +70,7 @@ public class TrainingDetail extends Activity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             ItemListMeuTreino item = (ItemListMeuTreino) lv.getItemAtPosition(i);
                             Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
-                            intent.putExtra(CHAVE_NOME_EXERCICIO, item.getNome());
+                            intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
                             startActivity(intent);
                         }
                     });

@@ -23,10 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import ufba.mypersonaltrainner.adapter.ExerciciosArrayAdapter;
-import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
-import ufba.mypersonaltrainner.util.DynamicListView;
 import ufba.mypersonaltrainner.util.ExercicioPO;
 import ufba.mypersonaltrainner.util.PK;
 
@@ -77,6 +74,7 @@ public class ConfigurarTreinoActivity extends Activity {
                 Intent intent = new Intent(getBaseContext(),
                         AdicionaExercicioAoTreinoActivity.class);
                 ExercicioPO exercicio = (ExercicioPO) mListViewExercicios.getItemAtPosition(i);
+                if (mRequest == C.EDITA_TREINO_REQUEST) intent.putExtra(C.EXTRA_ARRAY_INDEX, i);
                 startActivityForResult(intent, C.EDITA_EXERCICIO_REQUEST);
             }
         });
@@ -173,15 +171,16 @@ public class ConfigurarTreinoActivity extends Activity {
             }
         }
         if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
-            // TODO falta fazer esse...
             if (resultCode == RESULT_OK) {
                 String idParse = data.getStringExtra(C.EXTRA_EXERCICIO_IDPARSE);
                 String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
                 String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
                 String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
-
-                mAdapterExercicios.add(new ExercicioPO(idParse, , series, carga));
-                mAdapterExercicios.
+                int indiceToUpdate = data.getIntExtra(C.EXTRA_ARRAY_INDEX, -1);
+                ExercicioPO velho = mAdapterExercicios.getItem(indiceToUpdate);
+                mAdapterExercicios.remove(velho);
+                mAdapterExercicios.insert(new ExercicioPO(idParse, nome, series, carga),
+                        indiceToUpdate);
                 mAdapterExercicios.notifyDataSetChanged();
             }
         }
