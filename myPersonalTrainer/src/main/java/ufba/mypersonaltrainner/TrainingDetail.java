@@ -27,7 +27,6 @@ import ufba.mypersonaltrainner.util.PK;
 public class TrainingDetail extends Activity {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
-    private final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
     private String treinoID;
     private String treinoNome;
 
@@ -36,7 +35,7 @@ public class TrainingDetail extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.training_detail);
-
+        final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
 
         Intent intent = getIntent();
         treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
@@ -71,6 +70,7 @@ public class TrainingDetail extends Activity {
                             ItemListMeuTreino item = (ItemListMeuTreino) lv.getItemAtPosition(i);
                             Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
                             intent.setAction(C.ACTION_EDIT_TREINO);
+                            intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
                             intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
                             startActivity(intent);
                         }

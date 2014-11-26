@@ -59,8 +59,6 @@ public class MeusTreinos extends Activity {
                 ParseObject treino = (ParseObject) listView.getItemAtPosition(i);
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
                 intent.putExtra(C.EXTRA_TREINO_NOME, treino.getString(PK.TREINO_NOME));
-                // intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
-
                 startActivity(intent);
             }
         });
