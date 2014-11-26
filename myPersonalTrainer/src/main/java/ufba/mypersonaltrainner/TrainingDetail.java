@@ -1,7 +1,11 @@
 package ufba.mypersonaltrainner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -106,6 +110,72 @@ public class TrainingDetail extends Activity {
             startActivity(intent);
             return true;
         }
+
+        if(id == R.id.action_excluir_treino){
+
+
+
+            AlertDialog.Builder excuiDialog = new AlertDialog.Builder(this);
+            excuiDialog.setMessage("Deseja Excluir esse treino?");
+            excuiDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DeletarAsync delete = new DeletarAsync();
+                    delete.execute();
+                }
+            });
+
+            excuiDialog.setNegativeButton("Cancelar", null);
+
+            excuiDialog.show();
+
+
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class DeletarAsync extends AsyncTask<Void, Void, Void>{
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("TRT_treino");
+            //query.whereEqualTo("trt_ds_nome", treinoNome);
+            query.getInBackground(treinoID, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (e == null) {
+                        try {
+                            parseObject.delete();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    } else {
+                        // something went wrong
+                    }
+                }
+            });
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(TrainingDetail.this);
+            progressDialog.setTitle("...");
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Espere por Favor");
+            progressDialog.show();
+        }
+
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            finish();
+        }
     }
 }
