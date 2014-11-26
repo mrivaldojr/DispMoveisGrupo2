@@ -4,11 +4,11 @@ package ufba.mypersonaltrainner.model;
  * Created by usuario on 11/18/2014.
  */
 public final class Exercicio {
-    public CharSequence nome;
-    public CharSequence series;
-    public CharSequence carga;
+    public String nome;
+    public String series;
+    public String carga;
 
-    public Exercicio(CharSequence nome, CharSequence series, CharSequence carga) {
+    public Exercicio(String nome, String String, String carga) {
         this.nome = nome;
         this.series = series;
         this.carga = carga;

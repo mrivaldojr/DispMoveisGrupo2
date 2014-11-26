@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,9 +24,8 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
+import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
-import ufba.mypersonaltrainner.util.ExercicioPO;
 import ufba.mypersonaltrainner.util.PK;
 
 
@@ -35,7 +35,7 @@ public class TrainingDetail extends Activity {
     private String treinoID;
     private String treinoNome;
     private ParseObject treinoAtual;
-    private ListMeuTreinoAdapter mAdapter;
+    private ArrayAdapter<Exercicio> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +47,29 @@ public class TrainingDetail extends Activity {
         treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
         treinoNome = intent.getStringExtra(C.EXTRA_TREINO_NOME);
 
-        TextView nomeTreinoTextViwq = (TextView) findViewById(R.id.selected_training_detail);
-        nomeTreinoTextViwq.setText(treinoNome);
+        TextView nomeTreinoTextView = (TextView) findViewById(R.id.selected_training_detail);
+        nomeTreinoTextView.setText(treinoNome);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+        mAdapter = new ArrayAdapter<Exercicio> (getApplicationContext(),
+                android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
+        lv.setAdapter(mAdapter);
+
+        getData();
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Exercicio item = (Exercicio) lv.getItemAtPosition(i);
+                Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
+                intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
+                intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.nome);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void getData() {
+        ParseQuery < ParseObject > query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
         //query.fromPin(PK.GRP_TUDO);
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
@@ -58,30 +77,20 @@ public class TrainingDetail extends Activity {
                 if (e == null) {
                     treinoAtual = treino;
                     List<ParseObject> exerciciosDoParse = treino.getList(PK.EXERCICIO);
-                    ArrayList<ItemListMeuTreino> listaExercicios = new ArrayList<ItemListMeuTreino>();
-                    mAdapter = new ListMeuTreinoAdapter(getApplicationContext(), listaExercicios);
+                    ArrayList<Exercicio> listaExercicios = new ArrayList<Exercicio>();
                     for (ParseObject exercicio : exerciciosDoParse) {
                         String nome = exercicio.getString(PK.EXERCICIO_NOME);
-                        int reps = Integer.parseInt(exercicio.getString(PK.EXERCICIO_SERIES));
-                        int carga = Integer.parseInt(exercicio.getString(PK.EXERCICIO_CARGA));
+                        String reps = exercicio.getString(PK.EXERCICIO_SERIES);
+                        String carga = exercicio.getString(PK.EXERCICIO_CARGA);
 
-                        ItemListMeuTreino item = new ItemListMeuTreino(nome, reps, carga);
+                        Exercicio item = new Exercicio(nome, reps, carga);
                         listaExercicios.add(item);
                     }
-
-                    lv.setAdapter(mAdapter);
-
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            ItemListMeuTreino item = (ItemListMeuTreino) lv.getItemAtPosition(i);
-                            Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
-                            intent.setAction(C.ACTION_EDIT_TREINO);
-                            intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
-                            intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
-                            startActivity(intent);
-                        }
-                    });
+                    TextView nomeTreinoTextView = (TextView) findViewById(R.id.selected_training_detail);
+                    nomeTreinoTextView.setText(treinoAtual.getString(PK.TREINO_NOME));
+                    mAdapter.clear();
+                    mAdapter.addAll(listaExercicios);
+                    mAdapter.notifyDataSetChanged();
                 } else {
                     Log.e(LOG_TAG, e.getMessage());
                     e.printStackTrace();
@@ -89,19 +98,28 @@ public class TrainingDetail extends Activity {
             }
         });
     }
-/*
-    public void onCheckboxClicked(View view) {
-        if (treinoAtual == null) return;
-        String UID = ParseUser.getCurrentUser().getObjectId();
 
-        boolean checked = ((CheckBox) view).isChecked();
-        if (checked) {
-            treinoAtual.pin(PK.GRP_ATUAIS);
 
-        }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
-    */
 
+    /*
+        public void onCheckboxClicked(View view) {
+            if (treinoAtual == null) return;
+            String UID = ParseUser.getCurrentUser().getObjectId();
+
+            boolean checked = ((CheckBox) view).isChecked();
+            if (checked) {
+                treinoAtual.pin(PK.GRP_ATUAIS);
+
+            }
+        }
+        */
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

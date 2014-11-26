@@ -48,6 +48,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
             nome = intent.getStringExtra(C.EXTRA_EXERCICIO_NOME);
             series = intent.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
             carga = intent.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
+
         }
 
         ArrayAdapter<CharSequence> adapterCategorias = ArrayAdapter.createFromResource(this,
@@ -118,7 +119,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         if (intentChamante.getAction().equals(C.ACTION_EDIT_EXERCICIO)) {
             intent.putExtra(C.EXTRA_ARRAY_INDEX,
                     intentChamante.getIntExtra(C.EXTRA_ARRAY_INDEX, -1));
-
+        }
         setResult(Activity.RESULT_OK, intent);
         finish();
     }

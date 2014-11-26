@@ -22,7 +22,6 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.ExercicioPO;
@@ -51,8 +50,6 @@ public class ConfigurarTreinoActivity extends Activity {
             mRequest = C.CRIA_TREINO_REQUEST;
             String novoTreinoTitle = getString(R.string.action_novo_treino);
             getActionBar().setTitle(novoTreinoTitle);
-            mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
-                    android.R.layout.simple_list_item_1, new ArrayList<ExercicioPO>());
 
         } else if (action.equals(C.ACTION_EDIT_TREINO)) {
             idTreinoSelecionado = intentChamante.getStringExtra(C.EXTRA_TREINO_IDPARSE);
@@ -62,35 +59,40 @@ public class ConfigurarTreinoActivity extends Activity {
             nomeTreinoTextView.setText(nomeTreino);
             String editaTreinoTitle = getString(R.string.action_editar_treino);
             getActionBar().setTitle(editaTreinoTitle);
-            mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
-                    android.R.layout.simple_list_item_1,
-                    buscaListaExercicioDoParse(idTreinoSelecionado));
         }
 
         mListViewExercicios = (ListView) findViewById(R.id.list_execiciosAdicionados);
-                mListViewExercicios.setAdapter(mAdapterExercicios);
+        mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
+                android.R.layout.simple_list_item_1, new ArrayList<ExercicioPO>());
+        mListViewExercicios.setAdapter(mAdapterExercicios);
 
         mListViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(),
                         AdicionaExercicioAoTreinoActivity.class);
-                if (mRequest == C.CRIA_TREINO_REQUEST) {
-                    intent.setAction(C.ACTION_NOVO_EXERCICIO);
-                } else if (mRequest == C.CRIA_EXERCICIO_REQUEST) {
-                    ExercicioPO exercicio = mAdapterExercicios.getItem(i);
-                    intent.setAction(C.ACTION_EDIT_EXERCICIO);
-                    intent.putExtra(C.EXTRA_EXERCICIO_NOME, exercicio.nome);
-                    intent.putExtra(C.EXTRA_EXERCICIO_SERIES, exercicio.series);
-                    intent.putExtra(C.EXTRA_EXERCICIO_CARGA, exercicio.carga);
-                    intent.putExtra(C.EXTRA_ARRAY_INDEX, i);
-                }
-                startActivityForResult(intent, mRequest);
+                intent.setAction(C.ACTION_EDIT_EXERCICIO);
+
+                ExercicioPO exercicio = mAdapterExercicios.getItem(i);
+                intent.putExtra(C.EXTRA_EXERCICIO_NOME, exercicio.nome);
+                intent.putExtra(C.EXTRA_EXERCICIO_SERIES, exercicio.series);
+                intent.putExtra(C.EXTRA_EXERCICIO_CARGA, exercicio.carga);
+                intent.putExtra(C.EXTRA_ARRAY_INDEX, i);
+
+                startActivityForResult(intent, C.EDITA_EXERCICIO_REQUEST);
             }
         });
+
+        getData(idTreinoSelecionado);
     }
 
-    ArrayList<ExercicioPO> buscaListaExercicioDoParse(String idTreino) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData(idTreinoSelecionado);
+}
+
+    void getData(String idTreino) {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
@@ -114,7 +116,8 @@ public class ConfigurarTreinoActivity extends Activity {
             String carga = exercicio.getString(PK.EXERCICIO_CARGA);
             exercicios.add(new ExercicioPO(objectId, nome, reps, carga));
         }
-        return exercicios;
+        mAdapterExercicios.clear();
+        mAdapterExercicios.addAll(exercicios);
     }
 
     public void salvarTreino(View view) {
@@ -141,7 +144,7 @@ public class ConfigurarTreinoActivity extends Activity {
 
         treino.put(PK.TREINO_NOME, treinoNome);
 
-        if (mRequest == C.CRIA_TREINO_REQUEST) {
+/*        if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
             treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
             treino.put(PK.USER_ID, userId);
@@ -153,7 +156,7 @@ public class ConfigurarTreinoActivity extends Activity {
                 novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
                 treino.add(PK.EXERCICIO, novoExercicio);
             }
-        }
+        }*/
 
         // TODO CACHE
         //try {
@@ -191,37 +194,55 @@ public class ConfigurarTreinoActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        String idParse = data.getStringExtra(C.EXTRA_EXERCICIO_IDPARSE);
-        String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
-        String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
-        String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
+        if (resultCode == RESULT_OK) {
 
-        if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                mAdapterExercicios.notifyDataSetChanged();
-                mAdapterExercicios.add(new ExercicioPO(idParse, nome, series, carga));
-            }
-        }
-        if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
-            if (resultCode == RESULT_OK) {
+            String nome = data.getStringExtra(C.EXTRA_EXERCICIO_NOME);
+            String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
+            String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
+
+            ParseObject treino = null;
+            if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+                try {
+                    treino = query.get(idTreinoSelecionado);
+                } catch (Exception e) {
+                    Log.e(this.getClass().getSimpleName(), e.getMessage());
+                    e.printStackTrace();
+                }
+                String UID = ParseUser.getCurrentUser().getObjectId();
+                ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
+                novoExercicio.put(PK.EXERCICIO_NOME, nome);
+                novoExercicio.put(PK.EXERCICIO_SERIES, series);
+                novoExercicio.put(PK.EXERCICIO_CARGA, carga);
+                treino.add(PK.EXERCICIO, novoExercicio);
+                mAdapterExercicios.add(new ExercicioPO(idTreinoSelecionado, nome, series, carga));
+
+            } else if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
                 int indiceToUpdate = data.getIntExtra(C.EXTRA_ARRAY_INDEX, -1);
                 ExercicioPO velho = mAdapterExercicios.getItem(indiceToUpdate);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.EXERCICIO);
                 try {
                     ParseObject exercicioToUpdate = query.get(velho.objectId);
-                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_NOME, nome);
-                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_SERIES, series);
-                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_CARGA, carga);
+                    exercicioToUpdate.put(PK.EXERCICIO_NOME, nome);
+                    exercicioToUpdate.put(PK.EXERCICIO_SERIES, series);
+                    exercicioToUpdate.put(PK.EXERCICIO_CARGA, carga);
                     exercicioToUpdate.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
-                } catch(ParseException e) {
+                    exercicioToUpdate.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            mAdapterExercicios.notifyDataSetChanged();
+                        }
+                    });
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 mAdapterExercicios.remove(velho);
-                mAdapterExercicios.insert(new ExercicioPO(idParse, nome, series, carga),
+                mAdapterExercicios.insert(new ExercicioPO(idTreinoSelecionado, nome, series, carga),
                         indiceToUpdate);
             }
+            mAdapterExercicios.notifyDataSetChanged();
+        } else {
         }
-        mAdapterExercicios.notifyDataSetChanged();
     }
 
     @Override
@@ -242,7 +263,8 @@ public class ConfigurarTreinoActivity extends Activity {
         }
 
         if(id == R.id.action_novo_exercicio){
-            Intent i = new Intent(this,AdicionaExercicioAoTreinoActivity.class);
+            Intent i = new Intent(this, AdicionaExercicioAoTreinoActivity.class);
+            i.setAction(C.ACTION_NOVO_EXERCICIO);
             startActivityForResult(i, C.CRIA_EXERCICIO_REQUEST);
             return true;
         }
