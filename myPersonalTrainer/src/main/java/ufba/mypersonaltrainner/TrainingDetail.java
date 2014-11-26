@@ -36,13 +36,13 @@ public class TrainingDetail extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.training_detail);
-        TextView nomeTreino;
+
 
         Intent intent = getIntent();
         treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
         treinoNome = intent.getStringExtra(C.EXTRA_TREINO_NOME);
 
-        nomeTreino = (TextView) findViewById(R.id.selected_training_detail);
+        TextView nomeTreino = (TextView) findViewById(R.id.selected_training_detail);
         nomeTreino.setText(treinoNome);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
@@ -70,6 +70,7 @@ public class TrainingDetail extends Activity {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             ItemListMeuTreino item = (ItemListMeuTreino) lv.getItemAtPosition(i);
                             Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
+                            intent.setAction(C.ACTION_EDIT_TREINO);
                             intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
                             startActivity(intent);
                         }
@@ -98,6 +99,7 @@ public class TrainingDetail extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_editar_treino) {
             Intent intent = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
+            intent.setAction(C.ACTION_EDIT_TREINO);
             intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
             intent.putExtra(C.EXTRA_TREINO_NOME, treinoNome);
             // intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
