@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -45,12 +46,14 @@ public class ConfigurarTreinoActivity extends Activity {
 
         Intent intentChamante = getIntent();
         String action = intentChamante.getAction();
+
         if (action.equals(C.ACTION_NOVO_TREINO)) {
             mRequest = C.CRIA_TREINO_REQUEST;
             String novoTreinoTitle = getString(R.string.action_novo_treino);
             getActionBar().setTitle(novoTreinoTitle);
             mAdapterExercicios = new ArrayAdapter<ExercicioPO>(this,
                     android.R.layout.simple_list_item_1, new ArrayList<ExercicioPO>());
+
         } else if (action.equals(C.ACTION_EDIT_TREINO)) {
             idTreinoSelecionado = intentChamante.getStringExtra(C.EXTRA_TREINO_IDPARSE);
             final String nomeTreino = intentChamante.getStringExtra(C.EXTRA_TREINO_NOME);
@@ -104,9 +107,17 @@ public class ConfigurarTreinoActivity extends Activity {
     }
 
     public void salvarTreino(View view) {
+
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
         String treinoNome = nomeEditText.getText().toString();
         ParseObject treino = null;
+
+        String userId;
+
+        ParseUser user = ParseUser.getCurrentUser();
+        userId = user.getObjectId();
+
+
         if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino = new ParseObject(PK.TREINO);
         } else {
@@ -124,6 +135,7 @@ public class ConfigurarTreinoActivity extends Activity {
         if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
             treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
+            treino.put("USR_id", userId);
             for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
                 ExercicioPO exercicio = mAdapterExercicios.getItem(i);
                 ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);

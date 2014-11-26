@@ -18,6 +18,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -30,17 +31,22 @@ public class MeusTreinos extends Activity {
     private ListView listView;
     private final String LOG_TAG = MeusTreinos.class.getSimpleName();
     private ParseQueryAdapter<ParseObject> mTreinoAdapter;
+    private ParseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_treinos);
 
+        user = ParseUser.getCurrentUser();
+
+
         mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
                 //query.fromPin(PK.GRP_TUDO);
+                query.whereEqualTo("USR_id", user.getObjectId().toString());
                 query.orderByDescending(PK.PIN_DATE);
                 return query;
             }
