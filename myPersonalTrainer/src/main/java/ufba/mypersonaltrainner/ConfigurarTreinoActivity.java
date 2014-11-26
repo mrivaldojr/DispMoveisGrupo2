@@ -22,6 +22,7 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.ExercicioPO;
@@ -48,9 +49,9 @@ public class ConfigurarTreinoActivity extends Activity {
 
         if (action.equals(C.ACTION_NOVO_TREINO)) {
             mRequest = C.CRIA_TREINO_REQUEST;
+            // idTreinoSelecionado = UUID.randomUUID().toString();
             String novoTreinoTitle = getString(R.string.action_novo_treino);
             getActionBar().setTitle(novoTreinoTitle);
-
         } else if (action.equals(C.ACTION_EDIT_TREINO)) {
             idTreinoSelecionado = intentChamante.getStringExtra(C.EXTRA_TREINO_IDPARSE);
             final String nomeTreino = intentChamante.getStringExtra(C.EXTRA_TREINO_NOME);
@@ -93,6 +94,7 @@ public class ConfigurarTreinoActivity extends Activity {
 }
 
     void getData(String idTreino) {
+        if (idTreino == null) return;
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
@@ -132,6 +134,19 @@ public class ConfigurarTreinoActivity extends Activity {
 
         if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino = new ParseObject(PK.TREINO);
+            idTreinoSelecionado = treino.getObjectId();
+            treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
+            treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
+            treino.put(PK.USER_ID, userId);
+            for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
+                ExercicioPO exercicio = mAdapterExercicios.getItem(i);
+                ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
+                novoExercicio.put(PK.EXERCICIO_NOME, exercicio.nome);
+                novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.series);
+                novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
+                treino.addUnique(PK.EXERCICIO, novoExercicio);
+            }
+
         } else {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
             try {
@@ -144,39 +159,23 @@ public class ConfigurarTreinoActivity extends Activity {
 
         treino.put(PK.TREINO_NOME, treinoNome);
 
-/*        if (mRequest == C.CRIA_TREINO_REQUEST) {
-            treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
-            treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
-            treino.put(PK.USER_ID, userId);
-            for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
-                ExercicioPO exercicio = mAdapterExercicios.getItem(i);
-                ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
-                novoExercicio.put(PK.EXERCICIO_NOME, exercicio.nome);
-                novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.series);
-                novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
-                treino.add(PK.EXERCICIO, novoExercicio);
-            }
-        }*/
 
         // TODO CACHE
         //try {
             //treino.pin(PK.GRP_TUDO);
-        treino.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(getApplicationContext(), "Salvou!", Toast.LENGTH_LONG).show();
-                } else {
-                    erro(e);
-                    finish();
-                }
+        try {
+            treino.save();
+            Toast.makeText(getApplicationContext(), "Salvou!", Toast.LENGTH_LONG).show();
+        } catch (ParseException e) {
+            erro(e);
+            finish();
+        }
                 /*if (e != null)  {
                     Log.v(LOG_TAG, "Pinou!");
                     Toast.makeText(getApplicationContext(), "Pinou!", Toast.LENGTH_LONG).show();
                     treino.pinInBackground(PK.GRP_SUJO);
                 }*/
-            }
-        });
+
         setResult(Activity.RESULT_OK);
         finish();
         /*} catch (ParseException e) {
@@ -200,23 +199,11 @@ public class ConfigurarTreinoActivity extends Activity {
             String series = data.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
             String carga = data.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
 
-            ParseObject treino = null;
             if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-                try {
-                    treino = query.get(idTreinoSelecionado);
-                } catch (Exception e) {
-                    Log.e(this.getClass().getSimpleName(), e.getMessage());
-                    e.printStackTrace();
-                }
                 String UID = ParseUser.getCurrentUser().getObjectId();
-                ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
-                novoExercicio.put(PK.EXERCICIO_NOME, nome);
-                novoExercicio.put(PK.EXERCICIO_SERIES, series);
-                novoExercicio.put(PK.EXERCICIO_CARGA, carga);
-                treino.add(PK.EXERCICIO, novoExercicio);
-                mAdapterExercicios.add(new ExercicioPO(idTreinoSelecionado, nome, series, carga));
-
+                ExercicioPO exercicio = new ExercicioPO(UUID.randomUUID().toString(),
+                        nome, series, carga);
+                mAdapterExercicios.add(exercicio);
             } else if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
                 int indiceToUpdate = data.getIntExtra(C.EXTRA_ARRAY_INDEX, -1);
                 ExercicioPO velho = mAdapterExercicios.getItem(indiceToUpdate);

@@ -67,6 +67,7 @@ public class PerfilFragment extends Fragment {
 
         txtViewLevel = (TextView) rootView.findViewById(R.id.user_lvl);
         txtViewPontos = (TextView) rootView.findViewById(R.id.user_xp);
+
         barExp = (ProgressBar) rootView.findViewById(R.id.Bar_xp);
         userProfilePictureView = (ProfilePictureView) rootView.findViewById(R.id.img_perfil);
 
@@ -81,7 +82,6 @@ public class PerfilFragment extends Fragment {
         txtViewLevel.setText("Level: "+Integer.toString(level));
         txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
         barExp.setProgress((pontos*100)/maxpontos);
-
         Session session = ParseFacebookUtils.getSession();
 		if (session != null && session.isOpened()) {
 			makeMeRequest();

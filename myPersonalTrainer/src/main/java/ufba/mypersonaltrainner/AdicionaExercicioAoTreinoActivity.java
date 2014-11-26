@@ -161,7 +161,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
             try {
 
-                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TIPO_EXERCICIO);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TIPO_EXERCICIO);
                 query.fromPin(PK.GRP_TIPO_EXERCICIO);
                 query.whereEqualTo(PK.TIPO_EXERCICIO_CATEGORIA , categoria[0]);
                 listaExercicios = query.find();

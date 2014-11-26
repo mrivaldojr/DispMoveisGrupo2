@@ -105,13 +105,6 @@ public class MeusTreinos extends Activity {
             i.setAction(C.ACTION_NOVO_TREINO);
             startActivityForResult(i, C.CRIA_TREINO_REQUEST);
         }
-        if(id == R.id.action_editar_treino) {
-            Intent i = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
-            i.setAction(C.ACTION_EDIT_TREINO);
-            //i.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
-            //i.putExtra(C.EXTRA_TREINO_NOME, treinoNome);
-            //startActivityForResult(i, C.EDITA_TREINO_REQUEST);
-        }
         if(id == R.id.action_refresh){
             return true;
             //refresh();

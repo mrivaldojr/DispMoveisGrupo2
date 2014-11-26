@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import java.util.List;
 import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
+import ufba.mypersonaltrainner.util.TreinosAtivos;
 
 
 public class TrainingDetail extends Activity {
@@ -36,6 +39,8 @@ public class TrainingDetail extends Activity {
     private String treinoNome;
     private ParseObject treinoAtual;
     private ArrayAdapter<Exercicio> mAdapter;
+    private static String PREFERENCE_ESTADO_CHECKBOX = "treino_esta_ativo";
+    private boolean treinosAtivosCheckboxIsChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +55,16 @@ public class TrainingDetail extends Activity {
         TextView nomeTreinoTextView = (TextView) findViewById(R.id.selected_training_detail);
         nomeTreinoTextView.setText(treinoNome);
 
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        treinosAtivosCheckboxIsChecked = settings.getBoolean(PREFERENCE_ESTADO_CHECKBOX, false);
+        CheckBox ativoCheckbox = (CheckBox) findViewById(R.id.checkBox);
+        ativoCheckbox.setChecked(treinosAtivosCheckboxIsChecked);
+
         mAdapter = new ArrayAdapter<Exercicio> (getApplicationContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
         lv.setAdapter(mAdapter);
 
-        getData();
+        populaAdapter();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,7 +78,7 @@ public class TrainingDetail extends Activity {
         });
     }
 
-    private void getData() {
+    private void populaAdapter() {
         ParseQuery < ParseObject > query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
         //query.fromPin(PK.GRP_TUDO);
@@ -99,27 +109,32 @@ public class TrainingDetail extends Activity {
         });
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+        populaAdapter();
     }
 
-    /*
-        public void onCheckboxClicked(View view) {
-            if (treinoAtual == null) return;
-            String UID = ParseUser.getCurrentUser().getObjectId();
+    public void onCheckboxClicked(View view) {
+        treinosAtivosCheckboxIsChecked = ((CheckBox) view).isChecked();
 
-            boolean checked = ((CheckBox) view).isChecked();
-            if (checked) {
-                treinoAtual.pin(PK.GRP_ATUAIS);
-
-            }
+        if (treinosAtivosCheckboxIsChecked) {
+            //treinoAtual.pin(PK.GRP_ATUAIS);
+            TreinosAtivos.add(treinoID);
+        } else {
+            TreinosAtivos.remove(treinoID);
         }
-        */
-    
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(PREFERENCE_ESTADO_CHECKBOX, treinosAtivosCheckboxIsChecked);
+        editor.apply();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

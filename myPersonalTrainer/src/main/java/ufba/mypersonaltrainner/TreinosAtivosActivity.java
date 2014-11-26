@@ -3,41 +3,49 @@ package ufba.mypersonaltrainner;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseQueryAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ufba.mypersonaltrainner.model.Treino;
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
+import ufba.mypersonaltrainner.util.TreinosAtivos;
 
 
 public class TreinosAtivosActivity extends Activity {
+
+    private ArrayAdapter<Treino> mTreinosAtivosAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treinos_ativos);
 
-        //dados de teste
         ListView lv = (ListView) findViewById(R.id.listView_treinos_ativos);
 
-        /*List<String> lst = new ArrayList<String>();
+        List<String> lst = new ArrayList<String>();
 
         for(int i=1;i<4;i++){
             String item = "Treino "+i;
             lst.add(item);
         }
+        mTreinosAtivosAdapter = new ArrayAdapter<Treino>(this,
+                // R.layout.list_meus_treinos_item,
+                android.R.layout.simple_list_item_1,
+                new ArrayList<Treino>());
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.list_meus_treinos_item,
-                R.id.txt_nome_treino_lst_item,
-                lst);*/
-        ParseQueryAdapter<ParseObject> adapter;
+        /*ParseQueryAdapter<ParseObject> adapter;
         adapter = new ParseQueryAdapter<ParseObject>(this
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             @Override
@@ -47,17 +55,45 @@ public class TreinosAtivosActivity extends Activity {
                 return query;
             }
         });
-        adapter.setTextKey(PK.TIPO_EXERCICIO_NOME);
-
-        lv.setAdapter(adapter);
+        adapter.setTextKey(PK.TIPO_EXERCICIO_NOME);*/
+        lv.setAdapter(mTreinosAtivosAdapter);
+        populaAdapter();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
+                Treino treino = mTreinosAtivosAdapter.getItem(i);
+                intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
+                intent.putExtra(C.EXTRA_TREINO_NOME, treino.getNome());
                 startActivity(intent);
             }
         });
+    }
+
+    private void populaAdapter() {
+        mTreinosAtivosAdapter.clear();
+        List<ParseObject> treinosAtivos = TreinosAtivos.getAll();
+        if (treinosAtivos == null) return;
+        for (ParseObject treinoAtivo : treinosAtivos) {
+            try {
+                treinoAtivo.fetchIfNeeded();
+                ParseObject treino = treinoAtivo.getParseObject(PK.ATIVO_TREINO).fetchIfNeeded();
+                mTreinosAtivosAdapter.add(new Treino(treino.getString(PK.TREINO_NOME),
+                        treino.getObjectId(), true));
+            } catch (ParseException e) {
+                Log.v(this.getClass().getSimpleName(),
+                        "Erro ao pegar do parse o treno dentro do treinoAtivo\n" +
+                                e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populaAdapter();
     }
 
     @Override
