@@ -75,15 +75,26 @@ public class ConfigurarTreinoActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(),
                         AdicionaExercicioAoTreinoActivity.class);
-                if (mRequest == C.EDITA_TREINO_REQUEST) intent.putExtra(C.EXTRA_ARRAY_INDEX, i);
-                startActivityForResult(intent, C.EDITA_EXERCICIO_REQUEST);
+                if (mRequest == C.CRIA_TREINO_REQUEST) {
+                    intent.setAction(C.ACTION_NOVO_EXERCICIO);
+                } else if (mRequest == C.CRIA_EXERCICIO_REQUEST) {
+                    ExercicioPO exercicio = mAdapterExercicios.getItem(i);
+                    intent.setAction(C.ACTION_EDIT_EXERCICIO);
+                    intent.putExtra(C.EXTRA_EXERCICIO_NOME, exercicio.nome);
+                    intent.putExtra(C.EXTRA_EXERCICIO_SERIES, exercicio.series);
+                    intent.putExtra(C.EXTRA_EXERCICIO_CARGA, exercicio.carga);
+                    intent.putExtra(C.EXTRA_ARRAY_INDEX, i);
+                }
+                startActivityForResult(intent, mRequest);
             }
         });
     }
 
     ArrayList<ExercicioPO> buscaListaExercicioDoParse(String idTreino) {
+        ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
+        query.whereEqualTo(PK.USER_ID, user.getObjectId());
         //query.fromPin(PK.GRP_TUDO);
         ParseObject treinoPO = null;
         try {
@@ -113,10 +124,8 @@ public class ConfigurarTreinoActivity extends Activity {
         ParseObject treino = null;
 
         String userId;
-
         ParseUser user = ParseUser.getCurrentUser();
         userId = user.getObjectId();
-
 
         if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino = new ParseObject(PK.TREINO);
@@ -135,7 +144,7 @@ public class ConfigurarTreinoActivity extends Activity {
         if (mRequest == C.CRIA_TREINO_REQUEST) {
             treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
             treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
-            treino.put("USR_id", userId);
+            treino.put(PK.USER_ID, userId);
             for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
                 ExercicioPO exercicio = mAdapterExercicios.getItem(i);
                 ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);

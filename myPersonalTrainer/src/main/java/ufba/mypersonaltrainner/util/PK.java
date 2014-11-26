@@ -2,6 +2,7 @@ package ufba.mypersonaltrainner.util;
 
 public class PK {
     // Parse Keys
+    public static final String USER_ID = "USR_id";
     public static final String USER_NAME = "name";
 
     public static final String TIPO_EXERCICIO = "EXE_exercicio";
@@ -24,4 +25,6 @@ public class PK {
     public static final String GRP_TUDO = "tudo";
     public static final String GRP_SUJO = "sujo";
     public static final String GRP_TIPO_EXERCICIO = "tipos_exercicio";
+    public static final String USER_LEVEL = "level";
+    public static final String USER_PONTOS = "pontos";
 }

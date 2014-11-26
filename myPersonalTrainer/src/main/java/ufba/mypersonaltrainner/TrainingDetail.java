@@ -25,6 +25,7 @@ import java.util.List;
 
 import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
 import ufba.mypersonaltrainner.util.C;
+import ufba.mypersonaltrainner.util.ExercicioPO;
 import ufba.mypersonaltrainner.util.PK;
 
 
@@ -33,8 +34,9 @@ public class TrainingDetail extends Activity {
     private final String LOG_TAG = this.getClass().getSimpleName();
     private String treinoID;
     private String treinoNome;
-
+    private ParseObject treinoAtual;
     private ListMeuTreinoAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +47,8 @@ public class TrainingDetail extends Activity {
         treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
         treinoNome = intent.getStringExtra(C.EXTRA_TREINO_NOME);
 
-        TextView nomeTreino = (TextView) findViewById(R.id.selected_training_detail);
-        nomeTreino.setText(treinoNome);
+        TextView nomeTreinoTextViwq = (TextView) findViewById(R.id.selected_training_detail);
+        nomeTreinoTextViwq.setText(treinoNome);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
@@ -54,6 +56,7 @@ public class TrainingDetail extends Activity {
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
+                    treinoAtual = treino;
                     List<ParseObject> exerciciosDoParse = treino.getList(PK.EXERCICIO);
                     ArrayList<ItemListMeuTreino> listaExercicios = new ArrayList<ItemListMeuTreino>();
                     mAdapter = new ListMeuTreinoAdapter(getApplicationContext(), listaExercicios);
@@ -86,7 +89,18 @@ public class TrainingDetail extends Activity {
             }
         });
     }
+/*
+    public void onCheckboxClicked(View view) {
+        if (treinoAtual == null) return;
+        String UID = ParseUser.getCurrentUser().getObjectId();
 
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            treinoAtual.pin(PK.GRP_ATUAIS);
+
+        }
+    }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,10 +125,7 @@ public class TrainingDetail extends Activity {
             return true;
         }
 
-        if(id == R.id.action_excluir_treino){
-
-
-
+        if(id == R.id.action_excluir_treino) {
             AlertDialog.Builder excuiDialog = new AlertDialog.Builder(this);
             excuiDialog.setMessage("Deseja Excluir esse treino?");
             excuiDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
@@ -142,7 +153,7 @@ public class TrainingDetail extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("TRT_treino");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
             //query.whereEqualTo("trt_ds_nome", treinoNome);
             query.getInBackground(treinoID, new GetCallback<ParseObject>() {
                 @Override

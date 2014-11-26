@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
 
 import ufba.mypersonaltrainner.R;
 import ufba.mypersonaltrainner.util.PK;
@@ -22,7 +23,9 @@ public class ExerciciosParseAdapter extends ParseQueryAdapter<ParseObject> {
     public ExerciciosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
-                return new ParseQuery<ParseObject>(PK.TREINO);
+                return new ParseQuery<ParseObject>(PK.TREINO)
+                        .whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser()
+                                .getObjectId());
             }
         });
     }

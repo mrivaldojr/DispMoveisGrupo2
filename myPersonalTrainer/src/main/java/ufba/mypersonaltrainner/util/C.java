@@ -11,6 +11,8 @@ public class C {
     public static final int EDITA_EXERCICIO_REQUEST = 3;
     public static final String ACTION_EDIT_TREINO = "ufba.mypersonaltrainner.action.EDIT_TREINO";
     public static final String ACTION_NOVO_TREINO = "ufba.mypersonaltrainner.action.NOVO_TREINO";
+    public static final String ACTION_NOVO_EXERCICIO = "ufba.mypersonaltrainner.action.NOVO_EXERCICIO";
+    public static final String ACTION_EDIT_EXERCICIO = "ufba.mypersonaltrainner.action.EDIT_EXERCICIO";
     public static final String EXTRA_TREINO_IDPARSE = "ufba.mypersonaltrainner.ID_TREINO_PARSE";
     public static final String EXTRA_TREINO_NOME = "ufba.mypersonaltrainner.NOME_TREINO";
     public static final String EXTRA_EXERCICIO_IDPARSE = "ufba.mypersonaltrainner.ID_EXERCICIO_PARSE";

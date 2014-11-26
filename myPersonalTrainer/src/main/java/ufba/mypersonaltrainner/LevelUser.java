@@ -2,6 +2,8 @@ package ufba.mypersonaltrainner;
 
 import com.parse.ParseUser;
 
+import ufba.mypersonaltrainner.util.PK;
+
 public class LevelUser {
     private static LevelUser instance;
     private static final int RATE_EXP = 100; // Exp maxima
@@ -13,11 +15,12 @@ public class LevelUser {
     private LevelUser(){
         ParseUser user = ParseUser.getCurrentUser();
 
-        level = user.getInt("level");
-        pontos = user.getInt("pontos");
+        level = user.getInt(PK.USER_LEVEL);
+        pontos = user.getInt(PK.USER_PONTOS);
+
         if(level < 1){ //Valor indefinido
-            user.put("level",1);
-            user.put("pontos",0);
+            user.put(PK.USER_LEVEL,1);
+            user.put(PK.USER_PONTOS,0);
             user.saveInBackground();
             level = 1;
         }
@@ -49,8 +52,8 @@ public class LevelUser {
         }
         this.pontos = aux;
 
-        user.put("level", level);
-        user.put("pontos", aux);
+        user.put(PK.USER_LEVEL, level);
+        user.put(PK.USER_PONTOS, aux);
         user.saveInBackground();
     }
 

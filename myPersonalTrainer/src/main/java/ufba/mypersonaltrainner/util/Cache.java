@@ -11,6 +11,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.List;
@@ -104,7 +105,7 @@ public class Cache {
     public static void carregaTreinos() {
         // Pega treinos do parse e bota no datastore local
         // Bloqueia UI
-
+        String UID = ParseUser.getCurrentUser().getObjectId();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.fromPin(PK.GRP_TUDO);
         query.setLimit(1);
@@ -114,6 +115,7 @@ public class Cache {
             e.printStackTrace();
         }
         query = ParseQuery.getQuery(PK.TREINO);
+        query.whereEqualTo(PK.USER_ID, UID);
         try {
             List<ParseObject> treinosDoParse = query.find();
             for (ParseObject treino : treinosDoParse) {

@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import ufba.mypersonaltrainner.util.Cache;
 
 
 public class SideBarActivity extends Activity
@@ -26,6 +29,21 @@ public class SideBarActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_bar);
+
+
+        // Cache.limpaache();
+        Activity a = this;
+        if (Cache.conectado(a)) {
+            Toast.makeText(a.getApplicationContext(),
+                    "Internet detectada", Toast.LENGTH_SHORT).show();
+            //Cache.salvaTreinosSujos(a);
+            Cache.carregaTiposExercicios();
+            //Cache.carregaTreinos();
+        } else {
+            Toast.makeText(a.getApplicationContext(),
+                    "Conexão não encontrada, abortando", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);

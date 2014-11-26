@@ -21,9 +21,9 @@
 
 package ufba.mypersonaltrainner.parseLogin;
 
-import ufba.mypersonaltrainner.SideBarActivity;
-
 import com.parse.ui.ParseLoginDispatchActivity;
+
+import ufba.mypersonaltrainner.SideBarActivity;
 
 public class SampleDispatchActivity extends ParseLoginDispatchActivity {
 
@@ -31,4 +31,5 @@ public class SampleDispatchActivity extends ParseLoginDispatchActivity {
   protected Class<?> getTargetClass() {
     return SideBarActivity.class;
   }
+
 }

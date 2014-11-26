@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -22,7 +21,6 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ufba.mypersonaltrainner.util.Cache;
 import ufba.mypersonaltrainner.util.PK;
 
 public class PerfilFragment extends Fragment {
@@ -58,17 +56,7 @@ public class PerfilFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_side_bar, container, false);
 
-        // Cache.limpaache();
-        Activity a = getActivity();
-        if (Cache.conectado(a)) {
-            Toast.makeText(a.getApplicationContext(),
-                    "Internet detectada", Toast.LENGTH_SHORT).show();
-            //Cache.salvaTreinosSujos(a);
-            Cache.carregaTiposExercicios();
-            //Cache.carregaTreinos();
-        } else {
-            getActivity().finish();
-        }
+
         // instancia o usuário logado
         ParseUser user = ParseUser.getCurrentUser();
         

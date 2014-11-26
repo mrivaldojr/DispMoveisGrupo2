@@ -1,10 +1,7 @@
 package ufba.mypersonaltrainner;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -31,14 +28,14 @@ public class MeusTreinos extends Activity {
     private ListView listView;
     private final String LOG_TAG = MeusTreinos.class.getSimpleName();
     private ParseQueryAdapter<ParseObject> mTreinoAdapter;
-    private ParseUser user;
+    private String UID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_treinos);
 
-        user = ParseUser.getCurrentUser();
+        UID = ParseUser.getCurrentUser().getObjectId();
 
 
         mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
@@ -46,7 +43,7 @@ public class MeusTreinos extends Activity {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
                 //query.fromPin(PK.GRP_TUDO);
-                query.whereEqualTo("USR_id", user.getObjectId().toString());
+                query.whereEqualTo(PK.USER_ID, UID);
                 query.orderByDescending(PK.PIN_DATE);
                 return query;
             }
@@ -156,20 +153,16 @@ public class MeusTreinos extends Activity {
     }
 
     void refresh() {
+        String UID = ParseUser.getCurrentUser().getObjectId();
         ParseQuery<ParseObject> query;
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if ((ni == null) || (!ni.isConnected())) {
-            return;
-        }
         Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
         // Limpa o cache local da categoria PK.GRP_TUDO
         query = ParseQuery.getQuery(PK.TREINO);
         query.fromPin(PK.GRP_TUDO);
         try {
-            List<ParseObject> treinos = query.find();
-            ParseObject.unpinAll(PK.GRP_TUDO, treinos);
+            List<ParseObject> treinosLocais = query.find();
+            ParseObject.unpinAll(PK.GRP_TUDO, treinosLocais);
         } catch (ParseException e) {
             erro(e);
         }

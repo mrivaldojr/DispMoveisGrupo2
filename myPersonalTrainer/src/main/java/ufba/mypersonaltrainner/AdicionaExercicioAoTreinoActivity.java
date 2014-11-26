@@ -38,10 +38,17 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiciona_exercicio_ao_treino);
-
         cancelar = (Button) findViewById(R.id.button_cancelar_dialog);
         categoriaSpinner = (Spinner) findViewById(R.id.spinnerCategoria);
         exerciciosSpinner = (Spinner) findViewById(R.id.spinnerExercicio);
+
+        String nome; String series; String carga;
+        Intent intent = getIntent();
+        if (intent.getAction().equals(C.ACTION_EDIT_EXERCICIO)) {
+            nome = intent.getStringExtra(C.EXTRA_EXERCICIO_NOME);
+            series = intent.getStringExtra(C.EXTRA_EXERCICIO_SERIES);
+            carga = intent.getStringExtra(C.EXTRA_EXERCICIO_CARGA);
+        }
 
         ArrayAdapter<CharSequence> adapterCategorias = ArrayAdapter.createFromResource(this,
                 R.array.categorias_de_exercicios,
@@ -58,7 +65,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 categoriaEscolhida = parent.getItemAtPosition(position).toString();
 
-                if(categoriaEscolhida.equals("Escolha uma Categoria")) {
+                if (categoriaEscolhida.equals("Escolha uma Categoria")) {
                     exercicios.clear();
                     
                     //limpa o spinner
@@ -69,7 +76,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
                     exerciciosSpinner.setAdapter(adapterExercicio);
                 }
 
-                else{
+                else {
                     ExercicioAsync exercicioAsync = new ExercicioAsync();
                     exercicioAsync.execute(categoriaEscolhida);
                 }
@@ -106,6 +113,11 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         intent.putExtra(C.EXTRA_EXERCICIO_NOME, exerciciosSpinner.getSelectedItem().toString());
         intent.putExtra(C.EXTRA_EXERCICIO_SERIES, series.getText().toString());
         intent.putExtra(C.EXTRA_EXERCICIO_CARGA, carga.getText().toString());
+
+        Intent intentChamante = getIntent();
+        if (intentChamante.getAction().equals(C.ACTION_EDIT_EXERCICIO)) {
+            intent.putExtra(C.EXTRA_ARRAY_INDEX,
+                    intentChamante.getIntExtra(C.EXTRA_ARRAY_INDEX, -1));
 
         setResult(Activity.RESULT_OK, intent);
         finish();
