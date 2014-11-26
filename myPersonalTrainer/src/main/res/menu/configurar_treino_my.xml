@@ -7,7 +7,7 @@
         android:showAsAction="never" />
 
     <item android:id="@+id/action_novo_exercicio"
-        android:title="@string/action_novo_ecercicio"
+        android:title="@string/action_novo_exercicio"
         android:orderInCategory="100"
         android:showAsAction="always" />
 </menu>
