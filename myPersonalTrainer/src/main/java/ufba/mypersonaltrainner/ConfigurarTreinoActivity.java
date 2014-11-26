@@ -114,22 +114,24 @@ public class ConfigurarTreinoActivity extends Activity {
             try {
                 treino = query.get(idTreinoSelecionado);
             } catch (Exception e) {
-                Log.e(this.getClass().getSimpleName(), "OIA EU AQUI, SOU O ERRO "+e.getMessage());
+                Log.e(this.getClass().getSimpleName(), e.getMessage());
                 e.printStackTrace();
             }
         }
 
-        treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
-        treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
         treino.put(PK.TREINO_NOME, treinoNome);
 
-        for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
-            ExercicioPO exercicio = mAdapterExercicios.getItem(i);
-            ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
-            novoExercicio.put(PK.EXERCICIO_NOME, exercicio.nome);
-            novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.series);
-            novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
-            treino.add(PK.EXERCICIO, novoExercicio);
+        if (mRequest == C.CRIA_TREINO_REQUEST) {
+            treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
+            treino.put(PK.TREINO_ID, UUID.randomUUID().toString());
+            for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
+                ExercicioPO exercicio = mAdapterExercicios.getItem(i);
+                ParseObject novoExercicio = new ParseObject(PK.EXERCICIO);
+                novoExercicio.put(PK.EXERCICIO_NOME, exercicio.nome);
+                novoExercicio.put(PK.EXERCICIO_SERIES, exercicio.series);
+                novoExercicio.put(PK.EXERCICIO_CARGA, exercicio.carga);
+                treino.add(PK.EXERCICIO, novoExercicio);
+            }
         }
 
         // TODO CACHE
@@ -176,19 +178,29 @@ public class ConfigurarTreinoActivity extends Activity {
         if (requestCode == C.CRIA_EXERCICIO_REQUEST) {
             if (resultCode == RESULT_OK) {
                 mAdapterExercicios.notifyDataSetChanged();
+                mAdapterExercicios.add(new ExercicioPO(idParse, nome, series, carga));
             }
         }
         if (requestCode == C.EDITA_EXERCICIO_REQUEST) {
             if (resultCode == RESULT_OK) {
                 int indiceToUpdate = data.getIntExtra(C.EXTRA_ARRAY_INDEX, -1);
                 ExercicioPO velho = mAdapterExercicios.getItem(indiceToUpdate);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.EXERCICIO);
+                try {
+                    ParseObject exercicioToUpdate = query.get(velho.objectId);
+                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_NOME, nome);
+                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_SERIES, series);
+                    exercicioToUpdate.put(C.EXTRA_EXERCICIO_CARGA, carga);
+                    exercicioToUpdate.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
+                } catch(ParseException e) {
+                    e.printStackTrace();
+                }
                 mAdapterExercicios.remove(velho);
                 mAdapterExercicios.insert(new ExercicioPO(idParse, nome, series, carga),
                         indiceToUpdate);
-                mAdapterExercicios.notifyDataSetChanged();
             }
         }
-        mAdapterExercicios.add(new ExercicioPO(idParse, nome, series, carga));
+        mAdapterExercicios.notifyDataSetChanged();
     }
 
     @Override

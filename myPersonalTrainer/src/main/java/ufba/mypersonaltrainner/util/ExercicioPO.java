@@ -4,13 +4,13 @@ package ufba.mypersonaltrainner.util;
  * Created by usuario on 11/25/2014.
  */
 public class ExercicioPO {
-    public final CharSequence objectId;
-    public final CharSequence nome;
-    public final CharSequence series;
-    public final CharSequence carga;
+    public final String objectId;
+    public final String nome;
+    public final String series;
+    public final String carga;
 
 
-    public ExercicioPO(CharSequence objectId, CharSequence nome, CharSequence series, CharSequence carga) {
+    public ExercicioPO(String objectId, String nome, String series, String carga) {
         this.objectId = objectId;
         this.nome = nome;
         this.series = series;

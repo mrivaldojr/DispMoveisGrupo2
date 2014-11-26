@@ -57,7 +57,18 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_side_bar, container, false);
-        
+
+        // Cache.limpaache();
+        Activity a = getActivity();
+        if (Cache.conectado(a)) {
+            Toast.makeText(a.getApplicationContext(),
+                    "Internet detectada", Toast.LENGTH_SHORT).show();
+            //Cache.salvaTreinosSujos(a);
+            Cache.carregaTiposExercicios();
+            //Cache.carregaTreinos();
+        } else {
+            getActivity().finish();
+        }
         // instancia o usuário logado
         ParseUser user = ParseUser.getCurrentUser();
         
@@ -87,16 +98,6 @@ public class PerfilFragment extends Fragment {
 		if (session != null && session.isOpened()) {
 			makeMeRequest();
 		}
-
-        // Cache.limpaache();
-        Activity a = getActivity();
-        if (Cache.conectado(a)) {
-            Toast.makeText(a.getApplicationContext(),
-                    "Internet detectada", Toast.LENGTH_SHORT).show();
-            //Cache.salvaTreinosSujos(a);
-            Cache.carregaTiposExercicios();
-            //Cache.carregaTreinos();
-        }
 
         return rootView;
     }
