@@ -21,6 +21,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
 
@@ -101,9 +102,10 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
         EditText series = (EditText) findViewById(R.id.add_exercicio_series_do_exercicio);
         EditText carga = (EditText) findViewById(R.id.add_exercicio_carga_do_exercicio);
 
-        intent.putExtra(ConfigurarTreinoActivity.CHAVE_NOME, exerciciosSpinner.getSelectedItem().toString());
-        intent.putExtra(ConfigurarTreinoActivity.CHAVE_SERIES, series.getText().toString());
-        intent.putExtra(ConfigurarTreinoActivity.CHAVE_CARGA, carga.getText().toString());
+        intent.putExtra(C.EXTRA_EXERCICIO_IDPARSE, exerciciosSpinner.getSelectedItem().toString());
+        intent.putExtra(C.EXTRA_EXERCICIO_NOME, exerciciosSpinner.getSelectedItem().toString());
+        intent.putExtra(C.EXTRA_EXERCICIO_SERIES, series.getText().toString());
+        intent.putExtra(C.EXTRA_EXERCICIO_CARGA, carga.getText().toString());
 
         setResult(Activity.RESULT_OK, intent);
         finish();

@@ -20,17 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
+import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
 
 public class TrainingDetail extends Activity {
 
     private final String LOG_TAG = this.getClass().getSimpleName();
-    final static String CHAVE_NOME_EXERCICIO = "ufba.mypersonaltrainner.nome_exercicio";
-    final static String CHAVE_SERIES_EXERCICIO = "ufba.mypersonaltrainner.series_exercicio";
-    final static String CHAVE_CARGA_EXERCICIO = "ufba.mypersonaltrainner.carga_exercicio";
+    private final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
+    private String treinoID;
+    private String treinoNome;
 
-
+    private ListMeuTreinoAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,22 +39,21 @@ public class TrainingDetail extends Activity {
         TextView nomeTreino;
 
         Intent intent = getIntent();
-        String treinoParseID = intent.getStringExtra(MeusTreinos.CHAVE_EXTRA_IDPARSE_TREINO);
-        String treinoParseNome = intent.getStringExtra(MeusTreinos.CHAVE_EXTRA_NOME_TREINO);
+        treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
+        treinoNome = intent.getStringExtra(C.EXTRA_TREINO_NOME);
 
         nomeTreino = (TextView) findViewById(R.id.selected_training_detail);
-        nomeTreino.setText(treinoParseNome);
-
-        final ListView lv = (ListView) findViewById(R.id.lv_exerc_treino);
+        nomeTreino.setText(treinoNome);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
         //query.fromPin(PK.GRP_TUDO);
-        query.getInBackground(treinoParseID, new GetCallback<ParseObject>() {
+        query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
                     List<ParseObject> exerciciosDoParse = treino.getList(PK.EXERCICIO);
                     ArrayList<ItemListMeuTreino> listaExercicios = new ArrayList<ItemListMeuTreino>();
+                    mAdapter = new ListMeuTreinoAdapter(getApplicationContext(), listaExercicios);
                     for (ParseObject exercicio : exerciciosDoParse) {
                         String nome = exercicio.getString(PK.EXERCICIO_NOME);
                         int reps = Integer.parseInt(exercicio.getString(PK.EXERCICIO_SERIES));
@@ -63,7 +63,7 @@ public class TrainingDetail extends Activity {
                         listaExercicios.add(item);
                     }
 
-                    lv.setAdapter(new ListMeuTreinoAdapter(getApplicationContext(), listaExercicios));
+                    lv.setAdapter(mAdapter);
 
                     lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -96,7 +96,12 @@ public class TrainingDetail extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_edit_train) {
+        if (id == R.id.action_editar_treino) {
+            Intent intent = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
+            intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
+            intent.putExtra(C.EXTRA_TREINO_NOME, treinoNome);
+            // intent.putExtra(CHAVE_EXTRA_IDPARSE_TREINO, treino.getString(PK.TREINO_ID));
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

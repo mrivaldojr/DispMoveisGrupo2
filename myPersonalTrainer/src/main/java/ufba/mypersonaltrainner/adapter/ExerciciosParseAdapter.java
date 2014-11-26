@@ -12,11 +12,14 @@ import com.parse.ParseQueryAdapter;
 import ufba.mypersonaltrainner.R;
 import ufba.mypersonaltrainner.util.PK;
 
-public class TreinosParseAdapter extends ParseQueryAdapter<ParseObject> {
+/**
+ * Created by usuario on 11/25/2014.
+ */
+public class ExerciciosParseAdapter extends ParseQueryAdapter<ParseObject> {
 
     private final String LOG_TAG = TreinosParseAdapter.class.getSimpleName();
 
-    public TreinosParseAdapter(Context context) {
+    public ExerciciosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 return new ParseQuery<ParseObject>(PK.TREINO);
