@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -122,7 +123,8 @@ public class TrainingDetail extends Activity {
             //treinoAtual.pin(PK.GRP_ATUAIS);
             TreinosAtivos.add(treinoID);
         } else {
-            TreinosAtivos.remove(treinoID);
+            Toast.makeText(getApplicationContext(), "falta implentar", Toast.LENGTH_LONG);
+            // TreinosAtivos.remove(treinoID);
         }
     }
 
@@ -218,7 +220,6 @@ public class TrainingDetail extends Activity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
             finish();
         }
     }
