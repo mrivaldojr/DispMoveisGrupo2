@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +40,7 @@ public class TrainingDetail extends Activity {
     private ParseObject treinoAtual;
     private ArrayAdapter<Exercicio> mAdapter;
     private static String PREFERENCE_ESTADO_CHECKBOX = "treino_esta_ativo";
-    private boolean treinosAtivosCheckboxIsChecked;
+    private boolean ehTreinoAtivo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +51,14 @@ public class TrainingDetail extends Activity {
         Intent intent = getIntent();
         treinoID = intent.getStringExtra(C.EXTRA_TREINO_IDPARSE);
         treinoNome = intent.getStringExtra(C.EXTRA_TREINO_NOME);
+        ehTreinoAtivo = intent.getBooleanExtra(C.EXTRA_TREINO_EH_ATIVO, false);
+        Log.v(this.getClass().getSimpleName(), "ehTreinoAtivo: " + ehTreinoAtivo);
 
         TextView nomeTreinoTextView = (TextView) findViewById(R.id.selected_training_detail);
         nomeTreinoTextView.setText(treinoNome);
 
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        treinosAtivosCheckboxIsChecked = settings.getBoolean(PREFERENCE_ESTADO_CHECKBOX, false);
         CheckBox ativoCheckbox = (CheckBox) findViewById(R.id.checkBox);
-        ativoCheckbox.setChecked(treinosAtivosCheckboxIsChecked);
+        ativoCheckbox.setChecked(ehTreinoAtivo);
 
         mAdapter = new ArrayAdapter<Exercicio> (getApplicationContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
@@ -115,29 +114,40 @@ public class TrainingDetail extends Activity {
         super.onResume();
         populaAdapter();
     }
-
     public void onCheckboxClicked(View view) {
-        treinosAtivosCheckboxIsChecked = ((CheckBox) view).isChecked();
-
-        if (treinosAtivosCheckboxIsChecked) {
+        ehTreinoAtivo = ((CheckBox) view).isChecked();
+        if (ehTreinoAtivo) {
             //treinoAtual.pin(PK.GRP_ATUAIS);
-            TreinosAtivos.add(treinoID);
+            Toast.makeText(getApplicationContext(), "add", Toast.LENGTH_LONG).show();
+            //TreinosAtivos.add(treinoID);
         } else {
-            Toast.makeText(getApplicationContext(), "falta implentar", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "rem", Toast.LENGTH_LONG).show()    ;
             // TreinosAtivos.remove(treinoID);
         }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(PREFERENCE_ESTADO_CHECKBOX, treinosAtivosCheckboxIsChecked);
-        editor.apply();
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(getApplicationContext(), "pausou", Toast.LENGTH_LONG).show();
+        final boolean isChecked = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
+        ParseQuery.getQuery(PK.TREINO).getInBackground(treinoID, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject treino, ParseException e) {
+                if (e == null) {
+                    if (ehTreinoAtivo != treino.getBoolean(PK.TREINO_ESTADO_ATIVO))
+                        if (isChecked) TreinosAtivos.add(treinoID);
+                        else TreinosAtivos.remove(treinoID);
+                } else {
+                    Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
+                            + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    // TODO ver qualé a desse erro ufba.mypersonaltrainner I/Choreographer﹕Skipped 34 frames! The application may be doing too much work on its main thread.
+    // TODO ver colé a desse erro ufba.mypersonaltrainner I/Choreographer﹕Skipped 34 frames! The application may be doing too much work on its main thread.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

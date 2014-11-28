@@ -20,4 +20,5 @@ public class C {
     public static final String EXTRA_EXERCICIO_SERIES = "ufba.mypersonaltrainner.SERIES_EXERCICIO";
     public static final String EXTRA_EXERCICIO_CARGA = "ufba.mypersonaltrainner.CARGA_EXERCICIO";
     public static final String EXTRA_ARRAY_INDEX = "ufba.mypersonaltrainner.ARRAY_INDEX";
+    public static final String EXTRA_TREINO_EH_ATIVO = "ufba.mypersonaltrainner.BOOL_TREINO_ATIVO";
 }

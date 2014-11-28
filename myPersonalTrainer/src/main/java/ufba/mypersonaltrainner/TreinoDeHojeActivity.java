@@ -3,7 +3,6 @@ package ufba.mypersonaltrainner;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,10 +17,6 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 import ufba.mypersonaltrainner.adapter.ListMeuTreinoAdapter;
 import ufba.mypersonaltrainner.util.PK;
@@ -49,7 +44,7 @@ public class TreinoDeHojeActivity extends Activity {
             @Override
             public void done(ParseObject oTreinoAtual, ParseException e) {
                 if (e == null) {
-                    mAdapter.addAll;
+                    //mAdapter.addAll;
                 } else {
                     Log.e(TrainingDetail.class.getSimpleName(),
                             "não deu pra get treino ou count treinos ativos ou atualizar o treino: " +
@@ -61,10 +56,10 @@ public class TreinoDeHojeActivity extends Activity {
 
         ListView listExercicios = (ListView) findViewById(R.id.lv_treinoDeHoje);
 
-        ItemListMeuTreino item = new ItemListMeuTreino("Exercicio"+i, 3, i+20);
+        // ItemListMeuTreino item = new ItemListMeuTreino("Exercicio"+i, 3, i+20);
 
 
-        listExercicios.setAdapter(new ListMeuTreinoAdapter(this, new List));
+        listExercicios.setAdapter(mAdapter);
 
         listExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
