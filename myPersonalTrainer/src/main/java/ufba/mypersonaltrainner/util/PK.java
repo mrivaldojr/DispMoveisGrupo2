@@ -6,6 +6,8 @@ public class PK {
     public static final String USER_NAME = "name";
     public static final String USER_LEVEL = "level";
     public static final String USER_PONTOS = "pontos";
+    public static final String USER_INDICE_TREINO_ATUAL = "usr_trn_atual";
+
 
     public static final String TIPO_EXERCICIO = "EXE_exercicio";
     public static final String TIPO_EXERCICIO_NOME = "exe_ds_nome";

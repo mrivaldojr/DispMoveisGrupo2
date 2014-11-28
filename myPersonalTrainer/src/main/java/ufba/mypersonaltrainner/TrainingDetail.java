@@ -137,6 +137,8 @@ public class TrainingDetail extends Activity {
         editor.apply();
     }
 
+    // TODO ver qualé a desse erro ufba.mypersonaltrainner I/Choreographer﹕Skipped 34 frames! The application may be doing too much work on its main thread.
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

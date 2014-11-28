@@ -2,10 +2,13 @@ package ufba.mypersonaltrainner.util;
 
 import android.util.Log;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 import ufba.mypersonaltrainner.TrainingDetail;
 
@@ -14,7 +17,6 @@ public class TreinosAtivos {
         try {
             String uid = ParseUser.getCurrentUser().getObjectId();
             ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
-            treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
             ParseObject oTreino = treinosQuery.get(treinoObjectID);
 
             int proxIndiceTreinosAtuais = treinosQuery.count();
@@ -29,11 +31,14 @@ public class TreinosAtivos {
         }
     }
 
+    // TODO Tratar treinos ativos repetidos.
 
-/*    public static List<ParseObject> getAll() {
+    public static List<ParseObject> getAll() {
         try {
             String uid = ParseUser.getCurrentUser().getObjectId();
-            ParseQuery treinosQuery = ParseQuery.getQuery
+            ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
+            treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
             return treinosQuery.find();
         } catch (ParseException e) {
             Log.e(TrainingDetail.class.getSimpleName(),
@@ -42,18 +47,37 @@ public class TreinosAtivos {
             e.printStackTrace();
         }
         return null;
-    }*/
+    }
 
-/*    public static void remove(String treinoID) {
-        ParseUser user = ParseUser.getCurrentUser();
-        List<ParseObject> treinosAtivos = user.getList(PK.USER_TREINOS_ATIVOS);
-        for (ParseObject treinoAtivo : treinosAtivos) {
-            ParseObject treino = (ParseObject) treinoAtivo.get(PK.ATIVO_TREINO);
-            if (treino.getObjectId() == treinoID) {
-                user.removeAll(PK.USER_TREINOS_ATIVOS, Arrays.asList(treinoAtivo));
-                user.saveInBackground();
-                break;
+    public static void remove(String treinoID) {
+        String uid = ParseUser.getCurrentUser().getObjectId();
+        ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+
+        final ParseObject oTreino = null;
+
+        treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
+        treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+        treinosQuery.orderByAscending(PK.TREINO_ATIVO_ORDEM);
+
+        treinosQuery.findInBackground(new FindCallback() {
+
+            @Override
+            public void done(List tList, ParseException e) {
+                if (e == null) {
+                    int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
+                    for (; i < tList.size(); i++) {
+                        ParseObject treino = (ParseObject) tList.get(i);
+                        treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
+                        Log.v(TrainingDetail.class.getSimpleName(),
+                                "ativo: " + treino.getString(PK.TREINO_NOME));
+                    }
+                    oTreino.remove(PK.TREINO_ATIVO_ORDEM);
+                    oTreino.remove(PK.TREINO_ESTADO_ATIVO);
+                } else
+                    Log.e(TrainingDetail.class.getSimpleName(), "não deu pra get treino: " +
+                            e.getMessage());
+                    e.printStackTrace();
             }
-        }
-    }*/
+        });
+    }
 }
