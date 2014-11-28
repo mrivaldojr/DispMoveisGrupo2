@@ -82,6 +82,7 @@ public class PerfilFragment extends Fragment {
         txtViewLevel.setText("Level: "+Integer.toString(level));
         txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
         barExp.setProgress((pontos*100)/maxpontos);
+
         Session session = ParseFacebookUtils.getSession();
 		if (session != null && session.isOpened()) {
 			makeMeRequest();

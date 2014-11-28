@@ -2,63 +2,83 @@ package ufba.mypersonaltrainner.util;
 
 import android.util.Log;
 
-import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.Arrays;
 import java.util.List;
 
 import ufba.mypersonaltrainner.TrainingDetail;
 
 public class TreinosAtivos {
 
-    public static void add(final String treinoObjectID) {
+    public static void add(String treinoObjectID) {
+        try {
+            String uid = ParseUser.getCurrentUser().getObjectId();
+            ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            ParseObject oTreino = treinosQuery.get(treinoObjectID);
 
-        final ParseUser user = ParseUser.getCurrentUser();
-        String UID = user.getObjectId();
+            int proxIndiceTreinosAtuais = treinosQuery.count();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-
-        query.getInBackground(treinoObjectID, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject treinoPraAtivar, ParseException e) {
-                if (e == null) {
-                    final ParseObject treinoAtivo = new ParseObject(PK.ATIVO);
-                    treinoAtivo.put(PK.ATIVO_TREINO, treinoPraAtivar);
-                    Object treinosAtivosNoParse = user.get(PK.USER_TREINOS_ATIVOS);
-                    int proxIndiceTreinosAtuais = (treinosAtivosNoParse == null) ? 0
-                            : ((List)treinosAtivosNoParse).size();
-                    treinoAtivo.put(PK.ATIVO_ORDEM, proxIndiceTreinosAtuais);
-                    user.add(PK.USER_TREINOS_ATIVOS, treinoAtivo);
-                   // treinoAtivo.saveInBackground();
-                    user.saveInBackground();
-                } else {
-                    Log.e(TrainingDetail.class.getSimpleName(),
-                            "não deu pra get um treino do parse" + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        });
+            oTreino.put(PK.TREINO_ESTADO_ATIVO, true);
+            oTreino.put(PK.TREINO_ATIVO_ORDEM, proxIndiceTreinosAtuais);
+            oTreino.saveInBackground();
+        } catch (ParseException e) {
+            Log.e(TrainingDetail.class.getSimpleName(),
+                    "erro em get treino|count treinos ativos|atualizar treino: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
+    // TODO Tratar treinos ativos repetidos.
+
     public static List<ParseObject> getAll() {
-        ParseUser user = ParseUser.getCurrentUser();
-        return user.getList(PK.USER_TREINOS_ATIVOS);
+        try {
+            String uid = ParseUser.getCurrentUser().getObjectId();
+            ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
+            treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+            return treinosQuery.find();
+        } catch (ParseException e) {
+            Log.e(TrainingDetail.class.getSimpleName(),
+                    "não deu pra get treino ou count treinos ativos ou atualizar o treino: " +
+                            e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void remove(String treinoID) {
-        ParseUser user = ParseUser.getCurrentUser();
-        List<ParseObject> treinosAtivos = user.getList(PK.USER_TREINOS_ATIVOS);
-        for (ParseObject treinoAtivo : treinosAtivos) {
-            ParseObject treino = (ParseObject) treinoAtivo.get(PK.ATIVO_TREINO);
-            if (treino.getObjectId() == treinoID) {
-                user.removeAll(PK.USER_TREINOS_ATIVOS, Arrays.asList(treinoAtivo));
-                user.saveInBackground();
-                break;
+        String uid = ParseUser.getCurrentUser().getObjectId();
+        ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+
+        final ParseObject oTreino = null;
+
+        treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
+        treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+        treinosQuery.orderByAscending(PK.TREINO_ATIVO_ORDEM);
+
+        treinosQuery.findInBackground(new FindCallback() {
+
+            @Override
+            public void done(List tList, ParseException e) {
+                if (e == null) {
+                    int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
+                    for (; i < tList.size(); i++) {
+                        ParseObject treino = (ParseObject) tList.get(i);
+                        treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
+                        Log.v(TrainingDetail.class.getSimpleName(),
+                                "ativo: " + treino.getString(PK.TREINO_NOME));
+                    }
+                    oTreino.remove(PK.TREINO_ATIVO_ORDEM);
+                    oTreino.remove(PK.TREINO_ESTADO_ATIVO);
+                } else
+                    Log.e(TrainingDetail.class.getSimpleName(), "não deu pra get treino: " +
+                            e.getMessage());
+                    e.printStackTrace();
             }
-        }
+        });
     }
 }

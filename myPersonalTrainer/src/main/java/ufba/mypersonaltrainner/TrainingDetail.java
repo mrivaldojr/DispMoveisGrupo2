@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -72,7 +73,7 @@ public class TrainingDetail extends Activity {
                 Exercicio item = (Exercicio) lv.getItemAtPosition(i);
                 Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
-                intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.nome);
+                intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
                 startActivity(intent);
             }
         });
@@ -122,7 +123,8 @@ public class TrainingDetail extends Activity {
             //treinoAtual.pin(PK.GRP_ATUAIS);
             TreinosAtivos.add(treinoID);
         } else {
-            TreinosAtivos.remove(treinoID);
+            Toast.makeText(getApplicationContext(), "falta implentar", Toast.LENGTH_LONG);
+            // TreinosAtivos.remove(treinoID);
         }
     }
 
@@ -134,6 +136,8 @@ public class TrainingDetail extends Activity {
         editor.putBoolean(PREFERENCE_ESTADO_CHECKBOX, treinosAtivosCheckboxIsChecked);
         editor.apply();
     }
+
+    // TODO ver qualé a desse erro ufba.mypersonaltrainner I/Choreographer﹕Skipped 34 frames! The application may be doing too much work on its main thread.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -218,7 +222,6 @@ public class TrainingDetail extends Activity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
             finish();
         }
     }
