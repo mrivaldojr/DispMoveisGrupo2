@@ -64,7 +64,7 @@ public class TreinosAtivosActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(), TrainingDetail.class);
                 Treino treino = mTreinosAtivosAdapter.getItem(i);
-                intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
+                intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getId());
                 intent.putExtra(C.EXTRA_TREINO_NOME, treino.getNome());
                 startActivity(intent);
             }
@@ -80,7 +80,7 @@ public class TreinosAtivosActivity extends Activity {
                 treinoAtivo.fetchIfNeeded();
                 ParseObject treino = treinoAtivo.getParseObject(PK.ATIVO_TREINO).fetchIfNeeded();
                 mTreinosAtivosAdapter.add(new Treino(treino.getString(PK.TREINO_NOME),
-                        treino.getObjectId(), true));
+                        treino.getObjectId()));
             } catch (ParseException e) {
                 Log.v(this.getClass().getSimpleName(),
                         "Erro ao pegar do parse o treno dentro do treinoAtivo\n" +
@@ -99,7 +99,7 @@ public class TreinosAtivosActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.treinos_ativos, menu);
+                getMenuInflater().inflate(R.menu.treinos_ativos, menu);
         return true;
     }
 

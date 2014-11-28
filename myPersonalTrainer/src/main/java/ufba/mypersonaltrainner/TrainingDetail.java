@@ -72,7 +72,7 @@ public class TrainingDetail extends Activity {
                 Exercicio item = (Exercicio) lv.getItemAtPosition(i);
                 Intent intent = new Intent(getBaseContext(), ExercicioActivity.class);
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treinoID);
-                intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.nome);
+                intent.putExtra(C.EXTRA_EXERCICIO_NOME, item.getNome());
                 startActivity(intent);
             }
         });
