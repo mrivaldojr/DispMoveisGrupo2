@@ -14,10 +14,14 @@ import java.util.List;
 import ufba.mypersonaltrainner.TrainingDetail;
 
 public class TreinosAtivos {
+
     public static void add(final String treinoObjectID) {
+
         final ParseUser user = ParseUser.getCurrentUser();
         String UID = user.getObjectId();
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+
         query.getInBackground(treinoObjectID, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject treinoPraAtivar, ParseException e) {
