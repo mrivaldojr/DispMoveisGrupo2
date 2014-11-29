@@ -15,12 +15,16 @@ import ufba.mypersonaltrainner.TrainingDetail;
 public class TreinosAtivos {
 
     public static void add(String treinoObjectID) {
+
         try {
             String uid = ParseUser.getCurrentUser().getObjectId();
             ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
             ParseObject oTreino = treinosQuery.get(treinoObjectID);
+
             treinosQuery = ParseQuery.getQuery(PK.TREINO);
             treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+            treinosQuery.whereEqualTo(PK.USER_ID, uid);
+
             int proxIndiceTreinosAtuais = treinosQuery.count();
 
             oTreino.put(PK.TREINO_ESTADO_ATIVO, true);
@@ -64,12 +68,14 @@ public class TreinosAtivos {
             @Override
             public void done(List tList, ParseException e) {
                 if (e == null) {
+
                     try {
                         ParseObject oTreino = treinosQuery.get(treinoID);
                         int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
                         for (; i < tList.size(); i++) {
                             ParseObject treino = (ParseObject) tList.get(i);
                             treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
+                            treino.saveInBackground();
                             Log.v(TrainingDetail.class.getSimpleName(),
                                     "ativo: " + treino.getString(PK.TREINO_NOME));
                         }

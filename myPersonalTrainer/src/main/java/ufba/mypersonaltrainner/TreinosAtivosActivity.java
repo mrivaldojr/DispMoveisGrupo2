@@ -50,6 +50,7 @@ public class TreinosAtivosActivity extends Activity {
                 ParseObject treino = adapter.getItem(i);
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
                 intent.putExtra(C.EXTRA_TREINO_NOME, treino.getString(PK.TREINO_NOME));
+                intent.putExtra(C.EXTRA_TREINO_EH_ATIVO, treino.getBoolean(PK.TREINO_ESTADO_ATIVO));
                 startActivity(intent);
             }
         });

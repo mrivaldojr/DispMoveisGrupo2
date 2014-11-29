@@ -76,6 +76,7 @@ public class TrainingDetail extends Activity {
                 startActivity(intent);
             }
         });
+
     }
 
     private void populaAdapter() {
