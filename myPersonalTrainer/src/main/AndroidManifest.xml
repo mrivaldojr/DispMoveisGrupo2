@@ -8,7 +8,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
@@ -18,7 +17,7 @@
         android:maxSdkVersion="18" />
 
     <application
-        android:name="ufba.mypersonaltrainner.parseLogin.SampleApplication"
+        android:name=".parseLogin.SampleApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -35,7 +34,7 @@
                 android:value="@array/my_facebook_permissions" />
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.parseLogin.SampleDispatchActivity"
+            android:name=".parseLogin.SampleDispatchActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -45,13 +44,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.SideBarActivity"
+            android:name=".SideBarActivity"
             android:label="@string/title_activity_side_bar" >
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.MeusTreinos"
+            android:name=".MeusTreinos"
             android:label="@string/title_activity_meus_treinos"
-            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+            android:parentActivityName=".SideBarActivity" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -60,13 +59,13 @@
             >
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.ConfigurarTreinoActivity"
+            android:name=".ConfigurarTreinoActivity"
             android:label="@string/title_activity_configurar_treino_my" >
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.TreinoDeHojeActivity"
+            android:name=".TreinoDeHojeActivity"
             android:label="@string/title_activity_treino_de_hoje"
-            android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
+            android:parentActivityName=".SideBarActivity" >
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
@@ -74,19 +73,19 @@
                 android:value="ufba.mypersonaltrainner.SideBarActivity" />
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.ExercicioActivity"
+            android:name=".ExercicioActivity"
             android:label="@string/title_activity_execicio" >
         </activity>
         <activity
             android:name=".TrainingDetail"
             android:label="@string/title_activity_trainig_detail"
-            android:parentActivityName="ufba.mypersonaltrainner.MeusTreinos" >
+            android:parentActivityName=".MeusTreinos" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ufba.mypersonaltrainner.MeusTreinos" />
         </activity>
         <activity
-            android:name="ufba.mypersonaltrainner.TreinosAtivosActivity"
+            android:name=".TreinosAtivosActivity"
             android:label="@string/title_activity_treinos_ativos" >
             android:parentActivityName="ufba.mypersonaltrainner.SideBarActivity" >
 
@@ -105,13 +104,17 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name="ufba.mypersonaltrainner.AdicionaExercicioAoTreinoActivity"
+            android:name=".AdicionaExercicioAoTreinoActivity"
             android:label="@string/title_activity_adiciona_exercicio_ao_treino"
-            android:theme="@android:style/Theme.Holo.Dialog"
-            android:parentActivityName="ufba.mypersonaltrainner.ConfigurarTreinoActivity" >
+            android:parentActivityName=".ConfigurarTreinoActivity"
+            android:theme="@android:style/Theme.Holo.Dialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ufba.mypersonaltrainner.ConfigurarTreinoActivity" />
+        </activity>
+        <activity
+            android:name="com.parse.ui.TutorialActivity"
+            android:label="@string/title_activity_tutorial" >
         </activity>
     </application>
 
