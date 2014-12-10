@@ -23,6 +23,7 @@ package com.parse.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -58,17 +59,38 @@ public abstract class ParseLoginDispatchActivity extends Activity {
 
   @Override
   final protected void onCreate(Bundle savedInstanceState) {
+
     super.onCreate(savedInstanceState);
-    runDispatch();
+
+    SharedPreferences settings = getSharedPreferences("prefs", 0);
+    boolean firstRun = settings.getBoolean("firstRun", true);
+
+    if(firstRun){
+        startActivityForResult( new Intent(getBaseContext(), TutorialActivity.class), 123 );
+    }
+    else{
+        runDispatch();
+    }
+
   }
 
   @Override
   final protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     setResult(resultCode);
-    if (requestCode == LOGIN_REQUEST && resultCode == RESULT_OK) {
-      runDispatch();
-    } else {
+
+    if (requestCode == 123 && resultCode == RESULT_OK) {
+        SharedPreferences settings = getSharedPreferences("prefs", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("firstRun", false);
+        editor.commit();
+        runDispatch();
+
+    }
+    else if(requestCode == LOGIN_REQUEST && resultCode == RESULT_OK){
+        runDispatch();
+    }
+     else {
       finish();
     }
   }
