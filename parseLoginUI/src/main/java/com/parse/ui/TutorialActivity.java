@@ -14,7 +14,8 @@ public class TutorialActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(android.R.style.Theme);
+        setTheme(android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        setTitle("Tutorial");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
@@ -30,7 +31,7 @@ public class TutorialActivity extends Activity{
                     sairTuto.setText("Finalizar Tutorial");
                 }
                 else{
-                    sairTuto.setText("Pular");
+                    sairTuto.setText("Pular Tutorial");
                 }
             }
 
