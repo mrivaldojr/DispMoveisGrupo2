@@ -14,6 +14,7 @@ public class TutorialActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
@@ -27,6 +28,9 @@ public class TutorialActivity extends Activity{
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if(position == imageAdapter.getCount()-1){
                     sairTuto.setText("Finalizar Tutorial");
+                }
+                else{
+                    sairTuto.setText("Pular");
                 }
             }
 
