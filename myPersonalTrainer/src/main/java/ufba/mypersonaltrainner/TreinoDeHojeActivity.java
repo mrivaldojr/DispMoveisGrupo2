@@ -38,6 +38,13 @@ public class TreinoDeHojeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.treino_de_hoje);
+
+        btFinalizar = (Button) findViewById(R.id.button);
+
+        final ParseUser user = ParseUser.getCurrentUser();
+        final String uid = user.getObjectId();
+        final int indiceTreinoDeHoje = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+
         btFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,14 +62,6 @@ public class TreinoDeHojeActivity extends Activity {
                 }
             }
         });
-
-        btFinalizar = (Button) findViewById(R.id.button);
-
-        ParseUser user = ParseUser.getCurrentUser();
-        final int indiceTreinoDeHoje = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
-
-
-        final String uid = user.getObjectId();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.whereEqualTo(PK.TREINO_USER, uid);
