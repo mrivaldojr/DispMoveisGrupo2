@@ -82,6 +82,7 @@ public class TrainingDetail extends Activity {
     private void populaAdapter() {
         ParseQuery < ParseObject > query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         //query.fromPin(PK.GRP_TUDO);
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
@@ -132,10 +133,13 @@ public class TrainingDetail extends Activity {
         super.onPause();
         Toast.makeText(getApplicationContext(), "pausou", Toast.LENGTH_LONG).show();
         final boolean isChecked = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
-        ParseQuery.getQuery(PK.TREINO).getInBackground(treinoID, new GetCallback<ParseObject>() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
+                    boolean estado = treino.getBoolean(PK.TREINO_ESTADO_ATIVO);
                     if (ehTreinoAtivo != treino.getBoolean(PK.TREINO_ESTADO_ATIVO))
                         if (isChecked) TreinosAtivos.add(treinoID);
                         else TreinosAtivos.remove(treinoID);
@@ -202,6 +206,7 @@ public class TrainingDetail extends Activity {
         protected Void doInBackground(Void... params) {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
             //query.whereEqualTo("trt_ds_nome", treinoNome);
             query.getInBackground(treinoID, new GetCallback<ParseObject>() {
                 @Override

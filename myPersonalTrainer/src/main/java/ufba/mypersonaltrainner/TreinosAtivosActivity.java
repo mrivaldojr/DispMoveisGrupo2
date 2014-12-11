@@ -21,6 +21,7 @@ import ufba.mypersonaltrainner.util.PK;
 public class TreinosAtivosActivity extends Activity {
 
 //    private ArrayAdapter<Treino> mTreinosAtivosAdapter;
+    ParseQueryAdapter<ParseObject> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +29,16 @@ public class TreinosAtivosActivity extends Activity {
         setContentView(R.layout.activity_treinos_ativos);
 
 
-        final ParseQueryAdapter<ParseObject> adapter = new ParseQueryAdapter<ParseObject>(this,
+        adapter = new ParseQueryAdapter<ParseObject>(this,
                 new ParseQueryAdapter.QueryFactory<ParseObject>() {
             @Override
             public ParseQuery<ParseObject> create() {
                 String uid = ParseUser.getCurrentUser().getObjectId();
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
+                // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 query.whereEqualTo(PK.TREINO_USER, uid);
                 query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+                query.orderByAscending(PK.TREINO_ATIVO_ORDEM);
                 return query;
             }
         });
@@ -56,7 +59,13 @@ public class TreinosAtivosActivity extends Activity {
         });
     }
 
-/*    private void populaAdapter() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.loadObjects();
+    }
+
+    /*    private void populaAdapter() {
         mTreinosAtivosAdapter.clear();
         List<ParseObject> treinosAtivos = TreinosAtivos.getAll();
         if (treinosAtivos == null) return;

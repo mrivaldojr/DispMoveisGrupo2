@@ -19,9 +19,10 @@ public class TreinosAtivos {
         try {
             String uid = ParseUser.getCurrentUser().getObjectId();
             ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            treinosQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
             ParseObject oTreino = treinosQuery.get(treinoObjectID);
-
             treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            // treinosQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
             treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
             treinosQuery.whereEqualTo(PK.USER_ID, uid);
 
@@ -43,6 +44,7 @@ public class TreinosAtivos {
         try {
             String uid = ParseUser.getCurrentUser().getObjectId();
             ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            treinosQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
             treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
             treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
             return treinosQuery.find();
@@ -58,7 +60,7 @@ public class TreinosAtivos {
     public static void remove(final String treinoID) {
         String uid = ParseUser.getCurrentUser().getObjectId();
         final ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
-
+        // treinosQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
         treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
         treinosQuery.orderByAscending(PK.TREINO_ATIVO_ORDEM);
@@ -71,8 +73,9 @@ public class TreinosAtivos {
 
                     try {
                         ParseObject oTreino = treinosQuery.get(treinoID);
-                        int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
-                        for (; i < tList.size(); i++) {
+
+                        for (int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
+                             i < tList.size(); i++) {
                             ParseObject treino = (ParseObject) tList.get(i);
                             treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
                             treino.saveInBackground();

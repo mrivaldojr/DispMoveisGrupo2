@@ -42,6 +42,7 @@ public class MeusTreinos extends Activity {
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
+                //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 //query.fromPin(PK.GRP_TUDO);
                 query.whereEqualTo(PK.USER_ID, UID);
                 query.orderByDescending(PK.PIN_DATE);
