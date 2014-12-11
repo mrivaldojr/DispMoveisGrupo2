@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -21,6 +22,7 @@ import ufba.mypersonaltrainner.util.PK;
 public class TreinosAtivosActivity extends Activity {
 
 //    private ArrayAdapter<Treino> mTreinosAtivosAdapter;
+    private ParseQueryAdapter<ParseObject> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class TreinosAtivosActivity extends Activity {
         setContentView(R.layout.activity_treinos_ativos);
 
 
-        final ParseQueryAdapter<ParseObject> adapter = new ParseQueryAdapter<ParseObject>(this,
+        adapter = new ParseQueryAdapter<ParseObject>(this,
                 new ParseQueryAdapter.QueryFactory<ParseObject>() {
             @Override
             public ParseQuery<ParseObject> create() {
@@ -51,12 +53,34 @@ public class TreinosAtivosActivity extends Activity {
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
                 intent.putExtra(C.EXTRA_TREINO_NOME, treino.getString(PK.TREINO_NOME));
                 intent.putExtra(C.EXTRA_TREINO_EH_ATIVO, treino.getBoolean(PK.TREINO_ESTADO_ATIVO));
-                startActivity(intent);
+                startActivityForResult(intent, C.EDITA_TREINO_REQUEST);
             }
         });
     }
 
-/*    private void populaAdapter() {
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == C.EDITA_TREINO_REQUEST) {
+                Toast.makeText(getApplicationContext(), "foi clicado back, ativo modificado", Toast.LENGTH_LONG).show();
+                adapter.loadObjects();
+                // adapter.notifyDataSetChanged();
+            }
+        } else if (resultCode == RESULT_CANCELED) {
+            if (requestCode == C.EDITA_TREINO_REQUEST) {
+                Toast.makeText(getApplicationContext(), "foi cliado back, ativo igual", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //@Override
+    //protected void onResume() {
+    //    super.onResume();
+    //    adapter.loadObjects();
+    //    adapter.notifyDataSetChanged();
+    //}
+
+    /*    private void populaAdapter() {
         mTreinosAtivosAdapter.clear();
         List<ParseObject> treinosAtivos = TreinosAtivos.getAll();
         if (treinosAtivos == null) return;
