@@ -50,6 +50,7 @@ public class TreinoDeHojeActivity extends Activity {
             public void onClick(View v) {
                 user.getInt(PK.USER_INDICE_TREINO_ATUAL);
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
                 try {
                     int numTreinos = query.count();
@@ -64,6 +65,7 @@ public class TreinoDeHojeActivity extends Activity {
         });
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo(PK.TREINO_USER, uid);
         query.whereEqualTo(PK.TREINO_ATIVO_ORDEM, indiceTreinoDeHoje);
         ParseObject treino = null;
@@ -105,6 +107,7 @@ public class TreinoDeHojeActivity extends Activity {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo(PK.USER_ID, user.getObjectId());
 
         ParseObject treinoPO = null;

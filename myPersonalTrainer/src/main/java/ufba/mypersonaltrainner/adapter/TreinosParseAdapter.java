@@ -20,9 +20,10 @@ public class TreinosParseAdapter extends ParseQueryAdapter<ParseObject> {
     public TreinosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
-                return new ParseQuery<ParseObject>(PK.TREINO)
-                        .whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser()
-                                .getObjectId());
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
+                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                query.whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser().getObjectId());
+                return query;
             }
         });
     }

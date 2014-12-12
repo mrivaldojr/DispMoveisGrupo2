@@ -36,9 +36,9 @@ public class SideBarActivity extends Activity
         if (Cache.conectado(a)) {
             Toast.makeText(a.getApplicationContext(),
                     "Internet detectada", Toast.LENGTH_SHORT).show();
-            //Cache.salvaTreinosSujos(a);
-            Cache.carregaTiposExercicios();
-            //Cache.carregaTreinos();
+            // Cache.salvaTreinosSujos(a);
+            // Cache.carregaTiposExercicios();
+            // Cache.carregaTreinos();
         } else {
             Toast.makeText(a.getApplicationContext(),
                     "Conexão não encontrada, abortando", Toast.LENGTH_SHORT).show();

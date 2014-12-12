@@ -39,7 +39,7 @@ public class SampleApplication extends Application {
     super.onCreate();
 
     // Required - Initialize the Parse SDK
-    Parse.enableLocalDatastore(this);
+    // Parse.enableLocalDatastore(this);
     Parse.initialize(this, getString(R.string.parse_app_id),
         getString(R.string.parse_client_key));
     Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG);

@@ -82,6 +82,7 @@ public class TrainingDetail extends Activity {
     private void populaAdapter() {
         ParseQuery < ParseObject > query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         //query.fromPin(PK.GRP_TUDO);
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
@@ -234,6 +235,7 @@ public class TrainingDetail extends Activity {
         protected Void doInBackground(Void... params) {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
             //query.whereEqualTo("trt_ds_nome", treinoNome);
             query.getInBackground(treinoID, new GetCallback<ParseObject>() {
                 @Override

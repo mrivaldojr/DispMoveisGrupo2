@@ -23,9 +23,10 @@ public class ExerciciosParseAdapter extends ParseQueryAdapter<ParseObject> {
     public ExerciciosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
-                return new ParseQuery<ParseObject>(PK.TREINO)
-                        .whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser()
-                                .getObjectId());
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
+                query.whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser().getObjectId());
+                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                return query;
             }
         });
     }

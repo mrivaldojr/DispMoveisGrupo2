@@ -133,7 +133,9 @@ public class ConfigurarTreinoActivity extends Activity {
             treino.put(PK.USER_ID, uid);
         } else {
             try {
-                treino = ParseQuery.getQuery(PK.TREINO).get(idTreinoSelecionado);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                treino = query.get(idTreinoSelecionado);
             } catch (Exception e) {
                 Log.e(this.getClass().getSimpleName(), e.getMessage());
                 e.printStackTrace();
@@ -195,6 +197,7 @@ public class ConfigurarTreinoActivity extends Activity {
         testaVars(LOG_TAG, "populateAdapterFromcloud");
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.include(PK.EXERCICIO);
         query.whereEqualTo(PK.USER_ID, user.getObjectId());
 
