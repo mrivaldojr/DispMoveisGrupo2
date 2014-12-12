@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -62,13 +61,7 @@ public class TreinosAtivosActivity extends Activity {
                                     Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == C.EDITA_TREINO_REQUEST) {
-                Toast.makeText(getApplicationContext(), "foi clicado back, ativo modificado", Toast.LENGTH_LONG).show();
                 adapter.loadObjects();
-                // adapter.notifyDataSetChanged();
-            }
-        } else if (resultCode == RESULT_CANCELED) {
-            if (requestCode == C.EDITA_TREINO_REQUEST) {
-                Toast.makeText(getApplicationContext(), "foi cliado back, ativo igual", Toast.LENGTH_LONG).show();
             }
         }
     }

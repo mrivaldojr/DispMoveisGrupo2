@@ -27,7 +27,6 @@
             android:text="Ativar Treino"
             android:layout_weight="1"
             android:id="@+id/checkBox"
-            android:onClick="onCheckboxClicked"
             android:checked="false" />
 
     </LinearLayout>

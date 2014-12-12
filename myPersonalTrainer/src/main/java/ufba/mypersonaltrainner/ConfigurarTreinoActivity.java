@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -134,7 +133,7 @@ public class ConfigurarTreinoActivity extends Activity {
         } else {
             try {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
                 treino = query.get(idTreinoSelecionado);
             } catch (Exception e) {
                 Log.e(this.getClass().getSimpleName(), e.getMessage());
@@ -158,7 +157,6 @@ public class ConfigurarTreinoActivity extends Activity {
 
         try {
             treino.save();
-            Toast.makeText(getApplicationContext(), "Salvou!", Toast.LENGTH_LONG).show();
         } catch (ParseException e) {
             erro(e);
             finish();
@@ -197,7 +195,7 @@ public class ConfigurarTreinoActivity extends Activity {
         testaVars(LOG_TAG, "populateAdapterFromcloud");
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.include(PK.EXERCICIO);
         query.whereEqualTo(PK.USER_ID, user.getObjectId());
 
@@ -226,7 +224,6 @@ public class ConfigurarTreinoActivity extends Activity {
         Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
         Log.e(LOG_TAG, e.getMessage());
         e.printStackTrace();
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override

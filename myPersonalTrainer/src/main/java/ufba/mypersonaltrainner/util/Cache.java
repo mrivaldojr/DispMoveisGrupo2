@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -86,10 +85,6 @@ public class Cache {
             @Override
             public void done(List<ParseObject> treinosSujos, ParseException exception) {
                 if (exception != null) return;
-                if (!treinosSujos.isEmpty()) {
-                    Toast.makeText(activity.getApplicationContext(),
-                            "Upando os treinos sujos...", Toast.LENGTH_SHORT).show();
-                }
                 for (ParseObject treino : treinosSujos) {
                     try {
                         treino.save();

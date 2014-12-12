@@ -37,7 +37,7 @@ public class SideBarActivity extends Activity
             Toast.makeText(a.getApplicationContext(),
                     "Internet detectada", Toast.LENGTH_SHORT).show();
             // Cache.salvaTreinosSujos(a);
-            // Cache.carregaTiposExercicios();
+            Cache.carregaTiposExercicios();
             // Cache.carregaTreinos();
         } else {
             Toast.makeText(a.getApplicationContext(),

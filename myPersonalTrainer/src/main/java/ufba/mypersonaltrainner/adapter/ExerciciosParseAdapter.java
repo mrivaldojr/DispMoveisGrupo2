@@ -25,7 +25,7 @@ public class ExerciciosParseAdapter extends ParseQueryAdapter<ParseObject> {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
                 query.whereEqualTo(PK.USER_ID, ParseUser.getCurrentUser().getObjectId());
-                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
                 return query;
             }
         });

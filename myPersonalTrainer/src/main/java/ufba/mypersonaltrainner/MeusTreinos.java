@@ -9,15 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
@@ -100,43 +97,6 @@ public class MeusTreinos extends Activity {
             i.setAction(C.ACTION_NOVO_TREINO);
             startActivityForResult(i, C.CRIA_TREINO_REQUEST);
         }
-        if(id == R.id.action_refresh){
-            return true;
-            //refresh();
-        }
-        if(id == R.id.action_clear) {
-            return true;
-            /*Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
-            // Limpa o cache local da categoria GRP_TUDO
-            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-            query.fromPin(PK.GRP_TUDO);
-            try {
-                List<ParseObject> treinos = query.find();
-                ParseObject.unpinAll(PK.GRP_TUDO, treinos);
-            } catch (ParseException e) {
-                erro(e);
-            }
-            mTreinoAdapter.loadObjects();*/
-        }
-        if(id == R.id.action_load) {
-            return true;
-            /*Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_SHORT).show();
-            // Carrega treinos do parse e coloca no datastore com pin.
-            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-            query.fromPin(PK.GRP_TUDO);
-            try {
-                if (query.count() == 0) {
-                    query = ParseQuery.getQuery(PK.TREINO);
-                    List<ParseObject> treinos = query.find();
-                    for (ParseObject treino : treinos) {
-                        treino.pin(PK.GRP_TUDO);
-                    }
-                }
-            } catch (ParseException e) {
-                erro(e);
-            }
-            mTreinoAdapter.loadObjects();*/
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -144,40 +104,5 @@ public class MeusTreinos extends Activity {
         Log.e(LOG_TAG, "deu errado no parse, la vai mensagem e stack trace:");
         Log.e(LOG_TAG, e.getMessage());
         e.printStackTrace();
-        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    void refresh() {
-        String UID = ParseUser.getCurrentUser().getObjectId();
-        ParseQuery<ParseObject> query;
-
-        Toast.makeText(getApplicationContext(), "LIMPANDO", Toast.LENGTH_SHORT).show();
-        // Limpa o cache local da categoria PK.GRP_TUDO
-        query = ParseQuery.getQuery(PK.TREINO);
-        query.fromPin(PK.GRP_TUDO);
-        try {
-            List<ParseObject> treinosLocais = query.find();
-            ParseObject.unpinAll(PK.GRP_TUDO, treinosLocais);
-        } catch (ParseException e) {
-            erro(e);
-        }
-
-        Toast.makeText(getApplicationContext(), "LOADANDO", Toast.LENGTH_LONG).show();
-        // Carrega treinos do parse e coloca no datastore com pin.
-        query = ParseQuery.getQuery(PK.TREINO);
-        query.include(PK.EXERCICIO);
-        query.fromPin(PK.GRP_TUDO);
-        try {
-            if (query.count() == 0) {
-                query = ParseQuery.getQuery(PK.TREINO);
-                List<ParseObject> treinos = query.find();
-                for (ParseObject treino : treinos) {
-                    treino.pin(PK.GRP_TUDO);
-                }
-            }
-        } catch (ParseException e) {
-            erro(e);
-        }
-        mTreinoAdapter.loadObjects();
     }
 }

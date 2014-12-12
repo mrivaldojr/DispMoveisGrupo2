@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -39,25 +40,28 @@ public class TreinoDeHojeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.treino_de_hoje);
 
-        btFinalizar = (Button) findViewById(R.id.button);
+        TextView textView = (TextView) findViewById(R.id.textView);
+        Button btFinalizar = (Button) findViewById(R.id.button);
 
-        final ParseUser user = ParseUser.getCurrentUser();
+        ParseUser user = ParseUser.getCurrentUser();
         final String uid = user.getObjectId();
-        final int indiceTreinoDeHoje = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+        int indiceTreinoDeHoje = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
 
         btFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+                ParseUser user = ParseUser.getCurrentUser();
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-                query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+                query.whereEqualTo(PK.TREINO_USER, uid);
                 query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
                 try {
-                    int numTreinos = query.count();
                     int atual = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+                    int numTreinos = query.count();
                     atual = (atual + 1) % numTreinos;
                     user.put(PK.USER_INDICE_TREINO_ATUAL, atual);
-                    user.saveInBackground();
+                    user.save();
+                    finish();
+                    startActivity(getIntent());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -65,7 +69,6 @@ public class TreinoDeHojeActivity extends Activity {
         });
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo(PK.TREINO_USER, uid);
         query.whereEqualTo(PK.TREINO_ATIVO_ORDEM, indiceTreinoDeHoje);
         ParseObject treino = null;
@@ -74,12 +77,12 @@ public class TreinoDeHojeActivity extends Activity {
                 user.put(PK.USER_INDICE_TREINO_ATUAL, 0);
                 user.save();
             }
-            if (query.count() == 0) finish();
             treino = query.getFirst();
+            if (treino == null) finish();
+            textView.setText(treino.getString(PK.TREINO_NOME));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        // TreinosParseAdaptert adaper = new TreinosParseAdapter(this);
 
         mListViewExercicios = (ListView) findViewById(R.id.lv_treinoDeHoje);
         mAdapterExercicios = new ArrayAdapter<Exercicio>(this,
@@ -91,10 +94,8 @@ public class TreinoDeHojeActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(),
                         ExercicioActivity.class);
-
                 Exercicio exercicio = mAdapterExercicios.getItem(i);
                 intent.putExtra(C.EXTRA_EXERCICIO_NOME, exercicio.getNome());
-
                 startActivity(intent);
             }
         });
@@ -107,7 +108,6 @@ public class TreinoDeHojeActivity extends Activity {
         ParseUser user = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo(PK.USER_ID, user.getObjectId());
 
         ParseObject treinoPO = null;

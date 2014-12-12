@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -82,8 +81,8 @@ public class TrainingDetail extends Activity {
     private void populaAdapter() {
         ParseQuery < ParseObject > query = ParseQuery.getQuery(PK.TREINO);
         query.include(PK.EXERCICIO);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-        //query.fromPin(PK.GRP_TUDO);
+        // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        // query.fromPin(PK.GRP_TUDO);
         query.getInBackground(treinoID, new GetCallback<ParseObject>() {
             public void done(ParseObject treino, ParseException e) {
                 if (e == null) {
@@ -117,36 +116,33 @@ public class TrainingDetail extends Activity {
         populaAdapter();
     }
 
-    public void onCheckboxClicked(View view) {
-        ehTreinoAtivo = ((CheckBox) view).isChecked();
-        if (ehTreinoAtivo) {
-            //treinoAtual.pin(PK.GRP_ATUAIS);
-            Toast.makeText(getApplicationContext(), "add", Toast.LENGTH_LONG).show();
-            //TreinosAtivos.add(treinoID);
-        } else {
-            Toast.makeText(getApplicationContext(), "rem", Toast.LENGTH_LONG).show()    ;
-            // TreinosAtivos.remove(treinoID);
-        }
-    }
+    // public void onCheckboxClicked(View view) {
+    //     ehTreinoAtivo = ((CheckBox) view).isChecked();
+    //     if (ehTreinoAtivo) {
+    //         //treinoAtual.pin(PK.GRP_ATUAIS);
+    //         //TreinosAtivos.add(treinoID);
+    //     } else {
+    //         // TreinosAtivos.remove(treinoID);
+    //     }
+    // }
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(getApplicationContext(), "apertou back", Toast.LENGTH_LONG).show();
         final boolean isChecked = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
-        try {
-            ParseObject treino = ParseQuery.getQuery(PK.TREINO).get(treinoID);
-            if (ehTreinoAtivo != treino.getBoolean(PK.TREINO_ESTADO_ATIVO)) {
-                setResult(Activity.RESULT_OK);
-                if (isChecked) TreinosAtivos.add(treinoID);
-                else TreinosAtivos.remove(treinoID);
-            } else {
-                setResult(Activity.RESULT_CANCELED);
-            }
-        } catch (ParseException e) {
-            Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
-                    + e.getMessage());
-            e.printStackTrace();
+        // try {
+            // ParseObject treino = ParseQuery.getQuery(PK.TREINO).get(treinoID);
+        if (ehTreinoAtivo != isChecked) {
+            setResult(Activity.RESULT_OK);
+            if (isChecked) TreinosAtivos.add(treinoID);
+            else TreinosAtivos.remove(treinoID);
+        } else {
+            setResult(Activity.RESULT_CANCELED);
         }
+        // } catch (ParseException e) {
+        //     Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
+        //             + e.getMessage());
+        //     e.printStackTrace();
+        // }
         super.onBackPressed();
     }
 
@@ -235,8 +231,8 @@ public class TrainingDetail extends Activity {
         protected Void doInBackground(Void... params) {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
-            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-            //query.whereEqualTo("trt_ds_nome", treinoNome);
+            // query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+            // query.whereEqualTo("trt_ds_nome", treinoNome);
             query.getInBackground(treinoID, new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {
@@ -246,8 +242,6 @@ public class TrainingDetail extends Activity {
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
-                    } else {
-                        // something went wrong
                     }
                 }
             });

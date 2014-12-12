@@ -10,14 +10,4 @@
         android:icon="@drawable/new_icon"
         android:title="@string/action_novo_exercicio"
         android:showAsAction="ifRoom" />
-
-    <item android:id="@+id/action_refresh"
-        android:title="refresh"
-        android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/action_clear"
-        android:title="clear cache"
-        android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/action_load"
-        android:title="load cache"
-        android:showAsAction="ifRoom|withText" />
 </menu>

@@ -23,7 +23,7 @@ public class TreinosAtivos {
 
             treinosQuery = ParseQuery.getQuery(PK.TREINO);
             treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
-            treinosQuery.whereEqualTo(PK.USER_ID, uid);
+            treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
 
             int proxIndiceTreinosAtuais = treinosQuery.count();
 
@@ -37,7 +37,39 @@ public class TreinosAtivos {
         }
     }
 
-    // TODO Tratar treinos ativos repetidos.
+    public static void remove(final String treinoID) {
+        String uid = ParseUser.getCurrentUser().getObjectId();
+
+        try {
+            ParseObject oTreino = ParseQuery.getQuery(PK.TREINO).get(treinoID);
+            final int posDepoisDoTreino = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
+            oTreino.remove(PK.TREINO_ATIVO_ORDEM);
+            oTreino.remove(PK.TREINO_ESTADO_ATIVO);
+            oTreino.save();
+
+            ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
+            treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
+            treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+            treinosQuery.orderByAscending(PK.TREINO_ATIVO_ORDEM);
+            treinosQuery.findInBackground(new FindCallback() {
+
+                @Override
+                public void done(List tList, ParseException e) {
+                    if (e == null) {
+                        for (int i = 0; i < tList.size(); i++) {
+                            ParseObject treino = (ParseObject) tList.get(i);
+                            treino.put(PK.TREINO_ATIVO_ORDEM, i);
+                            treino.saveInBackground();
+                        }
+                    } else {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public static List<ParseObject> getAll() {
         try {
@@ -54,66 +86,6 @@ public class TreinosAtivos {
         }
         return null;
     }
-
-    public static void remove(final String treinoID) {
-        String uid = ParseUser.getCurrentUser().getObjectId();
-        final ParseQuery treinosQuery = ParseQuery.getQuery(PK.TREINO);
-
-        treinosQuery.whereEqualTo(PK.TREINO_USER, uid);
-        treinosQuery.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
-        treinosQuery.orderByAscending(PK.TREINO_ATIVO_ORDEM);
-
-        try {
-            List tList = treinosQuery.find();
-            ParseObject oTreino = treinosQuery.get(treinoID);
-
-            for (int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
-                 i < tList.size(); i++)
-            {
-                ParseObject treino = (ParseObject) tList.get(i);
-                treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
-                treino.saveInBackground();
-                Log.v(TrainingDetail.class.getSimpleName(),
-                        "ativo: " + treino.getString(PK.TREINO_NOME));
-            }
-            oTreino.remove(PK.TREINO_ATIVO_ORDEM);
-            oTreino.remove(PK.TREINO_ESTADO_ATIVO);
-            oTreino.save();
-        } catch (ParseException e) {
-            Log.e(TrainingDetail.class.getSimpleName(), "não deu pra get treino: " +
-                    e.getMessage());
-            e.printStackTrace();
-        }
-
-        //treinosQuery.findInBackground(new FindCallback() {
-        //
-        //    @Override
-        //    public void done(List tList, ParseException e) {
-        //        if (e == null) {
-        //
-        //            try {
-        //                ParseObject oTreino = treinosQuery.get(treinoID);
-        //                int i = 1 + oTreino.getInt(PK.TREINO_ATIVO_ORDEM);
-        //                for (; i < tList.size(); i++) {
-        //                    ParseObject treino = (ParseObject) tList.get(i);
-        //                    treino.put(PK.TREINO_ATIVO_ORDEM, i - 1);
-        //                    treino.saveInBackground();
-        //                    Log.v(TrainingDetail.class.getSimpleName(),
-        //                            "ativo: " + treino.getString(PK.TREINO_NOME));
-        //                }
-        //                oTreino.remove(PK.TREINO_ATIVO_ORDEM);
-        //                oTreino.remove(PK.TREINO_ESTADO_ATIVO);
-        //                oTreino.saveInBackground();
-        //            } catch (ParseException ex) {
-        //                ex.printStackTrace();
-        //            }
-        //        } else {
-        //            Log.e(TrainingDetail.class.getSimpleName(), "não deu pra get treino: " +
-        //                    e.getMessage());
-        //            e.printStackTrace();
-        //        }
-        //    }
-        //});
-    }
-
 }
+
+// TODO Tratar treinos ativos repetidos.
