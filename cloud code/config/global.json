@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "MyPersonalTrainner": {
+            "applicationId": "zAMAiwyXWH7rYYBCuZlnchjIW5CvVw9JtpotJ37g", 
+            "masterKey": "KhFJfk0LQUjo1q5cFB5A2uSdiKW9SU7YlC06taFh"
+        }, 
+        "_default": {
+            "link": "MyPersonalTrainner"
+        }
+    }
+}

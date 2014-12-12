@@ -68,21 +68,14 @@ public class MeusTreinos extends Activity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        if (requestCode == C.CRIA_TREINO_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                mTreinoAdapter.loadObjects();
-                mTreinoAdapter.notifyDataSetChanged();
-            }
-        }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == C.CRIA_TREINO_REQUEST) mTreinoAdapter.loadObjects();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mTreinoAdapter.loadObjects();
-        mTreinoAdapter.notifyDataSetChanged();
     }
 
     @Override
