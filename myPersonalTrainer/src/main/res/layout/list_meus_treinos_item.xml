@@ -11,5 +11,7 @@
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:text="Large Text"
         android:id="@+id/txt_nome_treino_lst_item"
-        android:layout_gravity="center_horizontal" />
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+       />
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -76,6 +77,8 @@ public class PerfilFragment extends Fragment {
         int pontos = levelUser.getPontos();
         int maxpontos = levelUser.getMaxpontos();
 
+        Toast toast = Toast.makeText(getActivity(), "Parabéns Você ganhou"+pontos+" pontos!", Toast.LENGTH_LONG);
+
         levelUser.addPontos(23);
 
         // Atualização dos dados sempre que o usuário abrir o perfil
@@ -97,7 +100,7 @@ public class PerfilFragment extends Fragment {
         ((SideBarActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     private void makeMeRequest() {
 		Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),

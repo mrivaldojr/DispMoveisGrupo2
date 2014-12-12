@@ -225,7 +225,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             case 0:
                 i = new Intent(getActivity(), TreinoDeHojeActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 456);
                 break;
             case 1:
                 i = new Intent(getActivity(),MeusTreinos.class);
@@ -280,6 +280,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 456 && resultCode == 444){
+
+        }
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -289,6 +298,8 @@ public class NavigationDrawerFragment extends Fragment {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
     }
+
+
 
     @Override
     public void onDetach() {

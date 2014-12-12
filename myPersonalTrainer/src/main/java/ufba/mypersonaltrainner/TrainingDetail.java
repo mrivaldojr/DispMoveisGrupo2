@@ -59,7 +59,7 @@ public class TrainingDetail extends Activity {
         CheckBox ativoCheckbox = (CheckBox) findViewById(R.id.checkBox);
         ativoCheckbox.setChecked(ehTreinoAtivo);
 
-        mAdapter = new ArrayAdapter<Exercicio> (getApplicationContext(),
+        mAdapter = new ArrayAdapter<Exercicio> (getBaseContext(),
                 android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
         lv.setAdapter(mAdapter);
 

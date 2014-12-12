@@ -12,10 +12,10 @@ import android.widget.ListView;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
+import ufba.mypersonaltrainner.adapter.CustomAdapterMeusTreinos;
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
@@ -35,7 +35,7 @@ public class MeusTreinos extends Activity {
         UID = ParseUser.getCurrentUser().getObjectId();
 
 
-        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
+/*        mTreinoAdapter = new ParseQueryAdapter<ParseObject>(this
                 , new ParseQueryAdapter.QueryFactory<ParseObject>() {
             public ParseQuery<ParseObject> create() {
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(PK.TREINO);
@@ -45,7 +45,9 @@ public class MeusTreinos extends Activity {
                 query.orderByDescending(PK.PIN_DATE);
                 return query;
             }
-        });
+        });*/
+
+        mTreinoAdapter = new CustomAdapterMeusTreinos(this);
         mTreinoAdapter.setTextKey(PK.TREINO_NOME);
 
         // TreinosParseAdapter adapter = new TreinosParseAdapter(this);
