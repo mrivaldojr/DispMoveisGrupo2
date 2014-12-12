@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.parse.ui"
     android:versionCode="1"
@@ -7,6 +8,11 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
-    <application />
+    <application>
+        <activity
+            android:name=".TemosDeUsoActivity"
+            android:label="@string/title_activity_temos_de_uso" >
+        </activity>
+    </application>
 
 </manifest>

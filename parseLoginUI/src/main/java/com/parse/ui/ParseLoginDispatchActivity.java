@@ -80,12 +80,15 @@ public abstract class ParseLoginDispatchActivity extends Activity {
     setResult(resultCode);
 
     if (requestCode == 123 && resultCode == RESULT_OK) {
+        startActivityForResult( new Intent(getBaseContext(), TemosDeUsoActivity.class), 321 );
+
+    }
+    else if(requestCode == 321 && resultCode == RESULT_OK){
         SharedPreferences settings = getSharedPreferences("prefs", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("firstRun", false);
         editor.commit();
         runDispatch();
-
     }
     else if(requestCode == LOGIN_REQUEST && resultCode == RESULT_OK){
         runDispatch();
