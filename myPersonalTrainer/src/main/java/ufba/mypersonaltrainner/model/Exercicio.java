@@ -12,7 +12,7 @@ public final class Exercicio {
     private String id;
     private ParseObject PO;
 
-    public Exercicio(String id, String nome, String carga, String series) {
+    public Exercicio(String id, String nome, String series, String carga) {
         this.nome = nome;
         this.id = id;
         this.carga = carga;

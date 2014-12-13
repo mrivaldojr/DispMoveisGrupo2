@@ -25,38 +25,54 @@
         android:id="@+id/textView2" />
 
     <Spinner
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerExercicio" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="2">
+        android:layout_height="113dp"
+        android:weightSum="1">
 
-    <EditText
-        android:id="@+id/add_exercicio_series_do_exercicio"
-        android:inputType="number"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/series_do_exercicio"/>
-    <EditText
-        android:id="@+id/add_exercicio_carga_do_exercicio"
-        android:inputType="number"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/carga_do_exercicio"/>
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Séries:"
+                android:id="@+id/textView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Spinner
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerSeries"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/add_exercicio_carga_do_exercicio"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:gravity="bottom"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/carga_do_exercicio"
+            android:layout_weight="0.75" />
+
 
     </LinearLayout>
 

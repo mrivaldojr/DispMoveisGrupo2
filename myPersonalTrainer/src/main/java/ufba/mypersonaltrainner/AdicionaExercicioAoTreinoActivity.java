@@ -29,6 +29,7 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
     private Spinner categoriaSpinner;
     private Spinner exerciciosSpinner;
+    private Spinner numSeriesSpinner;
     private String categoriaEscolhida;
     private Button cancelar;
     private List<String> exercicios = new ArrayList<String>();
@@ -38,9 +39,11 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiciona_exercicio_ao_treino);
+
         cancelar = (Button) findViewById(R.id.button_cancelar_dialog);
         categoriaSpinner = (Spinner) findViewById(R.id.spinnerCategoria);
         exerciciosSpinner = (Spinner) findViewById(R.id.spinnerExercicio);
+        numSeriesSpinner = (Spinner) findViewById(R.id.spinnerSeries);
 
         String nome; String series; String carga;
         Intent intent = getIntent();
@@ -55,10 +58,17 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
                 R.array.categorias_de_exercicios,
                 android.R.layout.simple_spinner_item);
 
+        ArrayAdapter<CharSequence> adapterSeries = ArrayAdapter.createFromResource(this,
+                R.array.num_series,
+                android.R.layout.simple_spinner_item);
+
         adapterCategorias.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterSeries.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         cancelar.setOnClickListener(clickCancelar);
 
+
+        numSeriesSpinner.setAdapter(adapterSeries);
         categoriaSpinner.setAdapter(adapterCategorias);
 
         categoriaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -107,12 +117,12 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
     public void confirma(View view) {
         Intent intent = new Intent();
 
-        EditText series = (EditText) findViewById(R.id.add_exercicio_series_do_exercicio);
+
         EditText carga = (EditText) findViewById(R.id.add_exercicio_carga_do_exercicio);
 
         intent.putExtra(C.EXTRA_EXERCICIO_IDPARSE, exerciciosSpinner.getSelectedItem().toString());
         intent.putExtra(C.EXTRA_EXERCICIO_NOME, exerciciosSpinner.getSelectedItem().toString());
-        intent.putExtra(C.EXTRA_EXERCICIO_SERIES, series.getText().toString());
+        intent.putExtra(C.EXTRA_EXERCICIO_SERIES, numSeriesSpinner.getSelectedItem().toString());
         intent.putExtra(C.EXTRA_EXERCICIO_CARGA, carga.getText().toString());
 
         Intent intentChamante = getIntent();

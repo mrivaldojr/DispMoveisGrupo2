@@ -19,6 +19,8 @@ import ufba.mypersonaltrainner.util.PK;
 public class ExerciciosParseAdapter extends ParseQueryAdapter<ParseObject> {
 
     private final String LOG_TAG = TreinosParseAdapter.class.getSimpleName();
+    private String idTreino;
+
 
     public ExerciciosParseAdapter(Context context) {
         super(context, new ParseQueryAdapter.QueryFactory<ParseObject>() {
