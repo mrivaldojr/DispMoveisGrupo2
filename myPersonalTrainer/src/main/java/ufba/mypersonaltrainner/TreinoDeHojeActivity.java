@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -60,8 +61,9 @@ public class TreinoDeHojeActivity extends Activity {
                     atual = (atual + 1) % numTreinos;
                     user.put(PK.USER_INDICE_TREINO_ATUAL, atual);
                     user.save();
+
                     finish();
-                    startActivity(getIntent());
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +101,15 @@ public class TreinoDeHojeActivity extends Activity {
                 startActivity(intent);
             }
         });
-        populateAdapterFromcloud(treino.getObjectId());
+        try {
+            populateAdapterFromcloud(treino.getObjectId());
+        }
+        catch (NullPointerException e){
+            btFinalizar.setVisibility(View.INVISIBLE);
+            Toast toast =  Toast.makeText(getBaseContext(), "Não há treinos Ativos", Toast.LENGTH_LONG);
+            toast.show();
+        }
+
     }
 
 

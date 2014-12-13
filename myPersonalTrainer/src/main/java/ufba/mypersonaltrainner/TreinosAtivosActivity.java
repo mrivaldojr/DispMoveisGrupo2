@@ -10,10 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
-import com.parse.ParseUser;
 
+import ufba.mypersonaltrainner.adapter.CustomAdapterTreinosAtivos;
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 
@@ -29,7 +28,10 @@ public class TreinosAtivosActivity extends Activity {
         setContentView(R.layout.activity_treinos_ativos);
 
 
-        adapter = new ParseQueryAdapter<ParseObject>(this,
+        adapter = new CustomAdapterTreinosAtivos(this);
+
+
+/*        adapter = new ParseQueryAdapter<ParseObject>(this,
                 new ParseQueryAdapter.QueryFactory<ParseObject>() {
             @Override
             public ParseQuery<ParseObject> create() {
@@ -39,11 +41,15 @@ public class TreinosAtivosActivity extends Activity {
                 query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
                 return query;
             }
-        });
+        });*/
+
+
         adapter.setTextKey(PK.TREINO_NOME);
 
         ListView lv = (ListView) findViewById(R.id.listView_treinos_ativos);
         lv.setAdapter(adapter);
+
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
