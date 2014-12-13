@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,11 +24,19 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import ufba.mypersonaltrainner.adapter.CustomAdapterExercicios;
 import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
 import ufba.mypersonaltrainner.util.TreinosAtivos;
 
+/*
+
+    android:id="@+id/item_lv_nome"
+    android:id="@+id/item_lv_carga"
+    android:id="@+id/item_lv_rep"
+
+ */
 
 public class TrainingDetail extends Activity {
 
@@ -37,7 +44,7 @@ public class TrainingDetail extends Activity {
     private String treinoID;
     private String treinoNome;
     private ParseObject treinoAtual;
-    private ArrayAdapter<Exercicio> mAdapter;
+    private CustomAdapterExercicios mAdapter;
     private static String PREFERENCE_ESTADO_CHECKBOX = "treino_esta_ativo";
     private boolean ehTreinoAtivo = false;
 
@@ -59,8 +66,7 @@ public class TrainingDetail extends Activity {
         CheckBox ativoCheckbox = (CheckBox) findViewById(R.id.checkBox);
         ativoCheckbox.setChecked(ehTreinoAtivo);
 
-        mAdapter = new ArrayAdapter<Exercicio> (getBaseContext(),
-                android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
+        mAdapter = new CustomAdapterExercicios (getBaseContext(), new ArrayList<Exercicio>());
         lv.setAdapter(mAdapter);
 
         populaAdapter();
@@ -115,16 +121,6 @@ public class TrainingDetail extends Activity {
         super.onResume();
         populaAdapter();
     }
-
-    // public void onCheckboxClicked(View view) {
-    //     ehTreinoAtivo = ((CheckBox) view).isChecked();
-    //     if (ehTreinoAtivo) {
-    //         //treinoAtual.pin(PK.GRP_ATUAIS);
-    //         //TreinosAtivos.add(treinoID);
-    //     } else {
-    //         // TreinosAtivos.remove(treinoID);
-    //     }
-    // }
 
     @Override
     public void onBackPressed() {

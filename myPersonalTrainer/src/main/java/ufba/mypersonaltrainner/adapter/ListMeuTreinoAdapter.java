@@ -57,7 +57,6 @@ public class ListMeuTreinoAdapter extends BaseAdapter {
         TextView cargaExercicio = (TextView) layout.findViewById(R.id.item_lv_carga);
         cargaExercicio.setText(Integer.toString(item.getCarga()));
 
-
         return layout;
     }
 }
