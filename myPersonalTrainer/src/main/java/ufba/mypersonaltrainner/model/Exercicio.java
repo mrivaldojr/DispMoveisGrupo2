@@ -27,7 +27,7 @@ public final class Exercicio {
         this.PO = PO;
     }
 
-    public Exercicio(String nome, String reps, String carga) {
+    public Exercicio(String nome, String series, String carga) {
         this.nome = nome;
         this.series = series;
         this.carga = carga;

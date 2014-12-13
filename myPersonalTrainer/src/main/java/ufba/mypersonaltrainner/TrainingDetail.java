@@ -91,10 +91,10 @@ public class TrainingDetail extends Activity {
                     ArrayList<Exercicio> listaExercicios = new ArrayList<Exercicio>();
                     for (ParseObject exercicio : exerciciosDoParse) {
                         String nome = exercicio.getString(PK.EXERCICIO_NOME);
-                        String reps = exercicio.getString(PK.EXERCICIO_SERIES);
+                        String series = exercicio.getString(PK.EXERCICIO_SERIES);
                         String carga = exercicio.getString(PK.EXERCICIO_CARGA);
 
-                        Exercicio item = new Exercicio(nome, reps, carga);
+                        Exercicio item = new Exercicio(nome, series, carga);
                         listaExercicios.add(item);
                     }
                     TextView nomeTreinoTextView = (TextView) findViewById(R.id.selected_training_detail);
