@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +30,7 @@ import ufba.mypersonaltrainner.util.PK;
 public class TreinoDeHojeActivity extends Activity {
 
     private ParseQueryAdapter<ParseObject> mAdapter;
-    private Button btFinalizar;
+    //private Button btFinalizar;
     private ArrayAdapter<Exercicio> mAdapterExercicios;
     private ListView mListViewExercicios;
     private ParseUser user;
@@ -42,13 +41,15 @@ public class TreinoDeHojeActivity extends Activity {
         setContentView(R.layout.treino_de_hoje);
 
         TextView textView = (TextView) findViewById(R.id.textView);
-        Button btFinalizar = (Button) findViewById(R.id.button);
+        //Button btFinalizar = (Button) findViewById(R.id.button);
 
         ParseUser user = ParseUser.getCurrentUser();
         final String uid = user.getObjectId();
         int indiceTreinoDeHoje = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
 
-        btFinalizar.setOnClickListener(new View.OnClickListener() {
+
+        //código do clique do botao movido para icone DONE da ActionBar
+        /*btFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ParseUser user = ParseUser.getCurrentUser();
@@ -68,7 +69,7 @@ public class TreinoDeHojeActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
         query.whereEqualTo(PK.TREINO_USER, uid);
@@ -105,7 +106,6 @@ public class TreinoDeHojeActivity extends Activity {
             populateAdapterFromcloud(treino.getObjectId());
         }
         catch (NullPointerException e){
-            btFinalizar.setVisibility(View.INVISIBLE);
             Toast toast =  Toast.makeText(getBaseContext(), "Não há treinos Ativos", Toast.LENGTH_LONG);
             toast.show();
         }
@@ -155,6 +155,27 @@ public class TreinoDeHojeActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+
+
+
+            ParseUser user = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.whereEqualTo(PK.TREINO_USER, user.getObjectId());
+            query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+            try {
+                int atual = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+                int numTreinos = query.count();
+                atual = (atual + 1) % numTreinos;
+                user.put(PK.USER_INDICE_TREINO_ATUAL, atual);
+                user.save();
+
+                finish();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
             return true;
         }
         return super.onOptionsItemSelected(item);

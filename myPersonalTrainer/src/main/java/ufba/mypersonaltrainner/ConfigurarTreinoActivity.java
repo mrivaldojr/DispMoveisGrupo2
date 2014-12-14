@@ -119,7 +119,7 @@ public class ConfigurarTreinoActivity extends Activity {
     }
 
     // TODO CACHE
-    public void onButtonSalvarTreinoClick(View view) {
+    public void onButtonSalvarTreinoClick() {
         testaVars(LOG_TAG, "onButtonSalvarTreinoClick");
 
         EditText nomeEditText = (EditText) findViewById(R.id.edt_nomeTreino);
@@ -253,7 +253,10 @@ public class ConfigurarTreinoActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //aqui vai para o botao done
         if (id == R.id.action_settings) {
+            onButtonSalvarTreinoClick();
             return true;
         }
 
