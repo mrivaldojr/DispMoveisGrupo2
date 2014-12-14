@@ -157,8 +157,6 @@ public class ConfigurarTreinoActivity extends Activity {
         treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
         treino.put(PK.TREINO_NOME, nomeTreino);
 
-        int k = mAdapterExercicios.getCount();
-
         for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
 
             Exercicio exercicio = mAdapterExercicios.getItem(i);

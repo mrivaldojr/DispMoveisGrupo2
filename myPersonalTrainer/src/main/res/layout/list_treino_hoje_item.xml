@@ -9,74 +9,61 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Carga: "
+        android:id="@+id/textView"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:maxWidth="140dp"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Supino Reto"
+        android:text="Supino Retosssssssssssssssssssssss"
         android:textStyle="bold"
         android:typeface="sans"
         android:textColor="#000000"
         android:id="@+id/item_lv_nome"
-        android:layout_marginLeft="38dp"
+        android:layout_marginLeft="44dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="97dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:typeface="sans"
+        android:text="Carga"
+        android:id="@+id/item_lv_carga"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_below="@+id/item_lv_rep"
+        android:layout_toRightOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Séries: "
+        android:textColor="#000000"
+        android:id="@+id/textView2"
         android:layout_toEndOf="@+id/item_lv_nome"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/item_lv_nome">
+        android:layout_toRightOf="@+id/item_lv_nome"
+        android:layout_marginLeft="104dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:id="@+id/item_lv_rep"
+        android:layout_gravity="center"
+        android:text="wer"
+        android:layout_toEndOf="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Carga: "
-                android:id="@+id/textView" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:typeface="sans"
-                android:text="Carga"
-                android:id="@+id/item_lv_carga" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Séries: "
-                android:textColor="#000000"
-                android:id="@+id/textView2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:id="@+id/item_lv_rep"
-                android:layout_gravity="center"
-                android:text="wer" />
-        </LinearLayout>
-
-    </LinearLayout>
 </RelativeLayout>
