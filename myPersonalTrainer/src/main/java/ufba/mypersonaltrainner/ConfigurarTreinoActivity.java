@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -127,6 +128,18 @@ public class ConfigurarTreinoActivity extends Activity {
 
         String uid = ParseUser.getCurrentUser().getObjectId();
 
+        if(nomeTreino.equals("")){
+            Toast toast = Toast.makeText(getBaseContext(), "Dê um Nome ao Treino.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
+        if(mAdapterExercicios.getCount()==0){
+            Toast toast = Toast.makeText(getBaseContext(), "Adicione exercícios.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
         if (ehNovoTreino) {
             treino = new ParseObject(PK.TREINO);
             treino.put(PK.USER_ID, uid);
@@ -144,7 +157,10 @@ public class ConfigurarTreinoActivity extends Activity {
         treino.put(PK.PIN_DATE, new Date(System.currentTimeMillis()));
         treino.put(PK.TREINO_NOME, nomeTreino);
 
+        int k = mAdapterExercicios.getCount();
+
         for (int i = 0; i < mAdapterExercicios.getCount(); i++) {
+
             Exercicio exercicio = mAdapterExercicios.getItem(i);
             ParseObject novoExercicio = exercicio.isLoaded() ? exercicio.getPO() :
                     new ParseObject(PK.EXERCICIO);

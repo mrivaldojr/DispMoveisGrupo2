@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -119,6 +120,13 @@ public class AdicionaExercicioAoTreinoActivity extends Activity{
 
 
         EditText carga = (EditText) findViewById(R.id.add_exercicio_carga_do_exercicio);
+
+        if(exerciciosSpinner.getSelectedItem() == null || carga.getText().toString().equals("")){
+            Toast toast = Toast.makeText(getBaseContext(), "Todos os Campos devem ser Preenchidos",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
 
         intent.putExtra(C.EXTRA_EXERCICIO_IDPARSE, exerciciosSpinner.getSelectedItem().toString());
         intent.putExtra(C.EXTRA_EXERCICIO_NOME, exerciciosSpinner.getSelectedItem().toString());
