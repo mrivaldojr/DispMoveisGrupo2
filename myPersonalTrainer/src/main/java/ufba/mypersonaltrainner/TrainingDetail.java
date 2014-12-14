@@ -125,8 +125,6 @@ public class TrainingDetail extends Activity {
     @Override
     public void onBackPressed() {
         final boolean isChecked = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
-        // try {
-            // ParseObject treino = ParseQuery.getQuery(PK.TREINO).get(treinoID);
         if (ehTreinoAtivo != isChecked) {
             setResult(Activity.RESULT_OK);
             if (isChecked) TreinosAtivos.add(treinoID);
@@ -134,46 +132,8 @@ public class TrainingDetail extends Activity {
         } else {
             setResult(Activity.RESULT_CANCELED);
         }
-        // } catch (ParseException e) {
-        //     Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
-        //             + e.getMessage());
-        //     e.printStackTrace();
-        // }
         super.onBackPressed();
     }
-
-    // @Override
-    // protected void onPause() {
-    //     super.onPause();
-    //     Toast.makeText(getApplicationContext(), "pausou", Toast.LENGTH_LONG).show();
-    //     final boolean isChecked = ((CheckBox) findViewById(R.id.checkBox)).isChecked();
-    //     try {
-    //         ParseObject treino = ParseQuery.getQuery(PK.TREINO).get(treinoID);
-    //         if (ehTreinoAtivo != treino.getBoolean(PK.TREINO_ESTADO_ATIVO))
-    //             if (isChecked) TreinosAtivos.add(treinoID);
-    //             else TreinosAtivos.remove(treinoID);
-    //     } catch (ParseException e) {
-    //         Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
-    //                 + e.getMessage());
-    //         e.printStackTrace();
-    //     }
-    //     // ParseQuery.getQuery(PK.TREINO).getInBackground(treinoID, new GetCallback<ParseObject>() {
-    //     //     @Override
-    //     //     public void done(ParseObject treino, ParseException e) {
-    //     //         if (e == null) {
-    //     //             if (ehTreinoAtivo != treino.getBoolean(PK.TREINO_ESTADO_ATIVO))
-    //     //                 if (isChecked) TreinosAtivos.add(treinoID);
-    //     //                 else TreinosAtivos.remove(treinoID);
-    //     //         } else {
-    //     //             Log.v(this.getClass().getSimpleName(), "Erro onstop na hora de update Ativo"
-    //     //                     + e.getMessage());
-    //     //             e.printStackTrace();
-    //     //         }
-    //     //     }
-    //     // });
-    // }
-
-    // TODO ver colé a desse erro ufba.mypersonaltrainner I/Choreographer﹕Skipped 34 frames! The application may be doing too much work on its main thread.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -75,6 +75,7 @@ public class TreinoDeHojeActivity extends Activity {
         query.whereEqualTo(PK.TREINO_USER, uid);
         query.whereEqualTo(PK.TREINO_ATIVO_ORDEM, indiceTreinoDeHoje);
         ParseObject treino = null;
+
         try {
             if (!user.containsKey(PK.USER_INDICE_TREINO_ATUAL)) {
                 user.put(PK.USER_INDICE_TREINO_ATUAL, 0);
@@ -102,6 +103,7 @@ public class TreinoDeHojeActivity extends Activity {
                 startActivity(intent);
             }
         });
+
         try {
             populateAdapterFromcloud(treino.getObjectId());
         }
@@ -154,20 +156,21 @@ public class TreinoDeHojeActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
-
-
 
             ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
             query.whereEqualTo(PK.TREINO_USER, user.getObjectId());
             query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
             try {
+                LevelUser levelUser = LevelUser.getInstance();
+                levelUser.addPontos(23);
                 int atual = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
                 int numTreinos = query.count();
                 atual = (atual + 1) % numTreinos;
                 user.put(PK.USER_INDICE_TREINO_ATUAL, atual);
-                user.save();
+                user.saveInBackground();
 
                 finish();
 

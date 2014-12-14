@@ -46,7 +46,7 @@ public class LevelUser {
         ParseUser user = ParseUser.getCurrentUser();
 
         int aux = (this.pontos + pontos)%maxpontos;
-        if(aux < this.pontos) { //Caso os novos pontos sejam menor do que o anterior, provavelmente ele upou
+        if(aux < this.pontos) { //Caso os novos pontos sejam menor do que o anterior, ele upou
             level++;
             maxpontos = level*RATE_EXP;
         }

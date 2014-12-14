@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -72,20 +71,6 @@ public class PerfilFragment extends Fragment {
         barExp = (ProgressBar) rootView.findViewById(R.id.Bar_xp);
         userProfilePictureView = (ProfilePictureView) rootView.findViewById(R.id.img_perfil);
 
-        LevelUser levelUser = LevelUser.getInstance();
-        int level = levelUser.getLevel();
-        int pontos = levelUser.getPontos();
-        int maxpontos = levelUser.getMaxpontos();
-
-        Toast toast = Toast.makeText(getActivity(), "Parabéns Você ganhou"+pontos+" pontos!", Toast.LENGTH_LONG);
-
-        levelUser.addPontos(23);
-
-        // Atualização dos dados sempre que o usuário abrir o perfil
-        txtViewLevel.setText("Level: "+Integer.toString(level));
-        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
-        barExp.setProgress((pontos*100)/maxpontos);
-
         Session session = ParseFacebookUtils.getSession();
 		if (session != null && session.isOpened()) {
 			makeMeRequest();
@@ -99,6 +84,12 @@ public class PerfilFragment extends Fragment {
         super.onAttach(activity);
         ((SideBarActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateLevelAndPointsViews();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -147,6 +138,18 @@ public class PerfilFragment extends Fragment {
 		);
 		request.executeAsync();
 	}
+
+    private void updateLevelAndPointsViews() {
+        LevelUser levelUser = LevelUser.getInstance();
+        int level = levelUser.getLevel();
+        int pontos = levelUser.getPontos();
+        int maxpontos = levelUser.getMaxpontos();
+
+        // Atualização dos dados sempre que o usuário abrir o perfil
+        txtViewLevel.setText("Level: "+Integer.toString(level));
+        txtViewPontos.setText("Experiência: "+Integer.toString(pontos)+"/"+Integer.toString(maxpontos));
+        barExp.setProgress((pontos*100)/maxpontos);
+    }
     
     private void updateViewsWithProfileInfo() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
