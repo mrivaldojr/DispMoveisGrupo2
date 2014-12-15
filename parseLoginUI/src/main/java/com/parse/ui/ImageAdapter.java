@@ -19,10 +19,14 @@ public class ImageAdapter extends PagerAdapter {
     private Resources resources;
 
     private int [] images = new int[]{
-            R.drawable.tuto_0sidebar,
-            R.drawable.tuto_1novo_treino,
-            R.drawable.tuto_2trainig_detail,
-            R.drawable.tuto_3add_exercicio};
+            R.drawable.tuto1_perfil,
+            R.drawable.tuto2_meus_treinos,
+            R.drawable.tuto3_destalhes,
+            R.drawable.tuto4_exercicio,
+            R.drawable.tuto5_novo_treino,
+            R.drawable.tuto6_adicionar_exerc,
+            R.drawable.tuto7_treino_hoje
+            };
 
     public ImageAdapter(Context context){
         this.contexto = context;
