@@ -8,6 +8,8 @@ O objetivo deste aplicativo é dar ao usuário a aportunidade de criar seus trei
 
 #Especificações Técnicas
 
+Versão do android: 4+;
+
 O aplicativo conta com um sistema de login usando o Facebook e o Parse para guardar os dados. Ele possui as seguintes funcionalidades:
 
 * Criação, Remoção e Edição de treinos: o usuário pode criar seus treinos baseados no banco de dados de exercícios pré estabelecidos e posteriormente excuí-los ou editá-los.
