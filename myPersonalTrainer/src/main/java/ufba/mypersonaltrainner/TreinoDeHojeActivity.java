@@ -181,6 +181,30 @@ public class TreinoDeHojeActivity extends Activity {
 
             return true;
         }
+
+        if(id == R.id.action_skip){
+
+            ParseUser user = ParseUser.getCurrentUser();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(PK.TREINO);
+            query.whereEqualTo(PK.TREINO_USER, user.getObjectId());
+            query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
+            try {
+                int atual = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
+                int numTreinos = query.count();
+                atual = (atual + 1) % numTreinos;
+                user.put(PK.USER_INDICE_TREINO_ATUAL, atual);
+                user.saveInBackground();
+
+                finish();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
