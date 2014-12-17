@@ -4,10 +4,7 @@ package ufba.mypersonaltrainner;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -25,9 +22,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.facebook.Session;
-import com.parse.ParseUser;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -118,7 +112,6 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
-                        getString(R.string.title_section4),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
@@ -235,15 +228,16 @@ public class NavigationDrawerFragment extends Fragment {
                 i = new Intent(getActivity(),TreinosAtivosActivity.class);
                 startActivity(i);
                 break;
-            case 3:
-            	ParseUser.logOut();
-            	
+            /*case 3:
+
             	//dialog para teste
             	AlertDialog.Builder aDialogBuilder = new AlertDialog.Builder(getActivity());
-            	aDialogBuilder.setPositiveButton("Encerrar Sessão" , new OnClickListener() {
+            	aDialogBuilder.setPositiveButton("Sim" , new OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+
+                        ParseUser.logOut();
 						Session fbs = Session.getActiveSession();
 		            	if (fbs == null) {
 		            	    fbs = new com.facebook.Session(getActivity());
@@ -259,23 +253,20 @@ public class NavigationDrawerFragment extends Fragment {
 					}
 				});
             	
-            	aDialogBuilder.setNegativeButton("Apenas Sair", new OnClickListener() {
+            	aDialogBuilder.setNegativeButton("Não", new OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						
-						Intent intent = new Intent(getActivity(),
-		                        ufba.mypersonaltrainner.parseLogin.SampleDispatchActivity.class);
-		                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-		                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-		                    startActivity(intent);
+
+
 					}
 				});
-            	aDialogBuilder.setTitle("Deseja Encerrar a Sessão?");
+            	aDialogBuilder.setTitle("Deseja Realmente Deslogar?");
             	
             	AlertDialog aDialog = aDialogBuilder.create();
             	aDialog.show();
             	break;
+            */
         }
 
     }
