@@ -9,6 +9,8 @@ public class C {
     public static final int EDITA_TREINO_REQUEST = 1;
     public static final int CRIA_EXERCICIO_REQUEST = 2;
     public static final int EDITA_EXERCICIO_REQUEST = 3;
+    public static final int EXCLUI_EXERCICIO_REQUEST = 4;
+
     public static final String ACTION_EDIT_TREINO = "ufba.mypersonaltrainner.action.EDIT_TREINO";
     public static final String ACTION_NOVO_TREINO = "ufba.mypersonaltrainner.action.NOVO_TREINO";
     public static final String ACTION_NOVO_EXERCICIO = "ufba.mypersonaltrainner.action.NOVO_EXERCICIO";

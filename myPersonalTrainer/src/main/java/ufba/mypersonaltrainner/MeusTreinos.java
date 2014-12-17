@@ -63,13 +63,13 @@ public class MeusTreinos extends Activity {
                 intent.putExtra(C.EXTRA_TREINO_IDPARSE, treino.getObjectId());
                 intent.putExtra(C.EXTRA_TREINO_NOME, treino.getString(PK.TREINO_NOME));
                 intent.putExtra(C.EXTRA_TREINO_EH_ATIVO, treino.getBoolean(PK.TREINO_ESTADO_ATIVO));
-                startActivity(intent);
+                startActivityForResult(intent, C.EXCLUI_EXERCICIO_REQUEST);
             }
         });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == C.CRIA_TREINO_REQUEST) mTreinoAdapter.loadObjects();
+        if (requestCode == C.CRIA_TREINO_REQUEST || requestCode == C.EXCLUI_EXERCICIO_REQUEST) mTreinoAdapter.loadObjects();
     }
 
     @Override
@@ -77,6 +77,7 @@ public class MeusTreinos extends Activity {
         super.onResume();
         mTreinoAdapter.loadObjects();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,9 +92,6 @@ public class MeusTreinos extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if(id == R.id.action_new){
             Intent i = new Intent(getBaseContext(), ConfigurarTreinoActivity.class);
             i.setAction(C.ACTION_NOVO_TREINO);

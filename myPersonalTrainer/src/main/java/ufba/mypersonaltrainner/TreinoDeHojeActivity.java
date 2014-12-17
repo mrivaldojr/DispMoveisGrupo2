@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +21,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import ufba.mypersonaltrainner.adapter.CustomAdapterExercicios;
 import ufba.mypersonaltrainner.model.Exercicio;
 import ufba.mypersonaltrainner.util.C;
 import ufba.mypersonaltrainner.util.PK;
@@ -31,7 +31,7 @@ public class TreinoDeHojeActivity extends Activity {
 
     private ParseQueryAdapter<ParseObject> mAdapter;
     //private Button btFinalizar;
-    private ArrayAdapter<Exercicio> mAdapterExercicios;
+    private CustomAdapterExercicios mAdapterExercicios;
     private ListView mListViewExercicios;
     private ParseUser user;
 
@@ -89,8 +89,8 @@ public class TreinoDeHojeActivity extends Activity {
         }
 
         mListViewExercicios = (ListView) findViewById(R.id.lv_treinoDeHoje);
-        mAdapterExercicios = new ArrayAdapter<Exercicio>(this,
-                android.R.layout.simple_list_item_1, new ArrayList<Exercicio>());
+        mAdapterExercicios = new CustomAdapterExercicios(getBaseContext(),
+                new ArrayList<Exercicio>());
         mListViewExercicios.setAdapter(mAdapterExercicios);
 
         mListViewExercicios.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -98,7 +98,7 @@ public class TreinoDeHojeActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getBaseContext(),
                         ExercicioActivity.class);
-                Exercicio exercicio = mAdapterExercicios.getItem(i);
+                Exercicio exercicio =(Exercicio) mAdapterExercicios.getItem(i);
                 intent.putExtra(C.EXTRA_EXERCICIO_NOME, exercicio.getNome());
                 startActivity(intent);
             }
@@ -165,7 +165,7 @@ public class TreinoDeHojeActivity extends Activity {
             query.whereEqualTo(PK.TREINO_ESTADO_ATIVO, true);
             try {
                 LevelUser levelUser = LevelUser.getInstance();
-                levelUser.addPontos(23);
+                levelUser.addPontos(40);
                 int atual = user.getInt(PK.USER_INDICE_TREINO_ATUAL);
                 int numTreinos = query.count();
                 atual = (atual + 1) % numTreinos;

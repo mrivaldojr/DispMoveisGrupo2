@@ -173,6 +173,8 @@ public class TrainingDetail extends Activity {
 
             excuiDialog.show();
 
+            setResult(RESULT_OK);
+
 
         }
         return super.onOptionsItemSelected(item);
